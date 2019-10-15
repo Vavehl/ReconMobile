@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clipToPadding="false"
+    android:gravity="center|top"
+    android:orientation="vertical"
+    android:paddingLeft="10dp"
+    android:paddingTop="10dp"
+    android:paddingRight="10dp"
+    android:scrollbarAlwaysDrawVerticalTrack="false"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center|top"
+        android:orientation="vertical">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColorHint="@color/colorPrimaryDark"
+            app:boxBackgroundColor="@color/colorIvoryText"
+            app:boxBackgroundMode="outline"
+            app:errorEnabled="true">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/reports_location"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:hint="@string/instrument_location"
+                android:inputType="text" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColorHint="@color/colorPrimaryDark"
+            app:boxBackgroundColor="@color/colorIvoryText"
+            app:boxBackgroundMode="outline"
+            app:boxStrokeColor="@color/colorPrimaryDark"
+            app:errorEnabled="true">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/reports_customer"
+                android:layout_width="match_parent"
+                android:layout_height="105dp"
+                android:hint="@string/customer_information_address"
+                android:inputType="textMultiLine"
+                android:maxLines="4"
+                android:minLines="3"
+                android:scrollbars="vertical"
+                android:selectAllOnFocus="true"
+                android:singleLine="false" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColorHint="@color/colorPrimaryDark"
+            app:boxBackgroundColor="@color/colorIvoryText"
+            app:boxBackgroundMode="outline"
+            app:boxStrokeColor="@color/colorPrimaryDark"
+            app:errorEnabled="true">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/reports_testsite"
+                android:layout_width="match_parent"
+                android:layout_height="105dp"
+                android:hint="@string/test_site_information_address"
+                android:inputType="textMultiLine"
+                android:maxLines="4"
+                android:minLines="3"
+                android:scrollbars="vertical"
+                android:selectAllOnFocus="true"
+                android:singleLine="false" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColorHint="@color/colorPrimaryDark"
+            app:boxBackgroundColor="@color/colorIvoryText"
+            app:boxBackgroundMode="outline"
+            app:boxStrokeColor="@color/colorPrimaryDark"
+            app:errorEnabled="true">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/reports_deployed"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:hint="@string/deployed_by"
+                android:inputType="text" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColorHint="@color/colorPrimaryDark"
+            app:boxBackgroundColor="@color/colorIvoryText"
+            app:boxBackgroundMode="outline"
+            app:boxStrokeColor="@color/colorPrimaryDark"
+            app:errorEnabled="true">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/reports_retrieved"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:hint="@string/retrieved_by"
+                android:inputType="text" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColorHint="@color/colorPrimaryDark"
+            app:boxBackgroundColor="@color/colorIvoryText"
+            app:boxBackgroundMode="outline"
+            app:boxStrokeColor="@color/colorPrimaryDark"
+            app:errorEnabled="true">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/reports_analyzed"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:hint="@string/analyzed_by"
+                android:inputType="text" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColorHint="@color/colorPrimaryDark"
+            app:boxBackgroundColor="@color/colorIvoryText"
+            app:boxBackgroundMode="outline"
+            app:boxStrokeColor="@color/colorPrimaryDark"
+            app:errorEnabled="true">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/reports_protocol"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:hint="@string/protocol"
+                android:inputType="text" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColorHint="@color/colorPrimaryDark"
+            app:boxBackgroundColor="@color/colorIvoryText"
+            app:boxBackgroundMode="outline"
+            app:boxStrokeColor="@color/colorPrimaryDark"
+            app:errorEnabled="true">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/reports_tampering"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:hint="@string/tampering"
+                android:inputType="text" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColorHint="@color/colorPrimaryDark"
+            app:boxBackgroundColor="@color/colorIvoryText"
+            app:boxBackgroundMode="outline"
+            app:boxStrokeColor="@color/colorPrimaryDark"
+            app:errorEnabled="true">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/reports_weather"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:hint="@string/weather"
+                android:inputType="text" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColorHint="@color/colorPrimaryDark"
+            app:boxBackgroundColor="@color/colorIvoryText"
+            app:boxBackgroundMode="outline"
+            app:boxStrokeColor="@color/colorPrimaryDark"
+            app:errorEnabled="true">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/reports_mitigation"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:hint="@string/mitigation"
+                android:inputType="text" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColorHint="@color/colorPrimaryDark"
+            app:boxBackgroundColor="@color/colorIvoryText"
+            app:boxBackgroundMode="outline"
+            app:boxStrokeColor="@color/colorPrimaryDark"
+            app:errorEnabled="true">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/reports_comment"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:hint="@string/report_comment"
+                android:inputType="text" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColorHint="@color/colorPrimaryDark"
+            app:boxBackgroundColor="@color/colorIvoryText"
+            app:boxBackgroundMode="outline"
+            app:boxStrokeColor="@color/colorPrimaryDark"
+            app:errorEnabled="true">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/reports_text"
+                android:layout_width="match_parent"
+                android:layout_height="105dp"
+                android:hint="@string/report_text"
+                android:inputType="textMultiLine"
+                android:maxLines="20"
+                android:minLines="1"
+                android:scrollbars="vertical"
+                android:selectAllOnFocus="true"
+                android:singleLine="false" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+    </LinearLayout>
+</ScrollView>

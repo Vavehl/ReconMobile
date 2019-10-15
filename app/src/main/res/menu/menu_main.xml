@@ -1,0 +1,29 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.example.reconmobile.MainActivity">
+    <item
+        android:id="@+id/menu_about"
+        android:title="@string/about" />
+    <item
+        android:id="@+id/menu_company"
+        android:title="@string/my_company" />
+    <item
+        android:id="@+id/open_file"
+        android:icon="@drawable/ic_folder_24px_rounded_filled"
+        android:title="@string/save_file"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/save_file"
+        android:icon="@drawable/ic_save_24px"
+        android:title="@string/save_file"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/settings"
+        android:icon="@drawable/ic_settings_24dp"
+        android:title="@string/settings"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/menu_exit"
+        android:title="@string/exit" />
+</menu>

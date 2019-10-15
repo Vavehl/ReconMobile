@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clickable="true"
+    android:clipToPadding="false"
+    android:focusable="true"
+    android:gravity="center|top"
+    android:orientation="vertical"
+    android:paddingLeft="10dp"
+    android:paddingTop="10dp"
+    android:paddingRight="10dp"
+    android:scrollbarAlwaysDrawVerticalTrack="false"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center|top"
+        android:orientation="vertical">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColorHint="@color/colorPrimaryDark"
+            app:boxBackgroundColor="@color/colorIvoryText"
+            app:boxBackgroundMode="outline"
+            app:errorEnabled="true">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/reports_location"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:hint="@string/company_name"
+                android:inputType="text" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColorHint="@color/colorPrimaryDark"
+            app:boxBackgroundColor="@color/colorIvoryText"
+            app:boxBackgroundMode="outline"
+            app:boxStrokeColor="@color/colorPrimaryDark"
+            app:errorEnabled="true">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/reports_customer"
+                android:layout_width="match_parent"
+                android:layout_height="105dp"
+                android:hint="@string/company_details"
+                android:inputType="textMultiLine"
+                android:maxLines="4"
+                android:minLines="3"
+                android:scrollbars="vertical"
+                android:selectAllOnFocus="true"
+                android:singleLine="false" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:hint="@string/company_logo_hint"
+            android:text="@string/company_logo"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/CompanyLogo"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:contentDescription="@string/company_logo_image"
+            android:padding="1dp"
+            android:background="@drawable/company_logo_background"
+            app:srcCompat="@color/colorIvoryText" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="20dp" />
+
+        <Button
+            android:id="@+id/btn_clear_logo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimaryDark"
+            android:padding="10dp"
+            android:text="@string/clear_logo"
+            android:textColor="@color/colorIvoryText" />
+    </LinearLayout>
+</ScrollView>

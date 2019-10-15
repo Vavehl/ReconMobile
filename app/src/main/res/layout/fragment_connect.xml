@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center|top"
+    android:orientation="vertical"
+    tools:context=".FragmentConnect">
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="match_parent"
+        android:layout_height="245dp"
+        android:contentDescription="@string/rad_elec_recon_mobile_logo"
+        android:paddingTop="20dp"
+        app:srcCompat="@drawable/recon_mobile_logo_crimson" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="80dp" />
+
+    <Button
+        android:id="@+id/buttonConnect"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:drawableStart="@drawable/ic_bluetooth_24px"
+        android:drawableLeft="@drawable/ic_bluetooth_24px"
+        android:drawableEnd="@drawable/ic_usb_24px"
+        android:drawableRight="@drawable/ic_usb_24px"
+        android:gravity="center"
+        android:text="@string/tabConnect"
+        android:textColor="@color/colorIvoryText"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:onClick="OnClick_Connect"/>
+
+</LinearLayout>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="top">
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabLayout_Graphs"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tabGravity="fill"
+        app:tabIndicatorColor="@color/colorPrimaryDark"
+        app:tabIndicatorHeight="5dp"
+        app:tabMode="fixed"
+        app:tabPaddingEnd="5dp"
+        app:tabPaddingStart="5dp">
+
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/tabRadon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/graph_radon" />
+
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/tabPressure"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/graph_pressure" />
+
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/tabTemperature"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/graph_temp" />
+
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/tabHumidity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/graph_humidity" />
+
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/tabTilts"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/graph_tilts" />
+
+    </com.google.android.material.tabs.TabLayout>
+</LinearLayout>
