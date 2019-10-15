@@ -42,4 +42,6 @@
     <string name="company_logo_hint">If importing a company logo, it will appear on your letterhead.</string>
     <string name="company_logo_image">Click here to import your company logo.</string>
     <string name="clear_logo">Clear Logo</string>
+    <string name="analyst_signature">Analyst Signature</string>
+    <string name="clear_signature">Clear Signature</string>
 </resources>

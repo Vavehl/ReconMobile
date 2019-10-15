@@ -61,7 +61,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/txtCompanyLogo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
@@ -92,5 +92,43 @@
             android:padding="10dp"
             android:text="@string/clear_logo"
             android:textColor="@color/colorIvoryText" />
+
+        <TextView
+            android:id="@+id/txtSignature"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:hint="@string/company_logo_hint"
+            android:paddingTop="30dp"
+            android:text="@string/analyst_signature"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/analystSignature"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:background="@drawable/company_logo_background"
+            android:contentDescription="@string/company_logo_image"
+            android:padding="1dp"
+            app:srcCompat="@color/colorIvoryText" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="20dp" />
+
+        <Button
+            android:id="@+id/btn_clear_signature"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimaryDark"
+            android:padding="10dp"
+            android:text="@string/clear_signature"
+            android:textColor="@color/colorIvoryText" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="20dp" />
     </LinearLayout>
 </ScrollView>
