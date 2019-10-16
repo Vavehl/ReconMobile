@@ -27,8 +27,8 @@ import android.widget.Toast;
 public class MainActivity extends AppCompatActivity {
 
     private TabLayout tabLayout;
-    public static String version_build = "v0.1.1";
-    public static String version_date = "9 Oct 2019";
+    public static String version_build = "v0.2.0";
+    public static String version_date = "16 Oct 2019";
 
     //Create various dialog windows. Hopefully there won't be too many of them, or this is gonna become a mess...
     public Dialog dialogAbout;
