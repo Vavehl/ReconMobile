@@ -44,4 +44,25 @@
     <string name="clear_logo">Clear Logo</string>
     <string name="analyst_signature">Analyst Signature</string>
     <string name="clear_signature">Clear Signature</string>
+    <string name="unit_system">Unit System</string>
+    <string name="auto_clear_sessions">Auto-Clear Sessions?</string>
+    <string name="signature_options">Signature Options</string>
+    <string name="tilt_sensitivity">Tilt Sensitivity</string>
+    <string name="tilt_sensitivity_low">Low</string>
+    <string name="tilt_sensitivity_high">High</string>
+    <string name="tilt_value">Tilt Value</string>
+    <string-array name = "spinnerUnitSystem">
+        <item>US</item>
+        <item>SI</item>
+    </string-array>
+    <string-array name = "spinnerAutoClearSessions">
+        <item>Always</item>
+        <item>Never</item>
+        <item>Prompt</item>
+    </string-array>
+    <string-array name = "spinnerSignatureOptions">
+        <item>Display Line Only</item>
+        <item>Digitally Signed</item>
+        <item>No Signature</item>
+    </string-array>
 </resources>

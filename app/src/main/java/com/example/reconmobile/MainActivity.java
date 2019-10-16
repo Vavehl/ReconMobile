@@ -20,6 +20,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
 import android.widget.ImageView;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -75,11 +76,14 @@ public class MainActivity extends AppCompatActivity {
                         fragment = new FragmentReport();
                         break;
                 }
-                FragmentManager fm = getSupportFragmentManager();
-                FragmentTransaction ft = fm.beginTransaction();
-                ft.replace(R.id.simpleConstraintContainer, fragment);
-                ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-                ft.commit();
+                if(fragment != null){
+                    FragmentManager fm = getSupportFragmentManager();
+                    FragmentTransaction ft = fm.beginTransaction();
+                    ft.replace(R.id.simpleConstraintContainer, fragment);
+                    ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                    ft.commit();
+                }
+
             }
 
             @Override
@@ -101,11 +105,13 @@ public class MainActivity extends AppCompatActivity {
                         fragment = new FragmentReport();
                         break;
                 }
-                FragmentManager fm = getSupportFragmentManager();
-                FragmentTransaction ft = fm.beginTransaction();
-                ft.replace(R.id.simpleConstraintContainer, fragment);
-                ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-                ft.commit();
+                if(fragment != null) {
+                    FragmentManager fm = getSupportFragmentManager();
+                    FragmentTransaction ft = fm.beginTransaction();
+                    ft.replace(R.id.simpleConstraintContainer, fragment);
+                    ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                    ft.commit();
+                }
             }
 
         });
@@ -160,16 +166,16 @@ public class MainActivity extends AppCompatActivity {
         dialogAbout.setContentView(R.layout.menu_about);
 
         //Initialize TextViews...
-        final TextView tvAboutVersionBuild = (TextView) dialogAbout.findViewById(R.id.aboutVersionBuild);
-        final TextView tvAboutVersionDate = (TextView) dialogAbout.findViewById(R.id.aboutVersionDate);
+        final TextView tvAboutVersionBuild = dialogAbout.findViewById(R.id.aboutVersionBuild);
+        final TextView tvAboutVersionDate = dialogAbout.findViewById(R.id.aboutVersionDate);
 
         //Initialize imgCloseAbout "button"
         final ImageView btnCloseAbout;
-        btnCloseAbout = (ImageView) dialogAbout.findViewById(R.id.imgCloseAbout);
+        btnCloseAbout = dialogAbout.findViewById(R.id.imgCloseAbout);
 
         //Initialize website link
         final TextView btnWebsite;
-        btnWebsite = (TextView) dialogAbout.findViewById(R.id.website_radelec);
+        btnWebsite = dialogAbout.findViewById(R.id.website_radelec);
 
         //Set the version and date textviews to their proper values.
         try {
@@ -207,7 +213,7 @@ public class MainActivity extends AppCompatActivity {
 
     //This will load/show the Settings fragment
     protected void showSettings() {
-        Fragment fragment = null;
+        Fragment fragment;
         fragment = new FragmentSettings();
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
@@ -218,7 +224,7 @@ public class MainActivity extends AppCompatActivity {
 
     //This will load/show the Settings fragment
     protected void showMyCompany() {
-        Fragment fragment = null;
+        Fragment fragment;
         fragment = new FragmentCompany();
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
