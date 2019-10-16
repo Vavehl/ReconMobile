@@ -51,6 +51,10 @@
     <string name="tilt_sensitivity_low">Low</string>
     <string name="tilt_sensitivity_high">High</string>
     <string name="tilt_value">Tilt Value</string>
+    <string name="recon_display_options">Recon Display Options</string>
+    <string name="display_pressure">Pressure</string>
+    <string name="display_temperature">Temperature</string>
+    <string name="display_radon">Radon</string>
     <string-array name = "spinnerUnitSystem">
         <item>US</item>
         <item>SI</item>
@@ -64,5 +68,18 @@
         <item>Display Line Only</item>
         <item>Digitally Signed</item>
         <item>No Signature</item>
+    </string-array>
+    <string-array name = "spinnerDisplay_Pressure">
+        <item>inHg</item>
+        <item>mBar</item>
+    </string-array>
+    <string-array name = "spinnerDisplay_Temperature">
+        <item>Fahrenheit</item>
+        <item>Celsius</item>
+    </string-array>
+    <string-array name = "spinnerDisplay_Radon">
+        <item>pCi/L</item>
+        <item>Bq/m³</item>
+        <item>Counts/hr</item>
     </string-array>
 </resources>
