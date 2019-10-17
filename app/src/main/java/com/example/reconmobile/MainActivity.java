@@ -16,6 +16,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
@@ -30,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
     public static String version_build = "v0.2.0";
     public static String version_date = "16 Oct 2019";
 
-    DatabaseOperations doDatabaseOperations;
+    DatabaseOperations db;
 
     //Create various dialog windows. Hopefully there won't be too many of them, or this is gonna become a mess...
     public Dialog dialogAbout;
@@ -39,13 +40,18 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+
+        //At the very least, let's broadcast a few info log messages detailing the version info.
+        Log.i("VersionInfo","Version Build = " + version_build);
+        Log.i("VersionInfo", "Version Date = " + version_date);
+
         setContentView(R.layout.activity_main);
         tabLayout = findViewById(R.id.tabLayout_Main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         //Initialize database (in DatabaseOperations)
-        doDatabaseOperations = new DatabaseOperations(this);
+        db = new DatabaseOperations(this);
 
         //Programmatically initialize fragmentConnect tab -- there has to be a better way to implement this??
         FragmentManager fm = getSupportFragmentManager();

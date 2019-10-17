@@ -13,7 +13,7 @@ import androidx.fragment.app.Fragment;
 
 public class FragmentReport extends Fragment {
     View view;
-    DatabaseOperations doDatabaseOperations;
+    DatabaseOperations db;
 
     public FragmentReport() {
     }
@@ -22,13 +22,13 @@ public class FragmentReport extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_report,container,false);
-        doDatabaseOperations = new DatabaseOperations(getContext());
+        db = new DatabaseOperations(getContext());
 
         //Get the widgets referenced in fragment_report.xml -- we'll need these to pull default values.
         final EditText etLocation;
         final EditText etCustomer;
         final EditText etTestSite;
-        EditText etReportText;
+        final EditText etReportText;
 
         etLocation = (EditText) view.findViewById(R.id.reports_location);
         etCustomer = (EditText) view.findViewById(R.id.reports_customer);
@@ -43,7 +43,7 @@ public class FragmentReport extends Fragment {
         etReportText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                //db.insertData("REPORT_DEFAULTS","REPORT_TEXT",etReportText.getText().toString());
             }
         });
         return view;
