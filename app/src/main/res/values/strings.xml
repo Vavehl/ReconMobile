@@ -55,29 +55,29 @@
     <string name="display_pressure">Pressure</string>
     <string name="display_temperature">Temperature</string>
     <string name="display_radon">Radon</string>
-    <string-array name = "spinnerUnitSystem">
+    <string-array name="spinnerUnitSystem">
         <item>US</item>
         <item>SI</item>
     </string-array>
-    <string-array name = "spinnerAutoClearSessions">
+    <string-array name="spinnerAutoClearSessions">
         <item>Always</item>
         <item>Never</item>
         <item>Prompt</item>
     </string-array>
-    <string-array name = "spinnerSignatureOptions">
+    <string-array name="spinnerSignatureOptions">
         <item>Display Line Only</item>
         <item>Digitally Signed</item>
         <item>No Signature</item>
     </string-array>
-    <string-array name = "spinnerDisplay_Pressure">
+    <string-array name="spinnerDisplay_Pressure">
         <item>inHg</item>
         <item>mBar</item>
     </string-array>
-    <string-array name = "spinnerDisplay_Temperature">
+    <string-array name="spinnerDisplay_Temperature">
         <item>Fahrenheit</item>
         <item>Celsius</item>
     </string-array>
-    <string-array name = "spinnerDisplay_Radon">
+    <string-array name="spinnerDisplay_Radon">
         <item>pCi/L</item>
         <item>Bq/m³</item>
         <item>Counts/hr</item>

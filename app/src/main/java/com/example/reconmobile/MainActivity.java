@@ -30,6 +30,8 @@ public class MainActivity extends AppCompatActivity {
     public static String version_build = "v0.2.0";
     public static String version_date = "16 Oct 2019";
 
+    DatabaseOperations doDatabaseOperations;
+
     //Create various dialog windows. Hopefully there won't be too many of them, or this is gonna become a mess...
     public Dialog dialogAbout;
 
@@ -41,6 +43,9 @@ public class MainActivity extends AppCompatActivity {
         tabLayout = findViewById(R.id.tabLayout_Main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        //Initialize database (in DatabaseOperations)
+        doDatabaseOperations = new DatabaseOperations(this);
 
         //Programmatically initialize fragmentConnect tab -- there has to be a better way to implement this??
         FragmentManager fm = getSupportFragmentManager();
