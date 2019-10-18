@@ -14,7 +14,7 @@ import com.google.android.material.textfield.TextInputEditText;
 
 public class FragmentReport extends Fragment {
     View view;
-    DatabaseOperations db;
+    DatabaseOperations db_report;
 
     public FragmentReport() {
     }
@@ -23,7 +23,7 @@ public class FragmentReport extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_report,container,false);
-        db = new DatabaseOperations(getContext());
+        db_report = new DatabaseOperations(getContext());
 
         //Get the widgets referenced in fragment_report.xml -- we'll need these to pull default values.
         final TextInputEditText etLocation;
@@ -54,7 +54,7 @@ public class FragmentReport extends Fragment {
 
         //Pull the Report Defaults in the database with a Cursor class...
         Cursor cursorReportDefaults;
-        cursorReportDefaults = db.getReportDefaultData();
+        cursorReportDefaults = db_report.getReportDefaultData();
         cursorReportDefaults.moveToFirst(); //Critical to moveToFirst() here, or else we're sitting at an invalid index.
 
         //Set the Report Defaults to the TextInputEditText boxes
@@ -76,14 +76,14 @@ public class FragmentReport extends Fragment {
         etLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                db.updateData("REPORT_DEFAULTS","INSTRUMENT_LOCATION",etLocation.getText().toString(),"DefaultID");
+                db_report.updateData("REPORT_DEFAULTS","INSTRUMENT_LOCATION",etLocation.getText().toString(),"DefaultID");
             }
         });
         etLocation.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus) {
-                    db.updateData("REPORT_DEFAULTS","INSTRUMENT_LOCATION",etLocation.getText().toString(),"DefaultID");
+                    db_report.updateData("REPORT_DEFAULTS","INSTRUMENT_LOCATION",etLocation.getText().toString(),"DefaultID");
                 }
             }
         });
@@ -92,14 +92,14 @@ public class FragmentReport extends Fragment {
         etCustomer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                db.updateData("REPORT_DEFAULTS","CUSTOMER_INFORMATION",etCustomer.getText().toString(),"DefaultID");
+                db_report.updateData("REPORT_DEFAULTS","CUSTOMER_INFORMATION",etCustomer.getText().toString(),"DefaultID");
             }
         });
         etCustomer.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus) {
-                    db.updateData("REPORT_DEFAULTS","CUSTOMER_INFORMATION",etCustomer.getText().toString(),"DefaultID");
+                    db_report.updateData("REPORT_DEFAULTS","CUSTOMER_INFORMATION",etCustomer.getText().toString(),"DefaultID");
                 }
             }
         });
@@ -108,14 +108,14 @@ public class FragmentReport extends Fragment {
         etTestSite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                db.updateData("REPORT_DEFAULTS","TEST_SITE_INFORMATION",etTestSite.getText().toString(),"DefaultID");
+                db_report.updateData("REPORT_DEFAULTS","TEST_SITE_INFORMATION",etTestSite.getText().toString(),"DefaultID");
             }
         });
         etTestSite.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus) {
-                    db.updateData("REPORT_DEFAULTS","TEST_SITE_INFORMATION",etTestSite.getText().toString(),"DefaultID");
+                    db_report.updateData("REPORT_DEFAULTS","TEST_SITE_INFORMATION",etTestSite.getText().toString(),"DefaultID");
                 }
             }
         });
@@ -124,14 +124,14 @@ public class FragmentReport extends Fragment {
         etDeployedBy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                db.updateData("REPORT_DEFAULTS","DEPLOYED_BY",etDeployedBy.getText().toString(),"DefaultID");
+                db_report.updateData("REPORT_DEFAULTS","DEPLOYED_BY",etDeployedBy.getText().toString(),"DefaultID");
             }
         });
         etDeployedBy.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus) {
-                    db.updateData("REPORT_DEFAULTS","DEPLOYED_BY",etDeployedBy.getText().toString(),"DefaultID");
+                    db_report.updateData("REPORT_DEFAULTS","DEPLOYED_BY",etDeployedBy.getText().toString(),"DefaultID");
                 }
             }
         });
@@ -140,14 +140,14 @@ public class FragmentReport extends Fragment {
         etRetrievedBy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                db.updateData("REPORT_DEFAULTS","RETRIEVED_BY",etRetrievedBy.getText().toString(),"DefaultID");
+                db_report.updateData("REPORT_DEFAULTS","RETRIEVED_BY",etRetrievedBy.getText().toString(),"DefaultID");
             }
         });
         etRetrievedBy.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus) {
-                    db.updateData("REPORT_DEFAULTS","RETRIEVED_BY",etRetrievedBy.getText().toString(),"DefaultID");
+                    db_report.updateData("REPORT_DEFAULTS","RETRIEVED_BY",etRetrievedBy.getText().toString(),"DefaultID");
                 }
             }
         });
@@ -156,14 +156,14 @@ public class FragmentReport extends Fragment {
         etAnalyzedBy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                db.updateData("REPORT_DEFAULTS","ANALYZED_BY",etAnalyzedBy.getText().toString(),"DefaultID");
+                db_report.updateData("REPORT_DEFAULTS","ANALYZED_BY",etAnalyzedBy.getText().toString(),"DefaultID");
             }
         });
         etAnalyzedBy.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus) {
-                    db.updateData("REPORT_DEFAULTS","ANALYZED_BY",etAnalyzedBy.getText().toString(),"DefaultID");
+                    db_report.updateData("REPORT_DEFAULTS","ANALYZED_BY",etAnalyzedBy.getText().toString(),"DefaultID");
                 }
             }
         });
@@ -172,14 +172,14 @@ public class FragmentReport extends Fragment {
         etProtocol.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                db.updateData("REPORT_DEFAULTS","PROTOCOL",etProtocol.getText().toString(),"DefaultID");
+                db_report.updateData("REPORT_DEFAULTS","PROTOCOL",etProtocol.getText().toString(),"DefaultID");
             }
         });
         etProtocol.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus) {
-                    db.updateData("REPORT_DEFAULTS","PROTOCOL",etProtocol.getText().toString(),"DefaultID");
+                    db_report.updateData("REPORT_DEFAULTS","PROTOCOL",etProtocol.getText().toString(),"DefaultID");
                 }
             }
         });
@@ -188,14 +188,14 @@ public class FragmentReport extends Fragment {
         etTampering.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                db.updateData("REPORT_DEFAULTS","TAMPERING",etTampering.getText().toString(),"DefaultID");
+                db_report.updateData("REPORT_DEFAULTS","TAMPERING",etTampering.getText().toString(),"DefaultID");
             }
         });
         etTampering.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus) {
-                    db.updateData("REPORT_DEFAULTS","TAMPERING",etTampering.getText().toString(),"DefaultID");
+                    db_report.updateData("REPORT_DEFAULTS","TAMPERING",etTampering.getText().toString(),"DefaultID");
                 }
             }
         });
@@ -204,14 +204,14 @@ public class FragmentReport extends Fragment {
         etWeather.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                db.updateData("REPORT_DEFAULTS","WEATHER",etWeather.getText().toString(),"DefaultID");
+                db_report.updateData("REPORT_DEFAULTS","WEATHER",etWeather.getText().toString(),"DefaultID");
             }
         });
         etWeather.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus) {
-                    db.updateData("REPORT_DEFAULTS","WEATHER",etWeather.getText().toString(),"DefaultID");
+                    db_report.updateData("REPORT_DEFAULTS","WEATHER",etWeather.getText().toString(),"DefaultID");
                 }
             }
         });
@@ -220,14 +220,14 @@ public class FragmentReport extends Fragment {
         etMitigation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                db.updateData("REPORT_DEFAULTS","MITIGATION",etMitigation.getText().toString(),"DefaultID");
+                db_report.updateData("REPORT_DEFAULTS","MITIGATION",etMitigation.getText().toString(),"DefaultID");
             }
         });
         etMitigation.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus) {
-                    db.updateData("REPORT_DEFAULTS","MITIGATION",etMitigation.getText().toString(),"DefaultID");
+                    db_report.updateData("REPORT_DEFAULTS","MITIGATION",etMitigation.getText().toString(),"DefaultID");
                 }
             }
         });
@@ -236,14 +236,14 @@ public class FragmentReport extends Fragment {
         etComment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                db.updateData("REPORT_DEFAULTS","COMMENT",etComment.getText().toString(),"DefaultID");
+                db_report.updateData("REPORT_DEFAULTS","COMMENT",etComment.getText().toString(),"DefaultID");
             }
         });
         etComment.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus) {
-                    db.updateData("REPORT_DEFAULTS","COMMENT",etComment.getText().toString(),"DefaultID");
+                    db_report.updateData("REPORT_DEFAULTS","COMMENT",etComment.getText().toString(),"DefaultID");
                 }
             }
         });
@@ -252,14 +252,14 @@ public class FragmentReport extends Fragment {
         etReportText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                db.updateData("REPORT_DEFAULTS","REPORT_TEXT",etReportText.getText().toString(),"DefaultID");
+                db_report.updateData("REPORT_DEFAULTS","REPORT_TEXT",etReportText.getText().toString(),"DefaultID");
             }
         });
         etReportText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus) {
-                    db.updateData("REPORT_DEFAULTS","REPORT_TEXT",etReportText.getText().toString(),"DefaultID");
+                    db_report.updateData("REPORT_DEFAULTS","REPORT_TEXT",etReportText.getText().toString(),"DefaultID");
                 }
             }
         });

@@ -29,7 +29,7 @@
             app:errorEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/reports_location"
+                android:id="@+id/company_name"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:hint="@string/company_name"
@@ -47,7 +47,7 @@
             app:errorEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/reports_customer"
+                android:id="@+id/company_details"
                 android:layout_width="match_parent"
                 android:layout_height="105dp"
                 android:hint="@string/company_details"

@@ -51,6 +51,7 @@ public class DatabaseOperations extends SQLiteOpenHelper {
 
         //Assign default values to newly created database
         db.execSQL("INSERT INTO SETTINGS (AUTO_CLEAR_SESSIONS, UNIT_SYSTEM, SIGNATURE_OPTIONS, TILT_SENSITIVITY) VALUES ('Always', 'US', 'Digitally Signed', '5')");
+        db.execSQL("INSERT INTO COMPANY (COMPANY_NAME, COMPANY_DETAILS) VALUES ('','')");
         db.execSQL("INSERT INTO REPORT_DEFAULTS (INSTRUMENT_LOCATION, PROTOCOL, TAMPERING, WEATHER, MITIGATION, COMMENT, REPORT_TEXT) VALUES ('Basement', " +
                 "'Closed Building Conditions Met', 'No Tampering Detected', 'No Abnormal Weather Conditions', 'No Mitigation System Installed', " +
                 "'Thanks for the business!', '" + txtReportText + "')");
@@ -91,6 +92,12 @@ public class DatabaseOperations extends SQLiteOpenHelper {
     public Cursor getReportDefaultData() {
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor result = db.rawQuery("SELECT * FROM REPORT_DEFAULTS",null);
+        return result;
+    }
+
+    public Cursor getCompanyData() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor result = db.rawQuery("SELECT * FROM COMPANY",null);
         return result;
     }
 
