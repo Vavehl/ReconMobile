@@ -13,8 +13,7 @@ import androidx.fragment.app.Fragment;
 import com.google.android.material.textfield.TextInputEditText;
 
 public class FragmentReport extends Fragment {
-    View view;
-    DatabaseOperations db_report;
+    private DatabaseOperations db_report;
 
     public FragmentReport() {
     }
@@ -22,7 +21,7 @@ public class FragmentReport extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_report,container,false);
+        View view = inflater.inflate(R.layout.fragment_report, container, false);
         db_report = new DatabaseOperations(getContext());
 
         //Get the widgets referenced in fragment_report.xml -- we'll need these to pull default values.

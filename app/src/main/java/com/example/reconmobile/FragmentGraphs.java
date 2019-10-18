@@ -10,14 +10,13 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 public class FragmentGraphs extends Fragment {
-    View view;
     public FragmentGraphs() {
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_graphs,container,false);
+        View view = inflater.inflate(R.layout.fragment_graphs, container, false);
         return view;
     }
 }

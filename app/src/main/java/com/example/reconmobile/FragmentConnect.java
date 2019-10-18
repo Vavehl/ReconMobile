@@ -12,18 +12,15 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 public class FragmentConnect extends Fragment {
-    View view;
     public FragmentConnect() {
     }
-
-    private Button btnConnect;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_connect,container,false);
+        View view = inflater.inflate(R.layout.fragment_connect, container, false);
 
-        btnConnect = view.findViewById(R.id.buttonConnect);
+        Button btnConnect = view.findViewById(R.id.buttonConnect);
 
         btnConnect.setOnClickListener(new View.OnClickListener() {
             @Override

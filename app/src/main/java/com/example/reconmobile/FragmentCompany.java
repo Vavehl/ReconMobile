@@ -13,8 +13,8 @@ import androidx.fragment.app.Fragment;
 import com.google.android.material.textfield.TextInputEditText;
 
 public class FragmentCompany extends Fragment {
-    View view;
-    DatabaseOperations db_company;
+
+    private DatabaseOperations db_company;
 
     public FragmentCompany() {
     }
@@ -22,7 +22,7 @@ public class FragmentCompany extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_company,container,false);
+        View view = inflater.inflate(R.layout.fragment_company, container, false);
 
         db_company = new DatabaseOperations(getContext());
 

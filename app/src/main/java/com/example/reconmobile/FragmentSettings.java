@@ -14,8 +14,6 @@ import androidx.fragment.app.Fragment;
 public class FragmentSettings extends Fragment {
     private View view;
 
-    //Settings fragment
-    private SeekBar sb_TiltSensitivity;
     private TextView tvTiltValue;
 
     public FragmentSettings() {
@@ -30,7 +28,8 @@ public class FragmentSettings extends Fragment {
     }
 
     private void SeekBar_TiltSensitivity() {
-        sb_TiltSensitivity = view.findViewById(R.id.seekbarTiltSensitivity);
+        //Settings fragment
+        SeekBar sb_TiltSensitivity = view.findViewById(R.id.seekbarTiltSensitivity);
         sb_TiltSensitivity.setMax(10);
 
         tvTiltValue = view.findViewById(R.id.txtTiltValue);

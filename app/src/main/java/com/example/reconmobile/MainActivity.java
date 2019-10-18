@@ -21,13 +21,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
 import android.widget.ImageView;
-import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
-    private TabLayout tabLayout;
     public static String version_build = "v0.2.1";
     public static String version_date = "18 Oct 2019";
 
@@ -46,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
         Log.i("VersionInfo", "Version Date = " + version_date);
 
         setContentView(R.layout.activity_main);
-        tabLayout = findViewById(R.id.tabLayout_Main);
+        TabLayout tabLayout = findViewById(R.id.tabLayout_Main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
