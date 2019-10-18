@@ -64,7 +64,7 @@ public class DatabaseOperations extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public boolean insertData(String table, String column, String value) {
+    public void insertData(String table, String column, String value) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(column, value);
@@ -72,28 +72,25 @@ public class DatabaseOperations extends SQLiteOpenHelper {
         long result = db.insert(table, null, contentValues);
         if(result == -1) {
             Log.d("DatabaseOperations", "DatabaseOperations.addData: FAILED to add " + value + "to " + table + "." + column);
-            return false;
         } else {
             Log.d("DatabaseOperations", "DatabaseOperations.addData: Adding " + value + "to " + table + "." + column);
-            return true;
         }
 
     }
 
-    public void replaceData(String table, String column, String item) {
+    public void updateData(String table, String column, String value, String primarycolumn) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(column, item);
+        contentValues.put(column, value);
 
-        db.replace(table, null, contentValues);
+        db.update(table, contentValues,primarycolumn+"='1'",null);
 
-        Log.d("DatabaseOperations", "DatabaseOperations.replaceData: Replacing " + table + "." + column + " with" + item);
+        Log.d("DatabaseOperations", "DatabaseOperations.replaceData: Updating " + table + "." + column + " with" + value);
     }
 
-    public Cursor getData(String table, String column) {
+    public Cursor getReportDefaultData() {
         SQLiteDatabase db = this.getWritableDatabase();
-        String query = "SELECT " + column + " FROM " + table;
-        Cursor result = db.rawQuery(query,null);
+        Cursor result = db.rawQuery("SELECT * FROM REPORT_DEFAULTS",null);
         return result;
     }
 
