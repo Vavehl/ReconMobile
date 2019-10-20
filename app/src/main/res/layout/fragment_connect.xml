@@ -25,15 +25,14 @@
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
-        android:drawableStart="@drawable/ic_bluetooth_24px"
-        android:drawableLeft="@drawable/ic_bluetooth_24px"
-        android:drawableEnd="@drawable/ic_usb_24px"
-        android:drawableRight="@drawable/ic_usb_24px"
+        app:drawableStartCompat="@drawable/ic_bluetooth_24px"
+        app:drawableLeftCompat="@drawable/ic_bluetooth_24px"
+        app:drawableEndCompat="@drawable/ic_usb_24px"
+        app:drawableRightCompat="@drawable/ic_usb_24px"
         android:gravity="center"
         android:text="@string/tabConnect"
         android:textColor="@color/colorIvoryText"
         android:textSize="24sp"
-        android:textStyle="bold"
-        android:onClick="OnClick_Connect"/>
+        android:textStyle="bold" />
 
 </LinearLayout>
