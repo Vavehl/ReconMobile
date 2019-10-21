@@ -14,7 +14,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -45,6 +47,10 @@ public class FragmentCompany extends Fragment {
 
         db_company = new DatabaseOperations(getContext());
 
+        //Create the buttons
+        Button btnClearLogo;
+        Button btnClearSignature;
+
         //Get the widgets referenced in fragment_company.xml -- we'll need these to pull default values.
         final TextInputEditText etCompanyName;
         final TextInputEditText etCompanyDetails;
@@ -56,6 +62,10 @@ public class FragmentCompany extends Fragment {
         //Find ImageView IDs
         imgCompanyLogo = view.findViewById(R.id.CompanyLogo);
         imgAnalystSignature = view.findViewById(R.id.analystSignature);
+
+        //Find Button IDs
+        btnClearLogo = view.findViewById(R.id.btn_clear_logo);
+        btnClearSignature = view.findViewById(R.id.btn_clear_signature);
 
         //Load images, if they already exist.
         try {
@@ -141,6 +151,40 @@ public class FragmentCompany extends Fragment {
             public void onClick(View v) {
                 startActivityForResult(new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI), SELECT_ANALYST_SIGNATURE);
 
+            }
+        });
+
+        //Button (Clear Logo) Listener
+        btnClearLogo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String strAppPath = getContext().getApplicationInfo().dataDir;
+                File pathCompanyLogo = new File(strAppPath + "/app_images/company_logo.png");
+                if(pathCompanyLogo.exists()) {
+                    Log.i("FragmentCompany", "Clear Logo button pressed ... deleting company logo!");
+                    imgCompanyLogo.setImageDrawable(null);
+                    pathCompanyLogo.delete();
+                    Toast.makeText(getContext(),"Clearing Logo...",Toast.LENGTH_SHORT).show();
+                } else {
+                    Log.i("FragmentCompany", "Clear Logo button pressed, but no company logo found...");
+                }
+            }
+        });
+
+        //Button (Clear Signature) Listener
+        btnClearSignature.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String strAppPath = getContext().getApplicationInfo().dataDir;
+                File pathAnalystSignature = new File(strAppPath + "/app_images/signature.png");
+                if(pathAnalystSignature.exists()) {
+                    Log.i("FragmentCompany", "Clear Signature button pressed ... deleting signature!");
+                    imgAnalystSignature.setImageDrawable(null);
+                    pathAnalystSignature.delete();
+                    Toast.makeText(getContext(),"Clearing Signature...",Toast.LENGTH_SHORT).show();
+                } else {
+                    Log.i("FragmentCompany", "Clear Signature button pressed, but no signature found...");
+                }
             }
         });
 
