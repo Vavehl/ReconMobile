@@ -26,8 +26,8 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
-    public static String version_build = "v0.2.1";
-    public static String version_date = "18 Oct 2019";
+    public static String version_build = "v0.3.0";
+    public static String version_date = "21 Oct 2019";
 
     DatabaseOperations db;
 
