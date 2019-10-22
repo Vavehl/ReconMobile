@@ -76,7 +76,7 @@ public class DatabaseOperations extends SQLiteOpenHelper {
 
     }
 
-    public void updateData(String table, String column, String value, String primarycolumn) {
+    void updateData(String table, String column, String value, String primarycolumn) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(column, value);
@@ -86,16 +86,19 @@ public class DatabaseOperations extends SQLiteOpenHelper {
         Log.d("DatabaseOperations", "DatabaseOperations.replaceData: Updating " + table + "." + column + " with" + value);
     }
 
-    public Cursor getReportDefaultData() {
+    Cursor getReportDefaultData() {
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor result = db.rawQuery("SELECT * FROM REPORT_DEFAULTS",null);
-        return result;
+        return db.rawQuery("SELECT * FROM REPORT_DEFAULTS",null);
     }
 
-    public Cursor getCompanyData() {
+    Cursor getCompanyData() {
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor result = db.rawQuery("SELECT * FROM COMPANY",null);
-        return result;
+        return db.rawQuery("SELECT * FROM COMPANY",null);
+    }
+
+    Cursor getSettingsData() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        return db.rawQuery("SELECT * FROM SETTINGS", null);
     }
 
 }
