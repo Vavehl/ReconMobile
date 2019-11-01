@@ -24,7 +24,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity
+        implements  FragmentManager.OnBackStackChangedListener,
+                    FragmentSearch.OnFragmentInteractionListener {
 
     public static String version_build = "v0.3.0";
     public static String version_date = "21 Oct 2019";
@@ -124,6 +126,10 @@ public class MainActivity extends AppCompatActivity {
             }
 
         });
+    }
+
+    public void onBackStackChanged() {
+        //getSupportActionBar().setDisplayHomeAsUpEnabled(getSupportFragmentManager().getBackStackEntryCount()>0);
     }
 
     //Creates Recon Main Menu
@@ -231,7 +237,7 @@ public class MainActivity extends AppCompatActivity {
         ft.commit();
     }
 
-    //This will load/show the Settings fragment
+    //This will load/show the Company fragment
     protected void showMyCompany() {
         Fragment fragment;
         fragment = new FragmentCompany();
@@ -252,6 +258,11 @@ public class MainActivity extends AppCompatActivity {
     protected void openFile() {
         Toast msgSave = Toast.makeText(getApplicationContext(),"TODO: Open File",Toast.LENGTH_SHORT);
         msgSave.show();
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
     }
 
 }

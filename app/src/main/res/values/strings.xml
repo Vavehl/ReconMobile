@@ -55,6 +55,7 @@
     <string name="display_pressure">Pressure</string>
     <string name="display_temperature">Temperature</string>
     <string name="display_radon">Radon</string>
+    <string name="close_search_window">Close Search Window</string>
     <string-array name="spinnerUnitSystem">
         <item>US</item>
         <item>SI</item>
@@ -82,4 +83,8 @@
         <item>Bq/m³</item>
         <item>Counts/hr</item>
     </string-array>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="recon_search_list">Recon Search List</string>
 </resources>

@@ -40,5 +40,6 @@
             app:drawableLeftCompat="@drawable/ic_bluetooth_24px"
             app:drawableRightCompat="@drawable/ic_usb_24px"
             app:drawableStartCompat="@drawable/ic_bluetooth_24px" />
+
     </LinearLayout>
 </ScrollView>

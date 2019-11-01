@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/layoutSearch"
+    android:orientation="vertical"
+    android:layout_width="350dp"
+    android:layout_height="475dp"
+    android:background="@color/colorPrimaryDark"
+    android:padding="5dp"
+    android:layout_gravity="center">
+
+    <LinearLayout
+        android:id="@+id/device_search_layout"
+        android:layout_width="match_parent"
+        android:layout_height="437dp"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/imgCloseSearch"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="end"
+            android:clickable="true"
+            android:contentDescription="@string/close_search_window"
+            android:focusable="true"
+            app:srcCompat="@drawable/ic_close_black_24dp" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="25dp" />
+
+    </LinearLayout>
+
+</ScrollView>
