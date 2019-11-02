@@ -111,17 +111,15 @@ public class ReconSearchList extends ListFragment {
     public void onListItemClick(ListView l, View v, int position, long id) {
         Log.d("ReconSearchList","ReconSearchList.onListItemClick() called!");
         Toast.makeText(getActivity(), "Connecting...", Toast.LENGTH_SHORT).show();
-        //Gotta fix this...
-        /*ListItem item = listItems.get(position-1);
+        ListItem item = listItems.get(position);
         if(item.driver == null) { //...this should never happen.
             Toast.makeText(getActivity(), "No Recon Driver!", Toast.LENGTH_SHORT).show();
         } else {
-            Toast.makeText(getActivity(), "Connecting...", Toast.LENGTH_SHORT).show();
             Bundle args = new Bundle();
             args.putInt("device", item.device.getDeviceId());
             args.putInt("port", item.port);
             args.putInt("baud", baudRate);
-        }*/
+        }
     }
 
 }
