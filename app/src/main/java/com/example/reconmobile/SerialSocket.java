@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.hardware.usb.UsbDeviceConnection;
+import android.util.Log;
 
 import com.hoho.android.usbserial.driver.UsbSerialPort;
 import com.hoho.android.usbserial.util.SerialInputOutputManager;
@@ -14,7 +15,7 @@ import java.util.concurrent.Executors;
 
 public class SerialSocket implements SerialInputOutputManager.Listener {
 
-    private static final int WRITE_WAIT_MILLIS = 2000; // 0 blocked infinitely on unprogrammed arduino
+    public static final int WRITE_WAIT_MILLIS = 1000;
 
     private final BroadcastReceiver disconnectBroadcastReceiver;
 
@@ -37,7 +38,7 @@ public class SerialSocket implements SerialInputOutputManager.Listener {
 
     void connect(Context context, SerialListener listener, UsbDeviceConnection connection, UsbSerialPort serialPort, int baudRate) throws IOException {
         if(this.serialPort != null)
-            throw new IOException("already connected");
+            throw new IOException("Recon Already Connected!");
         this.context = context;
         this.listener = listener;
         this.connection = connection;
@@ -45,7 +46,7 @@ public class SerialSocket implements SerialInputOutputManager.Listener {
         context.registerReceiver(disconnectBroadcastReceiver, new IntentFilter(Constants.INTENT_ACTION_DISCONNECT));
         serialPort.open(connection);
         serialPort.setParameters(baudRate, UsbSerialPort.DATABITS_8, UsbSerialPort.STOPBITS_1, UsbSerialPort.PARITY_NONE);
-        serialPort.setDTR(true); // for arduino, ...
+        serialPort.setDTR(true);
         serialPort.setRTS(true);
         ioManager = new SerialInputOutputManager(serialPort, this);
         Executors.newSingleThreadExecutor().submit(ioManager);
@@ -81,6 +82,7 @@ public class SerialSocket implements SerialInputOutputManager.Listener {
     }
 
     void write(byte[] data) throws IOException {
+        Log.d("SerialSocket","write(byte[] data) called!");
         if(serialPort == null)
             throw new IOException("Not Connected to Recon!");
         serialPort.write(data, WRITE_WAIT_MILLIS);

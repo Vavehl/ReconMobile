@@ -12,10 +12,12 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -208,12 +210,15 @@ public class SerialService extends Service implements SerialListener {
                     mainLooper.post(() -> {
                         if (listener != null) {
                             listener.onSerialRead(data);
+                            Log.d("SerialService","Receiving = " + Arrays.toString(data));
                         } else {
                             queue1.add(new QueueItem(QueueType.Read, data, null));
+                            Log.d("SerialService","Queueing (1) = " + Arrays.toString(data));
                         }
                     });
                 } else {
                     queue2.add(new QueueItem(QueueType.Read, data, null));
+                    Log.d("SerialService","Queueing (2) = " + Arrays.toString(data));
                 }
             }
         }

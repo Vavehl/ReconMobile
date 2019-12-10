@@ -27,4 +27,6 @@ class Constants {
 
     //...if we need any private constants, we can put them here.
     private Constants() {}
+
+    public enum ReconConnected { False, Pending, True }
 }

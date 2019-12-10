@@ -64,7 +64,8 @@ public class FragmentSearch extends DialogFragment {
         });
 
         //Begin searching for Recons and populate the Dialog fragment with the discovered devices...
-        getChildFragmentManager().beginTransaction().add(R.id.device_search_layout, new ReconSearchList()).commit();
+        //getChildFragmentManager().beginTransaction().add(R.id.device_search_layout, new ReconSearchList()).commit();
+        getChildFragmentManager().beginTransaction().add(R.id.device_search_layout, new ReconSearchList()).addToBackStack(null).commit();
 
         //The dialog box looks too small if we don't set a minimum height (regardless of whether we discover a Recon or not)
         view.setMinimumHeight(1000);
