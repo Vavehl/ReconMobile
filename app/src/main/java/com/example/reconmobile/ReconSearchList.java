@@ -27,7 +27,6 @@ import com.hoho.android.usbserial.driver.UsbSerialDriver;
 import com.hoho.android.usbserial.driver.UsbSerialPort;
 import com.hoho.android.usbserial.driver.UsbSerialProber;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Locale;
@@ -41,15 +40,11 @@ public class ReconSearchList extends ListFragment implements ServiceConnection, 
     private int deviceId;
     private int portNum;
 
-    public static final String INTENT_ACTION_GRANT_USB = BuildConfig.APPLICATION_ID + ".GRANT_USB";
-
     private SerialSocket socket;
     private SerialService service;
     private ReconConnected connected = ReconConnected.False;
     private boolean initialStart = true;
     private BroadcastReceiver broadcastReceiver;
-
-    private String newline = "\r\n"; //Should we change this?
 
     class ListItem {
         UsbDevice device;

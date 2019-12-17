@@ -213,7 +213,7 @@ public class SerialService extends Service implements SerialListener {
                         if (listener != null) {
                             listener.onSerialRead(data);
                             Log.d("SerialService","Receiving = " + Arrays.toString(data));
-                            globalLastResponse = new String(data);
+                            globalLastResponse = new String(data); //...this doesn't seem to always work. Why?
                         } else {
                             queue1.add(new QueueItem(QueueType.Read, data, null));
                             Log.d("SerialService","Queueing (1) = " + Arrays.toString(data));
