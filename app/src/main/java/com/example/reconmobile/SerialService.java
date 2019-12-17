@@ -21,6 +21,8 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Queue;
 
+import static com.example.reconmobile.Globals.*;
+
 /**
  * create notification and queue serial data while activity is not in the foreground
  * use listener chain: SerialSocket -> SerialService -> UI fragment
@@ -211,6 +213,7 @@ public class SerialService extends Service implements SerialListener {
                         if (listener != null) {
                             listener.onSerialRead(data);
                             Log.d("SerialService","Receiving = " + Arrays.toString(data));
+                            globalLastResponse = new String(data);
                         } else {
                             queue1.add(new QueueItem(QueueType.Read, data, null));
                             Log.d("SerialService","Queueing (1) = " + Arrays.toString(data));

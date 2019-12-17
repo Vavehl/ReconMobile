@@ -15,7 +15,7 @@ import java.util.concurrent.Executors;
 
 public class SerialSocket implements SerialInputOutputManager.Listener {
 
-    public static final int WRITE_WAIT_MILLIS = 1000;
+    public static final int WRITE_WAIT_MILLIS = 50;
 
     private final BroadcastReceiver disconnectBroadcastReceiver;
 

@@ -27,11 +27,13 @@ import com.hoho.android.usbserial.driver.UsbSerialDriver;
 import com.hoho.android.usbserial.driver.UsbSerialPort;
 import com.hoho.android.usbserial.driver.UsbSerialProber;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Locale;
 
 import static com.example.reconmobile.Constants.*;
+import static com.example.reconmobile.Globals.*;
 import static com.example.reconmobile.SerialSocket.WRITE_WAIT_MILLIS;
 
 public class ReconSearchList extends ListFragment implements ServiceConnection, SerialListener {
@@ -105,14 +107,23 @@ public class ReconSearchList extends ListFragment implements ServiceConnection, 
                     //Here we need to issue a command to pull the serial number.
                     if((item.device.getVendorId()==0x15A2) && (item.device.getProductId()==0x8143)){
                         Log.d("ReconSearchList","onCreate():: Broadcasting / tethered device meeting initial parameters found!");
-                        ReconSerial.setText(item.driver.getClass().getSimpleName().replace("CdcAcmSerialDriver", "Rad Elec Recon"));
-                        //ReconFirmware.setText(String.format(Locale.US, "Vendor %04X, Product %04X", item.device.getVendorId(), item.device.getProductId()));
-                        ReconFirmware.setText(String.format(Locale.US, "Tap to Connect"));
+                        if(connected == ReconConnected.True) {
+                            ReconSerial.setText(item.driver.getClass().getSimpleName().replace("CdcAcmSerialDriver", "Rad Elec Recon #" + globalReconSerial));
+                            ReconFirmware.setText(String.format(Locale.US, "Firmware v" + globalReconFirmwareRevision));
+                        } else {
+                            ReconSerial.setText(item.driver.getClass().getSimpleName().replace("CdcAcmSerialDriver", "Rad Elec Recon"));
+                            ReconFirmware.setText(String.format(Locale.US, "Tap to Connect"));
+                        }
                     }
                 } else { //...an unexpected port. Will this proc on nearby Bluetooth devices?
                     if((item.device.getVendorId()==0x15A2) && (item.device.getProductId()==0x8143)){
-                        ReconSerial.setText(item.driver.getClass().getSimpleName().replace("CdcAcmSerialDriver", "Rad Elec Recon") + " (Port " + item.port + ")");
-                        ReconFirmware.setText(String.format(Locale.US, "Vendor %04X, Product %04X", item.device.getVendorId(), item.device.getProductId()));
+                        if(connected == ReconConnected.True) {
+                            ReconSerial.setText(item.driver.getClass().getSimpleName().replace("CdcAcmSerialDriver", "Rad Elec Recon #" + globalReconSerial));
+                            ReconFirmware.setText(String.format(Locale.US, "Firmware v" + globalReconFirmwareRevision));
+                        } else {
+                            ReconSerial.setText(item.driver.getClass().getSimpleName().replace("CdcAcmSerialDriver", "Rad Elec Recon"));
+                            ReconFirmware.setText(String.format(Locale.US, "Tap to Connect"));
+                        }
                     }
                 }
                 return view;
@@ -239,14 +250,10 @@ public class ReconSearchList extends ListFragment implements ServiceConnection, 
             }
 
             //If permissions are true, let's pull the serial number and firmware revision.
-            if(usbManager.hasPermission(item.device)) {
-                Log.d("ReconSearchList","Sending " + cmdReconConfirm + " command to device, to confirm its identity.");
-                if(connected == ReconConnected.True)
-                    send(cmdReconConfirm);
-                else {
-                    connect(true);
-                    send(cmdReconConfirm);
-                }
+            if(usbManager.hasPermission(item.device) && connected != ReconConnected.True) {
+                Log.d("ReconSearchList","Attempting to Connect... [Current Connected State = " + connected + ")");
+                connect(true);
+                send(cmdReconConfirm);
             }
         }
     }
@@ -258,9 +265,9 @@ public class ReconSearchList extends ListFragment implements ServiceConnection, 
             return;
         }
         try {
-            //receiveText.append(spn);
             byte[] data = (str + newline).getBytes();
             socket.write(data);
+            globalLastWrite = str;
             Log.d("ReconSearchList","Writing " + str + " " + Arrays.toString(data));
         } catch (Exception e) {
             onSerialIoError(e);
@@ -349,7 +356,13 @@ public class ReconSearchList extends ListFragment implements ServiceConnection, 
         Log.d("ReconSearchList","onSerialRead() called!");
         receive(data);
         String s = new String(data);
+        globalLastResponse = s;
         Log.d("ReconSearchList","Receiving " + s);
+        switch(globalLastWrite) {
+            case ":RV":
+                getSerialAndFirmware();
+                break;
+        }
     }
 
     private void disconnect() {
@@ -386,6 +399,42 @@ public class ReconSearchList extends ListFragment implements ServiceConnection, 
         Log.d("ReconSearchList","onSerialConnectError() called!");
         Log.d("ReconSearchList", e.toString());
         disconnect();
+    }
+
+    private void getSerialAndFirmware() {
+        boolean boolReconConnected = false;
+        String[] parsedResponse = null;
+        Log.d("ReconSearchList","getSerialAndFirmware() called!");
+        if(connected == ReconConnected.True) {
+            if (!globalLastWrite.equals(cmdReconConfirm)) send(cmdReconConfirm);
+            Log.d("ReconSearchList", "getSerialAndFirmware():: LastResponse = " + globalLastResponse);
+            if(globalLastResponse != null) {
+                parsedResponse = globalLastResponse.split(",");
+                if(parsedResponse.length==4) {
+                    if (parsedResponse[0].equals("=DV") && parsedResponse[1].equals("CRM")) {
+                        boolReconConnected = true;
+                    } else {
+                        boolReconConnected = false;
+                    }
+                } else {
+                    boolReconConnected = false;
+                }
+            }
+        } else {
+            Log.d("ReconSearchList", "getSerialAndFirmware():: Not Connected to Recon!");
+        }
+        if(boolReconConnected) {
+            globalReconSerial = parsedResponse[3];
+            globalReconFirmwareRevision = Double.parseDouble(parsedResponse[2]);
+        } else {
+            globalReconSerial = "";
+            globalReconFirmwareRevision = 0;
+        }
+        View view = getView();
+        TextView ReconSerial = view.findViewById(R.id.txtFoundRecon_Serial);
+        TextView ReconFirmware = view.findViewById(R.id.txtFoundRecon_Firmware);
+        ReconSerial.setText("Rad Elec Recon #" + globalReconSerial);
+        ReconFirmware.setText("Firmware v" + globalReconFirmwareRevision);
     }
 
 }
