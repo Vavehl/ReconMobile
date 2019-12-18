@@ -2,6 +2,12 @@ package com.example.reconmobile;
 
 class Globals {
 
+    //Recon Globals
+    public enum ReconConnected { False, Pending, True }
+    public static ReconConnected connected = ReconConnected.False;
+    public static int deviceId;
+    public static int portNum;
+
     //Connected Recon Variables
     public static String globalReconSerial = "";
     public static double globalReconFirmwareRevision = 0;

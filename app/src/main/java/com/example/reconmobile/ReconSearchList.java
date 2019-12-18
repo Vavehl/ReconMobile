@@ -37,12 +37,9 @@ import static com.example.reconmobile.SerialSocket.WRITE_WAIT_MILLIS;
 
 public class ReconSearchList extends ListFragment implements ServiceConnection, SerialListener {
 
-    private int deviceId;
-    private int portNum;
-
     private SerialSocket socket;
     private SerialService service;
-    private ReconConnected connected = ReconConnected.False;
+
     private boolean initialStart = true;
     private BroadcastReceiver broadcastReceiver;
 
@@ -170,9 +167,9 @@ public class ReconSearchList extends ListFragment implements ServiceConnection, 
     @Override
     public void onDestroy() {
         Log.d("ReconSearchList","onDestroy() called!");
-        if (connected != ReconConnected.False)
-            disconnect();
-        getActivity().stopService(new Intent(getActivity(), SerialService.class));
+        //if (connected != ReconConnected.False)
+        //    disconnect();
+        //getActivity().stopService(new Intent(getActivity(), SerialService.class));
         super.onDestroy();
     }
 

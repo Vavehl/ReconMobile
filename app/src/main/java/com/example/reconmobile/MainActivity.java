@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity
         //Programmatically initialize fragmentConnect tab -- there has to be a better way to implement this??
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
-        ft.replace(R.id.simpleConstraintContainer, new FragmentConnect());
+        ft.replace(R.id.simpleConstraintContainer, new FragmentConnect(),"fragConnect");
         ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         ft.commit();
         //End initial implementation of fragmentConnect
@@ -75,7 +75,8 @@ public class MainActivity extends AppCompatActivity
             @Override
 
             public void onTabSelected(TabLayout.Tab tab) {
-                Fragment fragment = null;
+
+                Fragment fragment = null;Log.d("MainActivity","onTabSelected(TabLayout.Tab " + tab.toString() + ") called!");
                 switch (tab.getPosition()) {
                     case 0:
                         fragment = new FragmentConnect();
@@ -99,7 +100,7 @@ public class MainActivity extends AppCompatActivity
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
-
+                Log.d("MainActivity","onTabUnselected(TabLayout.Tab " + tab.toString() + ") called!");
             }
 
             @Override
@@ -129,18 +130,21 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void onBackStackChanged() {
+        Log.d("MainActivity","onBackStackChanged() called!");
         //getSupportActionBar().setDisplayHomeAsUpEnabled(getSupportFragmentManager().getBackStackEntryCount()>0);
     }
 
     //Creates Recon Main Menu
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        Log.d("MainActivity","onCreateOptionsMenu() called!");
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        Log.d("MainActivity","onOptionsItemSelected(MenuItem " + item.toString() + ") called!");
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
@@ -173,6 +177,8 @@ public class MainActivity extends AppCompatActivity
     ...and then display it!
     */
     protected void showAboutPopUp() {
+
+        Log.d("MainActivity","showAboutPopUp() called!");
 
         //Initialize the "About" dialog window in the menu...
         dialogAbout = new Dialog(this);
@@ -228,6 +234,7 @@ public class MainActivity extends AppCompatActivity
 
     //This will load/show the Settings fragment
     protected void showSettings() {
+        Log.d("MainActivity","showSettings() called!");
         Fragment fragment;
         fragment = new FragmentSettings();
         FragmentManager fm = getSupportFragmentManager();
@@ -239,6 +246,7 @@ public class MainActivity extends AppCompatActivity
 
     //This will load/show the Company fragment
     protected void showMyCompany() {
+        Log.d("MainActivity","showMyCompany() called!");
         Fragment fragment;
         fragment = new FragmentCompany();
         FragmentManager fm = getSupportFragmentManager();
@@ -250,19 +258,21 @@ public class MainActivity extends AppCompatActivity
 
     //We should offload this to its own class...
     protected void saveFile() {
+        Log.d("MainActivity","saveFile() called!");
         Toast msgSave = Toast.makeText(getApplicationContext(),"Saving file...",Toast.LENGTH_SHORT);
         msgSave.show();
     }
 
     //We should offload this to its own class, too...
     protected void openFile() {
+        Log.d("MainActivity","openFile() called!");
         Toast msgSave = Toast.makeText(getApplicationContext(),"TODO: Open File",Toast.LENGTH_SHORT);
         msgSave.show();
     }
 
     @Override
     public void onFragmentInteraction(Uri uri) {
-
+        Log.d("MainActivity","onFragmentInteraction() called!");
     }
 
 }

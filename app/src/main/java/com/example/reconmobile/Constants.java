@@ -30,6 +30,4 @@ class Constants {
 
     // values have to be unique within each app
     static final int NOTIFY_MANAGER_START_FOREGROUND_SERVICE = 1001;
-
-    public enum ReconConnected { False, Pending, True }
 }

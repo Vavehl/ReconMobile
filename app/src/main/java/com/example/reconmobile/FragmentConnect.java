@@ -12,7 +12,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import static com.example.reconmobile.Globals.*;
+
 public class FragmentConnect extends Fragment {
+
+    Button btnConnect;
+
     public FragmentConnect() {
     }
 
@@ -21,7 +26,22 @@ public class FragmentConnect extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_connect, container, false);
 
-        Button btnConnect = view.findViewById(R.id.buttonConnect);
+        btnConnect = view.findViewById(R.id.buttonConnect);
+
+        switch(connected) {
+            case True:
+                Log.d("FragmentConnect","Setting button to Disconnect [connected = " + connected + "]");
+                btnConnect.setText("Disconnect");
+                break;
+            case False:
+                Log.d("FragmentConnect","Setting button to Connect [connected = " + connected + "]");
+                btnConnect.setText("Connect");
+                break;
+            case Pending:
+                Log.d("FragmentConnect","Setting button to Wait [connected = " + connected + "]");
+                btnConnect.setText("Wait");
+                break;
+        }
 
         btnConnect.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -38,9 +58,48 @@ public class FragmentConnect extends Fragment {
 
     //Show Device Search popup
     protected void showSearchList() {
-        FragmentSearch dialogSearch = FragmentSearch.newInstance("arg1","arg2");
+        Log.d("FragmentConnect", "showSearchList() called!");
+        FragmentSearch dialogSearch = new FragmentSearch();
         dialogSearch.setRetainInstance(true);
         dialogSearch.show(getFragmentManager(),"");
+
+        if(dialogSearch.isDetached()) {
+            Log.d("FragmentConnect","SEARCH FRAGMENT DETACHED!");
+            checkConnectionStatus();
+        }
+    }
+
+    public void onStart() {
+        Log.d("FragmentConnect", "onStart() called!");
+        super.onStart();
+    }
+
+    public void onPause() {
+        Log.d("FragmentConnect", "onPause() called!");
+        super.onPause();
+    }
+
+    public void onResume() {
+        Log.d("FragmentConnect", "onResume() called!");
+        super.onResume();
+    }
+
+    public void checkConnectionStatus() {
+        Log.d("FragmentConnect", "checkConnectionStatus() called!");
+        switch(connected) {
+            case True:
+                Log.d("FragmentConnect","Setting button to Disconnect [connected = " + connected + "]");
+                btnConnect.setText("Disconnect");
+                break;
+            case False:
+                Log.d("FragmentConnect","Setting button to Connect [connected = " + connected + "]");
+                btnConnect.setText("Connect");
+                break;
+            case Pending:
+                Log.d("FragmentConnect","Setting button to Wait [connected = " + connected + "]");
+                btnConnect.setText("Wait");
+                break;
+        }
     }
 
 }
