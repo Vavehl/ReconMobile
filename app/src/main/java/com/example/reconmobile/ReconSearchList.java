@@ -76,48 +76,7 @@ public class ReconSearchList extends ListFragment implements ServiceConnection, 
         super.onCreate(savedInstanceState);
         Log.d("ReconSearchList","onCreate() called!");
         Log.d("ReconSearchList", "onCreate():: initialStart = " + initialStart);
-
-        listAdapter = new ArrayAdapter<ListItem>(getActivity(), 0, listItems) {
-            @Override
-            public View getView(int position, View view, ViewGroup parent) {
-
-                ListItem item = listItems.get(position);
-
-                if (view == null) {
-                    view = getActivity().getLayoutInflater().inflate(R.layout.device_list_item, parent, false);
-                }
-
-                TextView ReconSerial = view.findViewById(R.id.txtFoundRecon_Serial);
-                TextView ReconFirmware = view.findViewById(R.id.txtFoundRecon_Firmware);
-
-                if(item.driver == null)
-                    ReconSerial.setText("<Device Not Recognized>");
-                else if(item.driver.getPorts().size() == 1) {
-                    //Here we need to issue a command to pull the serial number.
-                    if((item.device.getVendorId()==0x15A2) && (item.device.getProductId()==0x8143)){
-                        Log.d("ReconSearchList","onCreate():: Broadcasting / tethered device meeting initial parameters found!");
-                        if(connected == ReconConnected.True) {
-                            ReconSerial.setText(item.driver.getClass().getSimpleName().replace("CdcAcmSerialDriver", "Rad Elec Recon #" + globalReconSerial));
-                            ReconFirmware.setText(String.format(Locale.US, "Firmware v" + globalReconFirmwareRevision));
-                        } else {
-                            ReconSerial.setText(item.driver.getClass().getSimpleName().replace("CdcAcmSerialDriver", "Rad Elec Recon"));
-                            ReconFirmware.setText(String.format(Locale.US, "Tap to Connect"));
-                        }
-                    }
-                } else { //...an unexpected port. Will this proc on nearby Bluetooth devices?
-                    if((item.device.getVendorId()==0x15A2) && (item.device.getProductId()==0x8143)){
-                        if(connected == ReconConnected.True) {
-                            ReconSerial.setText(item.driver.getClass().getSimpleName().replace("CdcAcmSerialDriver", "Rad Elec Recon #" + globalReconSerial));
-                            ReconFirmware.setText(String.format(Locale.US, "Firmware v" + globalReconFirmwareRevision));
-                        } else {
-                            ReconSerial.setText(item.driver.getClass().getSimpleName().replace("CdcAcmSerialDriver", "Rad Elec Recon"));
-                            ReconFirmware.setText(String.format(Locale.US, "Tap to Connect"));
-                        }
-                    }
-                }
-                return view;
-            }
-        };
+        createReconList();
     }
 
     @Override
@@ -191,25 +150,70 @@ public class ReconSearchList extends ListFragment implements ServiceConnection, 
         }
     }
 
+    private void createReconList() {
+        Log.d("ReconSearchList","createReconList() called!");
+        listAdapter = new ArrayAdapter<ListItem>(getActivity(), 0, listItems) {
+            @Override
+            public View getView(int position, View view, ViewGroup parent) {
+
+                ListItem item = listItems.get(position);
+
+                if (view == null) {
+                    view = getActivity().getLayoutInflater().inflate(R.layout.device_list_item, parent, false);
+                }
+
+                TextView ReconSerial = view.findViewById(R.id.txtFoundRecon_Serial);
+                TextView ReconFirmware = view.findViewById(R.id.txtFoundRecon_Firmware);
+
+                if(item.driver == null)
+                    ReconSerial.setText("<Device Not Recognized>");
+                else if(item.driver.getPorts().size() == 1) {
+                    //Here we need to issue a command to pull the serial number.
+                    if((item.device.getVendorId()==0x15A2) && (item.device.getProductId()==0x8143)){
+                        Log.d("ReconSearchList","createReconList():: Broadcasting / tethered device meeting initial parameters found!");
+                        if(connected == ReconConnected.True) {
+                            ReconSerial.setText(item.driver.getClass().getSimpleName().replace("CdcAcmSerialDriver", "Rad Elec Recon #" + globalReconSerial));
+                            ReconFirmware.setText(String.format(Locale.US, "Firmware v" + globalReconFirmwareRevision));
+                        } else {
+                            ReconSerial.setText(item.driver.getClass().getSimpleName().replace("CdcAcmSerialDriver", "Rad Elec Recon"));
+                            ReconFirmware.setText(String.format(Locale.US, "Tap to Connect"));
+                        }
+                    }
+                } else { //...an unexpected port. Will this proc on nearby Bluetooth devices?
+                    if((item.device.getVendorId()==0x15A2) && (item.device.getProductId()==0x8143)){
+                        if(connected == ReconConnected.True) {
+                            ReconSerial.setText(item.driver.getClass().getSimpleName().replace("CdcAcmSerialDriver", "Rad Elec Recon #" + globalReconSerial));
+                            ReconFirmware.setText(String.format(Locale.US, "Firmware v" + globalReconFirmwareRevision));
+                        } else {
+                            ReconSerial.setText(item.driver.getClass().getSimpleName().replace("CdcAcmSerialDriver", "Rad Elec Recon"));
+                            ReconFirmware.setText(String.format(Locale.US, "Tap to Connect"));
+                        }
+                    }
+                }
+                return view;
+            }
+        };
+    }
+
     void refresh() {
         Log.d("ReconSearchList","refresh() called!");
         UsbManager usbManager = (UsbManager) getActivity().getSystemService(Context.USB_SERVICE);
         UsbSerialProber usbDefaultProber = UsbSerialProber.getDefaultProber();
         UsbSerialProber usbCustomProber = CustomProber.getCustomProber();
-        listItems.clear();
-        for(UsbDevice device : usbManager.getDeviceList().values()) {
-            UsbSerialDriver driver = usbDefaultProber.probeDevice(device);
-            if(driver == null) {
-                driver = usbCustomProber.probeDevice(device);
+            listItems.clear();
+            for (UsbDevice device : usbManager.getDeviceList().values()) {
+                UsbSerialDriver driver = usbDefaultProber.probeDevice(device);
+                if (driver == null) {
+                    driver = usbCustomProber.probeDevice(device);
+                }
+                if (driver != null) {
+                    for (int port = 0; port < driver.getPorts().size(); port++)
+                        listItems.add(new ListItem(device, port, driver));
+                } else {
+                    listItems.add(new ListItem(device, 0, null));
+                }
             }
-            if(driver != null) {
-                for(int port = 0; port < driver.getPorts().size(); port++)
-                    listItems.add(new ListItem(device, port, driver));
-            } else {
-                listItems.add(new ListItem(device, 0, null));
-            }
-        }
-        listAdapter.notifyDataSetChanged();
+            if(listAdapter != null) listAdapter.notifyDataSetChanged();
     }
 
     @Override

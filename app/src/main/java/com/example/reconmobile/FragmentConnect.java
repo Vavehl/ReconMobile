@@ -110,7 +110,7 @@ public class FragmentConnect extends Fragment {
     public void onResume() {
         Log.d("FragmentConnect", "onResume() called!");
         super.onResume();
-        checkConnectionStatus();
+        checkConnectionStatus(); //This is needed to retain button configuration, system console, etc. when the screen orientation changes.
     }
 
     public void checkConnectionStatus() {
