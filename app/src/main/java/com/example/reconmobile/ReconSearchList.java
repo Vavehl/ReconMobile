@@ -360,6 +360,8 @@ public class ReconSearchList extends ListFragment implements ServiceConnection, 
         service.disconnect();
         socket.disconnect();
         socket = null;
+        globalReconSerial = "";
+        globalReconFirmwareRevision = 0;
     }
 
     @Override

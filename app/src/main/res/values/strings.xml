@@ -56,6 +56,10 @@
     <string name="display_temperature">Temperature</string>
     <string name="display_radon">Radon</string>
     <string name="close_search_window">Close Search Window</string>
+    <string name="no_recon_connected">No Recon Connected</string>
+    <string name="download">Download</string>
+    <string name="clear">Clear</string>
+    <string name="system_console">System Console</string>
     <string-array name="spinnerUnitSystem">
         <item>US</item>
         <item>SI</item>

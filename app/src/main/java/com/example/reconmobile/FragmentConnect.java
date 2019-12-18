@@ -6,6 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Space;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -17,6 +19,11 @@ import static com.example.reconmobile.Globals.*;
 public class FragmentConnect extends Fragment {
 
     Button btnConnect;
+    Button btnDownload;
+    Button btnClear;
+    TextView txtReconSerial;
+    TextView txtSystemConsole;
+    Space spaceConnect_1;
 
     public FragmentConnect() {
     }
@@ -27,6 +34,11 @@ public class FragmentConnect extends Fragment {
         View view = inflater.inflate(R.layout.fragment_connect, container, false);
 
         btnConnect = view.findViewById(R.id.buttonConnect);
+        btnDownload = view.findViewById(R.id.buttonDownload);
+        btnClear = view.findViewById(R.id.buttonClear);
+        txtReconSerial = view.findViewById(R.id.txtReconSerial);
+        txtSystemConsole = view.findViewById(R.id.txtConsole);
+        spaceConnect_1 = view.findViewById(R.id.spaceConnect_1);
 
         switch(connected) {
             case True:
@@ -42,6 +54,7 @@ public class FragmentConnect extends Fragment {
                 btnConnect.setText("Wait");
                 break;
         }
+        checkConnectionStatus();
 
         btnConnect.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -104,15 +117,33 @@ public class FragmentConnect extends Fragment {
         switch(connected) {
             case True:
                 Log.d("FragmentConnect","Setting button to Disconnect [connected = " + connected + "]");
+                btnClear.setVisibility(View.VISIBLE);
                 btnConnect.setText("Disconnect");
+                btnDownload.setVisibility(View.VISIBLE);
+                spaceConnect_1.setVisibility(View.GONE);
+                txtReconSerial.setText(String.format("Recon #%s", globalReconSerial));
+                txtReconSerial.setVisibility(View.VISIBLE);
+                txtSystemConsole.setVisibility(View.VISIBLE);
                 break;
             case False:
                 Log.d("FragmentConnect","Setting button to Connect [connected = " + connected + "]");
+                btnClear.setVisibility(View.GONE);
                 btnConnect.setText("Connect");
+                btnDownload.setVisibility(View.GONE);
+                spaceConnect_1.setVisibility(View.VISIBLE);
+                txtReconSerial.setText("No Recon Connected");
+                txtReconSerial.setVisibility(View.GONE);
+                txtSystemConsole.setVisibility(View.GONE);
                 break;
-            case Pending:
-                Log.d("FragmentConnect","Setting button to Wait [connected = " + connected + "]");
-                btnConnect.setText("Wait");
+            case Pending: //This should never proc...
+                Log.d("FragmentConnect","Pending connection... [connected = " + connected + "]");
+                btnClear.setVisibility(View.GONE);
+                btnConnect.setText("Disconnect");
+                btnDownload.setVisibility(View.GONE);
+                spaceConnect_1.setVisibility(View.GONE);
+                txtReconSerial.setText("Please Wait...");
+                txtReconSerial.setVisibility(View.GONE);
+                txtSystemConsole.setVisibility(View.GONE);
                 break;
         }
     }
@@ -123,6 +154,8 @@ public class FragmentConnect extends Fragment {
         service.disconnect();
         socket.disconnect();
         socket = null;
+        globalReconSerial = "";
+        globalReconFirmwareRevision = 0;
     }
 
 }
