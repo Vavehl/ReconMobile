@@ -110,6 +110,7 @@ public class FragmentConnect extends Fragment {
     public void onResume() {
         Log.d("FragmentConnect", "onResume() called!");
         super.onResume();
+        checkConnectionStatus();
     }
 
     public void checkConnectionStatus() {
