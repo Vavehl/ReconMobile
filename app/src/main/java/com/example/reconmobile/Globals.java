@@ -7,6 +7,8 @@ class Globals {
     public static ReconConnected connected = ReconConnected.False;
     public static int deviceId;
     public static int portNum;
+    public static SerialSocket socket;
+    public static SerialService service;
 
     //Connected Recon Variables
     public static String globalReconSerial = "";

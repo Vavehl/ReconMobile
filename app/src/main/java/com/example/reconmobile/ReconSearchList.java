@@ -37,9 +37,6 @@ import static com.example.reconmobile.SerialSocket.WRITE_WAIT_MILLIS;
 
 public class ReconSearchList extends ListFragment implements ServiceConnection, SerialListener {
 
-    private SerialSocket socket;
-    private SerialService service;
-
     private boolean initialStart = true;
     private BroadcastReceiver broadcastReceiver;
 

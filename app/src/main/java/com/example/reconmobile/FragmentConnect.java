@@ -46,10 +46,25 @@ public class FragmentConnect extends Fragment {
         btnConnect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("FragmentConnect","Connect button pressed!");
-                Toast txtOnClick_Connect = Toast.makeText(getContext(),"Searching for Recon...",Toast.LENGTH_SHORT);
-                txtOnClick_Connect.show();
-                showSearchList();
+                switch(connected) {
+                    case True:
+                        Log.d("FragmentConnect","Disconnect button pressed!");
+                        Toast txtOnClick_Disconnect = Toast.makeText(getContext(),"Disconnecting...",Toast.LENGTH_SHORT);
+                        txtOnClick_Disconnect.show();
+                        disconnect();
+                        checkConnectionStatus();
+                        break;
+                    case False:
+                        Log.d("FragmentConnect","Connect button pressed!");
+                        Toast txtOnClick_Connect = Toast.makeText(getContext(),"Searching for Recon...",Toast.LENGTH_SHORT);
+                        txtOnClick_Connect.show();
+                        showSearchList();
+                        break;
+                    case Pending:
+                        Toast txtOnClick_Pending = Toast.makeText(getContext(),"Please wait...",Toast.LENGTH_SHORT);
+                        txtOnClick_Pending.show();
+                        break;
+                }
             }
         });
 
@@ -100,6 +115,14 @@ public class FragmentConnect extends Fragment {
                 btnConnect.setText("Wait");
                 break;
         }
+    }
+
+    private void disconnect() {
+        Log.d("FragmentConnect","disconnect() called!");
+        connected = ReconConnected.False;
+        service.disconnect();
+        socket.disconnect();
+        socket = null;
     }
 
 }
