@@ -28,8 +28,8 @@ public class MainActivity extends AppCompatActivity
         implements  FragmentManager.OnBackStackChangedListener,
                     FragmentSearch.OnFragmentInteractionListener {
 
-    public static String version_build = "v0.3.0";
-    public static String version_date = "21 Oct 2019";
+    public static String version_build = "v0.3.1";
+    public static String version_date = "19 Dec 2019";
 
     DatabaseOperations db;
 
