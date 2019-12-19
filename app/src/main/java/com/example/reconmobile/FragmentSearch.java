@@ -17,27 +17,14 @@ import static com.example.reconmobile.Globals.*;
 
 public class FragmentSearch extends DialogFragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
     private OnFragmentInteractionListener mListener;
 
     public FragmentSearch() {
         // Required empty public constructor
     }
 
-    public static FragmentSearch newInstance(String param1, String param2) {
+    public static FragmentSearch newInstance() {
         FragmentSearch fragment = new FragmentSearch();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
         return fragment;
     }
 
@@ -46,10 +33,6 @@ public class FragmentSearch extends DialogFragment {
         Log.d("FragmentSearch","onCreate() called!");
         super.onCreate(savedInstanceState);
         setStyle(DialogFragment.STYLE_NO_TITLE, R.style.DialogStyle);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
@@ -70,7 +53,6 @@ public class FragmentSearch extends DialogFragment {
         });
 
         //Begin searching for Recons and populate the Dialog fragment with the discovered devices...
-        //getChildFragmentManager().beginTransaction().add(R.id.device_search_layout, new ReconSearchList()).commit();
         getChildFragmentManager().beginTransaction().add(R.id.device_search_layout, new ReconSearchList()).addToBackStack(null).commit();
 
         //The dialog box looks too small if we don't set a minimum height (regardless of whether we discover a Recon or not)

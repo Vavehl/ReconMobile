@@ -30,7 +30,6 @@ import com.hoho.android.usbserial.driver.UsbSerialProber;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Locale;
-import java.util.Objects;
 
 import static com.example.reconmobile.Constants.*;
 import static com.example.reconmobile.Globals.*;
@@ -123,8 +122,6 @@ public class ReconSearchList extends ListFragment implements ServiceConnection, 
     @Override
     public void onDestroy() {
         Log.d("ReconSearchList","onDestroy() called!");
-        //if (connected != ReconConnected.False)
-        //    disconnect();
         getActivity().stopService(new Intent(getActivity(), SerialService.class));
         super.onDestroy();
     }
