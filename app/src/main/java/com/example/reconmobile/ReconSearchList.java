@@ -30,6 +30,7 @@ import com.hoho.android.usbserial.driver.UsbSerialProber;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Locale;
+import java.util.Objects;
 
 import static com.example.reconmobile.Constants.*;
 import static com.example.reconmobile.Globals.*;
@@ -76,7 +77,6 @@ public class ReconSearchList extends ListFragment implements ServiceConnection, 
         super.onCreate(savedInstanceState);
         Log.d("ReconSearchList","onCreate() called!");
         Log.d("ReconSearchList", "onCreate():: initialStart = " + initialStart);
-        createReconList();
     }
 
     @Override
@@ -87,7 +87,7 @@ public class ReconSearchList extends ListFragment implements ServiceConnection, 
             service.attach(this);
         else
             getActivity().startService(new Intent(getActivity(), SerialService.class)); // prevents service destroy on unbind from recreated activity caused by orientation change
-        refresh();
+        refreshReconList();
     }
 
     @Override
@@ -125,7 +125,7 @@ public class ReconSearchList extends ListFragment implements ServiceConnection, 
         Log.d("ReconSearchList","onDestroy() called!");
         //if (connected != ReconConnected.False)
         //    disconnect();
-        //getActivity().stopService(new Intent(getActivity(), SerialService.class));
+        getActivity().stopService(new Intent(getActivity(), SerialService.class));
         super.onDestroy();
     }
 
@@ -148,18 +148,21 @@ public class ReconSearchList extends ListFragment implements ServiceConnection, 
             initialStart = false;
             getActivity().runOnUiThread(this::connect);
         }
+        refreshReconList();
     }
 
     private void createReconList() {
         Log.d("ReconSearchList","createReconList() called!");
         listAdapter = new ArrayAdapter<ListItem>(getActivity(), 0, listItems) {
+
             @Override
             public View getView(int position, View view, ViewGroup parent) {
 
                 ListItem item = listItems.get(position);
 
                 if (view == null) {
-                    view = getActivity().getLayoutInflater().inflate(R.layout.device_list_item, parent, false);
+                    Log.d("ReconSearchList","VIEW=NULL, instantiating new view! [initialStart=" + initialStart + "]");
+                    view = getActivity().getLayoutInflater().inflate(R.layout.device_list_item,parent, false);
                 }
 
                 TextView ReconSerial = view.findViewById(R.id.txtFoundRecon_Serial);
@@ -190,30 +193,37 @@ public class ReconSearchList extends ListFragment implements ServiceConnection, 
                         }
                     }
                 }
+                if(listAdapter != null) listAdapter.notifyDataSetChanged();
                 return view;
             }
         };
     }
 
-    void refresh() {
+    void refreshReconList() {
         Log.d("ReconSearchList","refresh() called!");
         UsbManager usbManager = (UsbManager) getActivity().getSystemService(Context.USB_SERVICE);
         UsbSerialProber usbDefaultProber = UsbSerialProber.getDefaultProber();
         UsbSerialProber usbCustomProber = CustomProber.getCustomProber();
-            listItems.clear();
-            for (UsbDevice device : usbManager.getDeviceList().values()) {
-                UsbSerialDriver driver = usbDefaultProber.probeDevice(device);
-                if (driver == null) {
-                    driver = usbCustomProber.probeDevice(device);
-                }
-                if (driver != null) {
-                    for (int port = 0; port < driver.getPorts().size(); port++)
-                        listItems.add(new ListItem(device, port, driver));
-                } else {
-                    listItems.add(new ListItem(device, 0, null));
-                }
+
+        setListAdapter(null);
+        setListAdapter(listAdapter);
+
+        listItems.clear();
+
+        for (UsbDevice device : usbManager.getDeviceList().values()) {
+            UsbSerialDriver driver = usbDefaultProber.probeDevice(device);
+            if (driver == null) {
+                driver = usbCustomProber.probeDevice(device);
             }
-            if(listAdapter != null) listAdapter.notifyDataSetChanged();
+            if (driver != null) {
+                for (int port = 0; port < driver.getPorts().size(); port++)
+                    listItems.add(new ListItem(device, port, driver));
+            } else {
+                listItems.add(new ListItem(device, 0, null));
+            }
+        }
+        if(listAdapter != null) listAdapter.notifyDataSetChanged();
+        createReconList();
     }
 
     @Override
