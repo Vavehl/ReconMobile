@@ -33,6 +33,7 @@ import java.util.Locale;
 
 import static com.example.reconmobile.Constants.*;
 import static com.example.reconmobile.Globals.*;
+import static com.example.reconmobile.Globals.globalDataSessions;
 import static com.example.reconmobile.SerialSocket.WRITE_WAIT_MILLIS;
 
 public class ReconSearchList extends ListFragment implements ServiceConnection, SerialListener {
@@ -253,7 +254,16 @@ public class ReconSearchList extends ListFragment implements ServiceConnection, 
             if(usbManager.hasPermission(item.device) && connected != ReconConnected.True) {
                 Log.d("ReconSearchList","Attempting to Connect... [Current Connected State = " + connected + ")");
                 connect(true);
-                send(cmdReconConfirm);
+                synchronized(socket) {
+                    send(cmdReconConfirm);
+                    try {
+                        socket.wait(100);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    send(cmdReadProtocol);
+                }
+
             }
         }
     }
@@ -355,12 +365,21 @@ public class ReconSearchList extends ListFragment implements ServiceConnection, 
     public void onSerialRead(byte[] data) {
         Log.d("ReconSearchList","onSerialRead() called!");
         receive(data);
-        String s = new String(data);
-        globalLastResponse = s;
-        Log.d("ReconSearchList","Receiving " + s);
-        switch(globalLastWrite) {
-            case ":RV":
+        String response = new String(data);
+        globalLastResponse = response;
+        Log.d("ReconSearchList","Receiving " + response);
+        String[] parsedResponse = null;
+        parsedResponse = response.split(",");
+        if(parsedResponse.length<1) return;
+        switch(parsedResponse[0]) {
+            case "=DV":
                 getSerialAndFirmware();
+                break;
+            case "=DP":
+                getDataSessions();
+                break;
+            case "=BD":
+                Log.d("ReconSearchList","onSerialRead():: =BD Response from Recon... invalid request?");
                 break;
         }
     }
@@ -437,6 +456,33 @@ public class ReconSearchList extends ListFragment implements ServiceConnection, 
         TextView ReconFirmware = view.findViewById(R.id.txtFoundRecon_Firmware);
         ReconSerial.setText("Rad Elec Recon #" + globalReconSerial);
         ReconFirmware.setText("Firmware v" + globalReconFirmwareRevision);
+    }
+
+    public void getDataSessions() {
+        String[] parsedResponse = null;
+        boolean boolUnexpectedResponse = true;
+        Log.d("ReconSearchList","getDataSessions() called!");
+        if(connected == ReconConnected.True) {
+            if (!globalLastWrite.equals(cmdReadProtocol)) send(cmdReadProtocol);
+            Log.d("ReconSearchList", "getDataSessions():: LastResponse = " + globalLastResponse);
+            if(globalLastResponse != null) {
+                parsedResponse = globalLastResponse.split(",");
+                if(parsedResponse.length==4) {
+                    if (parsedResponse[0].equals("=DP")) {
+                        if(!parsedResponse[3].trim().isEmpty()) {
+                            globalDataSessions = parsedResponse[3].trim();
+                            boolUnexpectedResponse = false;
+                            Log.d("ReconSearchList","getDataSessions() Data Sessions on Recon = " + globalDataSessions);
+                        }
+                    }
+                }
+            }
+            if(boolUnexpectedResponse) {
+                Log.d("ReconSearchList","getDataSessions() Unexpected Response from Recon! [" + globalLastResponse + "]");
+            }
+        } else {
+            Log.d("ReconSearchList", "getDataSessions():: Not Connected to Recon!");
+        }
     }
 
 }
