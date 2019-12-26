@@ -13,6 +13,7 @@ import android.hardware.usb.UsbDeviceConnection;
 import android.hardware.usb.UsbManager;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,8 +28,13 @@ import com.hoho.android.usbserial.driver.UsbSerialDriver;
 import com.hoho.android.usbserial.driver.UsbSerialPort;
 import com.hoho.android.usbserial.driver.UsbSerialProber;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 import static com.example.reconmobile.Constants.*;
@@ -256,14 +262,12 @@ public class ReconSearchList extends ListFragment implements ServiceConnection, 
                 connect(true);
                 synchronized(socket) {
                     send(cmdReconConfirm);
-                    try {
-                        socket.wait(100);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
                     send(cmdReadProtocol);
+                    send(cmdReadTime);
                 }
 
+            } else if(usbManager.hasPermission(item.device) && connected == ReconConnected.True) {
+                Log.d("ReconSearchList","Already connected to this device... [Current Connected State = " + connected + ")");
             }
         }
     }
@@ -275,8 +279,10 @@ public class ReconSearchList extends ListFragment implements ServiceConnection, 
             return;
         }
         try {
+            socket.wait(50);
             byte[] data = (str + newline).getBytes();
             socket.write(data);
+            socket.wait(50);
             globalLastWrite = str;
             Log.d("ReconSearchList","Writing " + str + " " + Arrays.toString(data));
         } catch (Exception e) {
@@ -373,10 +379,13 @@ public class ReconSearchList extends ListFragment implements ServiceConnection, 
         if(parsedResponse.length<1) return;
         switch(parsedResponse[0]) {
             case "=DV":
-                getSerialAndFirmware();
+                getSerialAndFirmware(response);
                 break;
             case "=DP":
-                getDataSessions();
+                getDataSessions(response);
+                break;
+            case "=DT":
+                SyncDateTime(response);
                 break;
             case "=BD":
                 Log.d("ReconSearchList","onSerialRead():: =BD Response from Recon... invalid request?");
@@ -422,15 +431,14 @@ public class ReconSearchList extends ListFragment implements ServiceConnection, 
         disconnect();
     }
 
-    private void getSerialAndFirmware() {
+    private void getSerialAndFirmware(String response) {
         boolean boolReconConnected = false;
         String[] parsedResponse = null;
         Log.d("ReconSearchList","getSerialAndFirmware() called!");
         if(connected == ReconConnected.True) {
-            if (!globalLastWrite.equals(cmdReconConfirm)) send(cmdReconConfirm);
-            Log.d("ReconSearchList", "getSerialAndFirmware():: LastResponse = " + globalLastResponse);
-            if(globalLastResponse != null) {
-                parsedResponse = globalLastResponse.split(",");
+            Log.d("ReconSearchList", "getSerialAndFirmware():: LastResponse = " + response);
+            if(response != null) {
+                parsedResponse = response.split(",");
                 if(parsedResponse.length==4) {
                     if (parsedResponse[0].equals("=DV") && parsedResponse[1].equals("CRM")) {
                         boolReconConnected = true;
@@ -458,15 +466,14 @@ public class ReconSearchList extends ListFragment implements ServiceConnection, 
         ReconFirmware.setText("Firmware v" + globalReconFirmwareRevision);
     }
 
-    public void getDataSessions() {
+    public void getDataSessions(String response) {
         String[] parsedResponse = null;
         boolean boolUnexpectedResponse = true;
         Log.d("ReconSearchList","getDataSessions() called!");
         if(connected == ReconConnected.True) {
-            if (!globalLastWrite.equals(cmdReadProtocol)) send(cmdReadProtocol);
-            Log.d("ReconSearchList", "getDataSessions():: LastResponse = " + globalLastResponse);
-            if(globalLastResponse != null) {
-                parsedResponse = globalLastResponse.split(",");
+            Log.d("ReconSearchList", "getDataSessions():: LastResponse = " + response);
+            if(response != null) {
+                parsedResponse = response.split(",");
                 if(parsedResponse.length==4) {
                     if (parsedResponse[0].equals("=DP")) {
                         if(!parsedResponse[3].trim().isEmpty()) {
@@ -478,10 +485,63 @@ public class ReconSearchList extends ListFragment implements ServiceConnection, 
                 }
             }
             if(boolUnexpectedResponse) {
-                Log.d("ReconSearchList","getDataSessions() Unexpected Response from Recon! [" + globalLastResponse + "]");
+                Log.d("ReconSearchList","getDataSessions() Unexpected Response from Recon! [" + response + "]");
             }
         } else {
             Log.d("ReconSearchList", "getDataSessions():: Not Connected to Recon!");
+        }
+    }
+
+    public void SyncDateTime(String response) {
+        Log.d("ReconSearchList","SyncDateTime() called!");
+        String[] parsedResponse = null;
+        parsedResponse = response.split(",");
+        if(parsedResponse[0].equals("=DT") && parsedResponse.length==7 && connected==ReconConnected.True) {
+
+            boolean boolSyncSuccessful = false;
+            Date currentDateTime = Calendar.getInstance().getTime();
+            Date reconDateTime = Calendar.getInstance().getTime(); //Temporarily initialize Recon to current datetime.
+            DateFormat.format("yy,MM,dd,HH,mm,ss",currentDateTime);
+            DateFormat.format("yy,MM,dd,HH,mm,ss",reconDateTime);
+            SimpleDateFormat formatReconDateTime = new SimpleDateFormat("yy,MM,dd,HH,mm,ss");
+
+            String strMonth_Phone = (String) DateFormat.format("MM", currentDateTime);
+            String strDay_Phone = (String) DateFormat.format("dd", currentDateTime);
+            String strYear_Phone = (String) DateFormat.format("yy", currentDateTime);
+            String strHour_Phone = (String) DateFormat.format("HH", currentDateTime);
+            String strMinute_Phone = (String) DateFormat.format("mm", currentDateTime);
+            String strSecond_Phone = (String) DateFormat.format("ss", currentDateTime);
+
+            String strYear_Recon = parsedResponse[1];
+            String strMonth_Recon = parsedResponse[2];
+            String strDay_Recon = parsedResponse[3];
+            String strHour_Recon = parsedResponse[4];
+            String strMinute_Recon = parsedResponse[5];
+            String strSecond_Recon = parsedResponse[6];
+            String strReconDateTime = strYear_Recon + "," + strMonth_Recon + "," + strDay_Recon + "," + strHour_Recon + "," + strMinute_Recon + "," + strSecond_Recon;
+            try {
+                reconDateTime = formatReconDateTime.parse(strReconDateTime);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            Log.d("ReconSearchList","Current DateTime = " + currentDateTime.toString());
+            if (reconDateTime != null) {
+                long diffSeconds = Math.abs((reconDateTime.getTime() - currentDateTime.getTime())/1000);
+                Log.d("ReconSearchList","Recon DateTime = " + reconDateTime.toString());
+                Log.d("ReconSearchList", "Difference between two times = " + diffSeconds + " seconds.");
+                if(diffSeconds>10) {
+                    Log.d("ReconSearchList","Difference between time exceeds threshold of 10 seconds. Issuing :WT command to synchronize Recon with phone...");
+                    String strWriteNewDateTime = ":WT," + strYear_Phone + "," + strMonth_Phone + "," + strDay_Phone + "," + strHour_Phone + ","+ strMinute_Phone + "," + strSecond_Phone;
+                    synchronized(socket) {
+                        send(strWriteNewDateTime);
+                    }
+                }
+            } else {
+                Log.d("ReconSearchList","Unable to parse Recon DateTime!");
+            }
+
+        } else {
+            Log.d("ReconSearchList","Unexpected instrument response in SyncDateTime(). Synchronization not performed!");
         }
     }
 
