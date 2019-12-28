@@ -1,5 +1,6 @@
 package com.example.reconmobile;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
@@ -264,6 +265,7 @@ public class ReconSearchList extends ListFragment implements ServiceConnection, 
                     send(cmdReconConfirm);
                     send(cmdReadProtocol);
                     send(cmdReadTime);
+                    send(cmdReadCalibrationFactors);
                 }
 
             } else if(usbManager.hasPermission(item.device) && connected == ReconConnected.True) {
@@ -386,6 +388,9 @@ public class ReconSearchList extends ListFragment implements ServiceConnection, 
                 break;
             case "=DT":
                 SyncDateTime(response);
+                break;
+            case "=RL":
+                getCalibrationFactors(response);
                 break;
             case "=BD":
                 Log.d("ReconSearchList","onSerialRead():: =BD Response from Recon... invalid request?");
@@ -543,6 +548,52 @@ public class ReconSearchList extends ListFragment implements ServiceConnection, 
         } else {
             Log.d("ReconSearchList","Unexpected instrument response in SyncDateTime(). Synchronization not performed!");
         }
+    }
+
+    public void getCalibrationFactors(String response) {
+        Log.d("ReconSearchList","getCalibrationFactors() called!");
+        Date reconDateTime = Calendar.getInstance().getTime();
+        String[] parsedResponse = null;
+        parsedResponse = response.split(",");
+        if(parsedResponse[0].equals("=RL") && parsedResponse.length==9 && connected==ReconConnected.True) {
+            if(!parsedResponse[1].trim().isEmpty()) {
+                try {
+                    globalReconCF1 = Double.parseDouble(parsedResponse[1].trim())/1000;
+                } catch (NumberFormatException ex) {
+                    Log.d("ReconSearchList","Unable to parse Recon CF1 as a double! Reverting to default CF1...");
+                    globalReconCF1 = 6;
+                }
+                Log.d("ReconSearchList","Recon CF1 = " + globalReconCF1);
+            }
+            if(!parsedResponse[2].trim().isEmpty()) {
+                try {
+                    globalReconCF2 = Double.parseDouble(parsedResponse[2].trim())/1000;
+                } catch (NumberFormatException ex) {
+                    Log.d("ReconSearchList","Unable to parse Recon CF2 as a double! Reverting to default CF2...");
+                    globalReconCF2 = 6;
+                }
+                Log.d("ReconSearchList","Recon CF2 = " + globalReconCF2);
+            }
+
+            String strYear_Recon = parsedResponse[3];
+            String strMonth_Recon = parsedResponse[4];
+            String strDay_Recon = parsedResponse[5];
+            String strReconDateTime = strDay_Recon + "-" + strMonth_Recon + "-" + strYear_Recon;
+            @SuppressLint("SimpleDateFormat") SimpleDateFormat formatReconDateTime = new SimpleDateFormat("dd-MMM-yyyy");
+            try {
+                reconDateTime = formatReconDateTime.parse(strReconDateTime);
+                if (reconDateTime != null) {
+                    globalReconCalibrationDate = reconDateTime.toString();
+                } else {
+                    globalReconCalibrationDate = "Unknown";
+                }
+                Log.d("ReconSearchList","Recon Calibration Date = " + globalReconCalibrationDate);
+            } catch (ParseException e) {
+                Log.d("ReconSearchList","Unable to parse Recon calibration date!");
+                e.printStackTrace();
+            }
+        }
+
     }
 
 }

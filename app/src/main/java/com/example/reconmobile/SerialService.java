@@ -145,13 +145,13 @@ public class SerialService extends Service implements SerialListener {
         PendingIntent disconnectPendingIntent = PendingIntent.getBroadcast(this, 1, disconnectIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         PendingIntent restartPendingIntent = PendingIntent.getActivity(this, 1, restartIntent,  PendingIntent.FLAG_UPDATE_CURRENT);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, Constants.NOTIFICATION_CHANNEL)
-                .setSmallIcon(R.drawable.ic_close_black_24dp)
+                .setSmallIcon(R.drawable.ic_notification)
                 .setColor(getResources().getColor(R.color.colorPrimary))
                 .setContentTitle(getResources().getString(R.string.app_name))
                 .setContentText(notificationMsg)
                 .setContentIntent(restartPendingIntent)
                 .setOngoing(true)
-                .addAction(new NotificationCompat.Action(R.drawable.ic_close_black_24dp, "Disconnect", disconnectPendingIntent));
+                .addAction(new NotificationCompat.Action(R.drawable.ic_clear_white_24dp, "Disconnect", disconnectPendingIntent));
         // @drawable/ic_notification created with Android Studio -> New -> Image Asset using @color/colorPrimaryDark as background color
         // Android < API 21 does not support vectorDrawables in notifications, so both drawables used here, are created as .png instead of .xml
         Notification notification = builder.build();
