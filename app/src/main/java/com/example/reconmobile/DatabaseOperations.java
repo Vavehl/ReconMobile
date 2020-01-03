@@ -101,4 +101,39 @@ public class DatabaseOperations extends SQLiteOpenHelper {
         return db.rawQuery("SELECT * FROM SETTINGS", null);
     }
 
+    public void resetCompanyData() {
+        Log.d("DatabaseOperations","resetCompanyData() called!");
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("DELETE FROM COMPANY");
+        db.execSQL("DELETE FROM sqlite_sequence WHERE NAME='COMPANY'"); //This will reset the primary index.
+        db.execSQL("INSERT INTO COMPANY (COMPANY_NAME, COMPANY_DETAILS) VALUES ('','')");
+    }
+
+    public boolean ReconTableExists(String strTableName, boolean boolOpenDB) {
+        Log.d("DatabaseOperations","ReconTableExists(" + strTableName + ", " + boolOpenDB + ") called!");
+        boolean boolTableExists = false;
+        SQLiteDatabase db = this.getWritableDatabase();
+        if(boolOpenDB) {
+            if(db == null || !db.isOpen()) {
+                db = getReadableDatabase();
+            }
+
+            if(!db.isReadOnly()) {
+                db.close();
+                db = getReadableDatabase();
+            }
+        }
+
+        String query = "SELECT DISTINCT tbl_name FROM sqlite_master WHERE tbl_name = '"+strTableName+"'";
+        try (Cursor cursor = db.rawQuery(query, null)) {
+            if(cursor!=null) {
+                if(cursor.getCount()>0) {
+                    boolTableExists = true;
+                }
+            }
+            Log.d("DatabaseOperations","ReconTableExists = " + boolTableExists);
+            return boolTableExists;
+        }
+    }
+
 }

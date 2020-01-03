@@ -37,6 +37,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Objects;
 
 import static com.example.reconmobile.Constants.*;
 import static com.example.reconmobile.Globals.*;
@@ -578,15 +579,26 @@ public class ReconSearchList extends ListFragment implements ServiceConnection, 
             String strYear_Recon = parsedResponse[3];
             String strMonth_Recon = parsedResponse[4];
             String strDay_Recon = parsedResponse[5];
-            String strReconDateTime = strDay_Recon + "-" + strMonth_Recon + "-" + strYear_Recon;
-            @SuppressLint("SimpleDateFormat") SimpleDateFormat formatReconDateTime = new SimpleDateFormat("dd-MMM-yyyy");
+            if(strMonth_Recon.length()==1) {
+                strMonth_Recon = "0" + strMonth_Recon;
+            }
+            if(strDay_Recon.length()==1) {
+                strDay_Recon = "0" + strDay_Recon;
+            }
+            SimpleDateFormat sdfMonthParse = new SimpleDateFormat("MM");
+            SimpleDateFormat sdfMonthDisplay = new SimpleDateFormat("MMM");
             try {
-                reconDateTime = formatReconDateTime.parse(strReconDateTime);
-                if (reconDateTime != null) {
-                    globalReconCalibrationDate = reconDateTime.toString();
-                } else {
-                    globalReconCalibrationDate = "Unknown";
-                }
+                strMonth_Recon = sdfMonthDisplay.format(sdfMonthParse.parse(strMonth_Recon));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            String strCalibrationDate = strDay_Recon + "-" + strMonth_Recon + "-20" + strYear_Recon;
+            SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
+            Calendar calendar = Calendar.getInstance();
+            try {
+                calendar.setTime(Objects.requireNonNull(df.parse(strCalibrationDate)));
+                strCalibrationDate = df.format(calendar.getTime());
+                globalReconCalibrationDate = strCalibrationDate;
                 Log.d("ReconSearchList","Recon Calibration Date = " + globalReconCalibrationDate);
             } catch (ParseException e) {
                 Log.d("ReconSearchList","Unable to parse Recon calibration date!");

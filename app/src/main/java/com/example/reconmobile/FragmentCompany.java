@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import com.example.reconmobile.DatabaseOperations.*;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.textfield.TextInputEditText;
@@ -28,6 +29,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Arrays;
 
 public class FragmentCompany extends Fragment {
 
@@ -101,8 +103,33 @@ public class FragmentCompany extends Fragment {
 
         //Set the Company Defaults to the TextInputEditText boxes
         //How should we best handle the company logo and signature?
-        etCompanyName.setText((String)cursorCompanyDefaults.getString(1));
-        etCompanyDetails.setText((String)cursorCompanyDefaults.getString(2));
+        if(db_company.ReconTableExists("COMPANY",true)) {
+            Log.d("FragmentCompany","Column Names in table COMPANY = " + Arrays.toString(cursorCompanyDefaults.getColumnNames()));
+            if(cursorCompanyDefaults.getCount()==0) {
+                Log.d("FragmentCompany","No data found in table COMPANY!");
+                db_company.resetCompanyData();
+            }
+            if(cursorCompanyDefaults.getColumnIndex("COMPANY_NAME")==1) {
+                if(!cursorCompanyDefaults.isNull(1)) {
+                    etCompanyName.setText(cursorCompanyDefaults.getString(1));
+                } else {
+                    Log.d("FragmentCompany","WARNING! Column COMPANY_NAME is null!");
+                }
+            } else {
+                Log.d("FragmentCompany","WARNING! Column COMPANY_NAME not found!");
+            }
+            if(cursorCompanyDefaults.getColumnIndex("COMPANY_DETAILS")==2) {
+                if(!cursorCompanyDefaults.isNull(2)) {
+                    etCompanyDetails.setText(cursorCompanyDefaults.getString(2));
+                } else {
+                    Log.d("FragmentCompany","WARNING! Column COMPANY_DETAILS is null!");
+                }
+            } else {
+                Log.d("FragmentCompany","WARNING! Column COMPANY_DETAILS not found!");
+            }
+        } else {
+            Log.d("FragmentCompany","WARNING! Table COMPANY not found!");
+        }
 
         //Company Name Listener
         etCompanyName.setOnClickListener(new View.OnClickListener() {
