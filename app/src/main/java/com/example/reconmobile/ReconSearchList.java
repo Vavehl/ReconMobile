@@ -1,6 +1,5 @@
 package com.example.reconmobile;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
@@ -14,7 +13,6 @@ import android.hardware.usb.UsbDeviceConnection;
 import android.hardware.usb.UsbManager;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,21 +27,13 @@ import com.hoho.android.usbserial.driver.UsbSerialDriver;
 import com.hoho.android.usbserial.driver.UsbSerialPort;
 import com.hoho.android.usbserial.driver.UsbSerialProber;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.Locale;
-import java.util.Objects;
 
 import static com.example.reconmobile.Constants.*;
 import static com.example.reconmobile.Globals.*;
-import static com.example.reconmobile.Globals.globalDataSessions;
 import static com.example.reconmobile.SerialSocket.WRITE_WAIT_MILLIS;
-import com.example.reconmobile.ReconFunctions;
 
 public class ReconSearchList extends ListFragment implements ServiceConnection, SerialListener {
 

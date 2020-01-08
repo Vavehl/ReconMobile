@@ -4,7 +4,6 @@ import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -13,7 +12,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Objects;
 
-import static com.example.reconmobile.Constants.cmdCheckNewRecord;
 import static com.example.reconmobile.Constants.newline;
 import static com.example.reconmobile.Globals.connected;
 import static com.example.reconmobile.Globals.globalDataSessions;
