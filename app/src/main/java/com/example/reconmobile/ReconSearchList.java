@@ -43,6 +43,7 @@ import static com.example.reconmobile.Constants.*;
 import static com.example.reconmobile.Globals.*;
 import static com.example.reconmobile.Globals.globalDataSessions;
 import static com.example.reconmobile.SerialSocket.WRITE_WAIT_MILLIS;
+import com.example.reconmobile.ReconFunctions;
 
 public class ReconSearchList extends ListFragment implements ServiceConnection, SerialListener {
 
@@ -380,18 +381,19 @@ public class ReconSearchList extends ListFragment implements ServiceConnection, 
         String[] parsedResponse = null;
         parsedResponse = response.split(",");
         if(parsedResponse.length<1) return;
+        ReconFunctions rfRecon = new ReconFunctions();
         switch(parsedResponse[0]) {
             case "=DV":
-                getSerialAndFirmware(response);
+                rfRecon.getSerialAndFirmware(response, getView());
                 break;
             case "=DP":
-                getDataSessions(response);
+                rfRecon.getDataSessions(response);
                 break;
             case "=DT":
-                SyncDateTime(response);
+                rfRecon.SyncDateTime(response);
                 break;
             case "=RL":
-                getCalibrationFactors(response);
+                rfRecon.getCalibrationFactors(response);
                 break;
             case "=BD":
                 Log.d("ReconSearchList","onSerialRead():: =BD Response from Recon... invalid request?");
@@ -435,177 +437,6 @@ public class ReconSearchList extends ListFragment implements ServiceConnection, 
         Log.d("ReconSearchList","onSerialConnectError() called!");
         Log.d("ReconSearchList", e.toString());
         disconnect();
-    }
-
-    private void getSerialAndFirmware(String response) {
-        boolean boolReconConnected = false;
-        String[] parsedResponse = null;
-        Log.d("ReconSearchList","getSerialAndFirmware() called!");
-        if(connected == ReconConnected.True) {
-            Log.d("ReconSearchList", "getSerialAndFirmware():: LastResponse = " + response);
-            if(response != null) {
-                parsedResponse = response.split(",");
-                if(parsedResponse.length==4) {
-                    if (parsedResponse[0].equals("=DV") && parsedResponse[1].equals("CRM")) {
-                        boolReconConnected = true;
-                    } else {
-                        boolReconConnected = false;
-                    }
-                } else {
-                    boolReconConnected = false;
-                }
-            }
-        } else {
-            Log.d("ReconSearchList", "getSerialAndFirmware():: Not Connected to Recon!");
-        }
-        if(boolReconConnected) {
-            globalReconSerial = parsedResponse[3];
-            globalReconFirmwareRevision = Double.parseDouble(parsedResponse[2]);
-        } else {
-            globalReconSerial = "";
-            globalReconFirmwareRevision = 0;
-        }
-        View view = getView();
-        TextView ReconSerial = view.findViewById(R.id.txtFoundRecon_Serial);
-        TextView ReconFirmware = view.findViewById(R.id.txtFoundRecon_Firmware);
-        ReconSerial.setText("Rad Elec Recon #" + globalReconSerial);
-        ReconFirmware.setText("Firmware v" + globalReconFirmwareRevision);
-    }
-
-    public void getDataSessions(String response) {
-        String[] parsedResponse = null;
-        boolean boolUnexpectedResponse = true;
-        Log.d("ReconSearchList","getDataSessions() called!");
-        if(connected == ReconConnected.True) {
-            Log.d("ReconSearchList", "getDataSessions():: LastResponse = " + response);
-            if(response != null) {
-                parsedResponse = response.split(",");
-                if(parsedResponse.length==4) {
-                    if (parsedResponse[0].equals("=DP")) {
-                        if(!parsedResponse[3].trim().isEmpty()) {
-                            globalDataSessions = parsedResponse[3].trim();
-                            boolUnexpectedResponse = false;
-                            Log.d("ReconSearchList","getDataSessions() Data Sessions on Recon = " + globalDataSessions);
-                        }
-                    }
-                }
-            }
-            if(boolUnexpectedResponse) {
-                Log.d("ReconSearchList","getDataSessions() Unexpected Response from Recon! [" + response + "]");
-            }
-        } else {
-            Log.d("ReconSearchList", "getDataSessions():: Not Connected to Recon!");
-        }
-    }
-
-    public void SyncDateTime(String response) {
-        Log.d("ReconSearchList","SyncDateTime() called!");
-        String[] parsedResponse = null;
-        parsedResponse = response.split(",");
-        if(parsedResponse[0].equals("=DT") && parsedResponse.length==7 && connected==ReconConnected.True) {
-
-            boolean boolSyncSuccessful = false;
-            Date currentDateTime = Calendar.getInstance().getTime();
-            Date reconDateTime = Calendar.getInstance().getTime(); //Temporarily initialize Recon to current datetime.
-            DateFormat.format("yy,MM,dd,HH,mm,ss",currentDateTime);
-            DateFormat.format("yy,MM,dd,HH,mm,ss",reconDateTime);
-            SimpleDateFormat formatReconDateTime = new SimpleDateFormat("yy,MM,dd,HH,mm,ss");
-
-            String strMonth_Phone = (String) DateFormat.format("MM", currentDateTime);
-            String strDay_Phone = (String) DateFormat.format("dd", currentDateTime);
-            String strYear_Phone = (String) DateFormat.format("yy", currentDateTime);
-            String strHour_Phone = (String) DateFormat.format("HH", currentDateTime);
-            String strMinute_Phone = (String) DateFormat.format("mm", currentDateTime);
-            String strSecond_Phone = (String) DateFormat.format("ss", currentDateTime);
-
-            String strYear_Recon = parsedResponse[1];
-            String strMonth_Recon = parsedResponse[2];
-            String strDay_Recon = parsedResponse[3];
-            String strHour_Recon = parsedResponse[4];
-            String strMinute_Recon = parsedResponse[5];
-            String strSecond_Recon = parsedResponse[6];
-            String strReconDateTime = strYear_Recon + "," + strMonth_Recon + "," + strDay_Recon + "," + strHour_Recon + "," + strMinute_Recon + "," + strSecond_Recon;
-            try {
-                reconDateTime = formatReconDateTime.parse(strReconDateTime);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-            Log.d("ReconSearchList","Current DateTime = " + currentDateTime.toString());
-            if (reconDateTime != null) {
-                long diffSeconds = Math.abs((reconDateTime.getTime() - currentDateTime.getTime())/1000);
-                Log.d("ReconSearchList","Recon DateTime = " + reconDateTime.toString());
-                Log.d("ReconSearchList", "Difference between two times = " + diffSeconds + " seconds.");
-                if(diffSeconds>10) {
-                    Log.d("ReconSearchList","Difference between time exceeds threshold of 10 seconds. Issuing :WT command to synchronize Recon with phone...");
-                    String strWriteNewDateTime = ":WT," + strYear_Phone + "," + strMonth_Phone + "," + strDay_Phone + "," + strHour_Phone + ","+ strMinute_Phone + "," + strSecond_Phone;
-                    synchronized(socket) {
-                        send(strWriteNewDateTime);
-                    }
-                }
-            } else {
-                Log.d("ReconSearchList","Unable to parse Recon DateTime!");
-            }
-
-        } else {
-            Log.d("ReconSearchList","Unexpected instrument response in SyncDateTime(). Synchronization not performed!");
-        }
-    }
-
-    public void getCalibrationFactors(String response) {
-        Log.d("ReconSearchList","getCalibrationFactors() called!");
-        Date reconDateTime = Calendar.getInstance().getTime();
-        String[] parsedResponse = null;
-        parsedResponse = response.split(",");
-        if(parsedResponse[0].equals("=RL") && parsedResponse.length==9 && connected==ReconConnected.True) {
-            if(!parsedResponse[1].trim().isEmpty()) {
-                try {
-                    globalReconCF1 = Double.parseDouble(parsedResponse[1].trim())/1000;
-                } catch (NumberFormatException ex) {
-                    Log.d("ReconSearchList","Unable to parse Recon CF1 as a double! Reverting to default CF1...");
-                    globalReconCF1 = 6;
-                }
-                Log.d("ReconSearchList","Recon CF1 = " + globalReconCF1);
-            }
-            if(!parsedResponse[2].trim().isEmpty()) {
-                try {
-                    globalReconCF2 = Double.parseDouble(parsedResponse[2].trim())/1000;
-                } catch (NumberFormatException ex) {
-                    Log.d("ReconSearchList","Unable to parse Recon CF2 as a double! Reverting to default CF2...");
-                    globalReconCF2 = 6;
-                }
-                Log.d("ReconSearchList","Recon CF2 = " + globalReconCF2);
-            }
-
-            String strYear_Recon = parsedResponse[3];
-            String strMonth_Recon = parsedResponse[4];
-            String strDay_Recon = parsedResponse[5];
-            if(strMonth_Recon.length()==1) {
-                strMonth_Recon = "0" + strMonth_Recon;
-            }
-            if(strDay_Recon.length()==1) {
-                strDay_Recon = "0" + strDay_Recon;
-            }
-            SimpleDateFormat sdfMonthParse = new SimpleDateFormat("MM");
-            SimpleDateFormat sdfMonthDisplay = new SimpleDateFormat("MMM");
-            try {
-                strMonth_Recon = sdfMonthDisplay.format(sdfMonthParse.parse(strMonth_Recon));
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-            String strCalibrationDate = strDay_Recon + "-" + strMonth_Recon + "-20" + strYear_Recon;
-            SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
-            Calendar calendar = Calendar.getInstance();
-            try {
-                calendar.setTime(Objects.requireNonNull(df.parse(strCalibrationDate)));
-                strCalibrationDate = df.format(calendar.getTime());
-                globalReconCalibrationDate = strCalibrationDate;
-                Log.d("ReconSearchList","Recon Calibration Date = " + globalReconCalibrationDate);
-            } catch (ParseException e) {
-                Log.d("ReconSearchList","Unable to parse Recon calibration date!");
-                e.printStackTrace();
-            }
-        }
-
     }
 
 }
