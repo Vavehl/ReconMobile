@@ -13,6 +13,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Objects;
 
+import static com.example.reconmobile.Constants.cmdCheckNewRecord;
 import static com.example.reconmobile.Constants.newline;
 import static com.example.reconmobile.Globals.connected;
 import static com.example.reconmobile.Globals.globalDataSessions;
@@ -26,6 +27,29 @@ import static com.example.reconmobile.Globals.service;
 import static com.example.reconmobile.Globals.socket;
 
 public class ReconFunctions {
+
+    public void downloadDataSession(String response) {
+        String[] parsedResponse = null;
+        parsedResponse = response.split(",");
+        if(parsedResponse.length<15) {
+            Log.d("ReconFunctions","downloadDataSession: Session point at null record. Aborting download.");
+            return;
+        } else if(!parsedResponse[0].equals("=DB")) {
+            return;
+        }
+        switch(parsedResponse[2]) {
+            case "H":
+                break;
+            case "S":
+                break;
+            case "I":
+                break;
+            case "E":
+                break;
+            default:
+                break;
+        }
+    }
 
     public void getCalibrationFactors(String response) {
         Log.d("ReconFunctions","getCalibrationFactors() called!");

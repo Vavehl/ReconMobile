@@ -37,6 +37,19 @@ public class DatabaseOperations extends SQLiteOpenHelper {
                 "ANALYZED_BY TEXT, PROTOCOL TEXT, TAMPERING TEXT, WEATHER TEXT, MITIGATION TEXT, COMMENT TEXT, REPORT_TEXT TEXT)";
         db.execSQL(createTable);
 
+        //Create Downloaded Session Metadata Table
+        createTable = "CREATE TABLE SESSION_META (MetaID INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "INSTRUMENT_SERIAL TEXT, SESSION_START_DATETIME TEXT, SESSION_END_DATETIME TEXT, RADON_AVG TEXT, HUMIDITY_AVG TEXT," +
+                "TEMPERATURE_AVG TEXT, PRESSURE_AVG TEXT, TILTS_TOTAL TEXT, CF_1 DOUBLE, CF_2 DOUBLE, CALIBRATION_DATE TEXT," +
+                "INSTRUMENT_LOCATION TEXT, CUSTOMER_INFORMATION TEXT, TEST_SITE_INFORMATION TEXT, DEPLOYED_BY TEXT, RETRIEVED_BY TEXT," +
+                "ANALYZED_BY TEXT, PROTOCOL TEXT, TAMPERING TEXT, WEATHER TEXT, MITIGATION TEXT, COMMENT TEXT, REPORT_TEXT TEXT)";
+        db.execSQL(createTable);
+
+        //Create Downloaded Session Table
+        createTable = "CREATE TABLE SESSION_DATA (SessionID INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "MetaID INTEGER, RECON_RECORD TEXT, FLAG TEXT, DATETIME TEXT, RADON TEXT, TEMPERATURE TEXT, PRESSURE TEXT, TILTS TEXT)";
+        db.execSQL(createTable);
+
         //Default Report Text, to be inserted into a new database.
         String txtReportText;
         txtReportText = "The U.S. Environmental Protection Agency (US EPA) and the Surgeon General strongly recommend that further action be " +
