@@ -214,7 +214,7 @@ public class ReconFunctions {
         }
     }
 
-    private void disconnect() {
+    public void disconnect() {
         Log.d("ReconFunctions","disconnect() called!");
         connected = Globals.ReconConnected.False;
         service.disconnect();
@@ -224,7 +224,7 @@ public class ReconFunctions {
         globalReconFirmwareRevision = 0;
     }
 
-    public void onSerialIoError(Exception e) {
+    private void onSerialIoError(Exception e) {
         Log.d("ReconFunctions","onSerialIoError() called!");
         Log.d("ReconFunctions", e.toString());
         disconnect();

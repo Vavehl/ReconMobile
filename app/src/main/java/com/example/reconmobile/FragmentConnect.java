@@ -64,7 +64,8 @@ public class FragmentConnect extends Fragment {
                         Log.d("FragmentConnect","Disconnect button pressed!");
                         Toast txtOnClick_Disconnect = Toast.makeText(getContext(),"Disconnecting...",Toast.LENGTH_SHORT);
                         txtOnClick_Disconnect.show();
-                        disconnect();
+                        ReconFunctions rfRecon = new ReconFunctions();
+                        rfRecon.disconnect();
                         checkConnectionStatus();
                         break;
                     case False:
@@ -147,16 +148,6 @@ public class FragmentConnect extends Fragment {
                 txtSystemConsole.setVisibility(View.GONE);
                 break;
         }
-    }
-
-    private void disconnect() {
-        Log.d("FragmentConnect","disconnect() called!");
-        connected = ReconConnected.False;
-        service.disconnect();
-        socket.disconnect();
-        socket = null;
-        globalReconSerial = "";
-        globalReconFirmwareRevision = 0;
     }
 
 }

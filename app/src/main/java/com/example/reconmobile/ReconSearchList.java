@@ -401,16 +401,6 @@ public class ReconSearchList extends ListFragment implements ServiceConnection, 
         }
     }
 
-    private void disconnect() {
-        Log.d("ReconSearchList","disconnect() called!");
-        connected = ReconConnected.False;
-        service.disconnect();
-        socket.disconnect();
-        socket = null;
-        globalReconSerial = "";
-        globalReconFirmwareRevision = 0;
-    }
-
     @Override
     public void onServiceConnected(ComponentName name, IBinder binder) {
         Log.d("ReconSearchList","onServiceConnected() called!");
@@ -430,13 +420,15 @@ public class ReconSearchList extends ListFragment implements ServiceConnection, 
     public void onSerialIoError(Exception e) {
         Log.d("ReconSearchList","onSerialIoError() called!");
         Log.d("ReconSearchList", e.toString());
-        disconnect();
+        ReconFunctions rfRecon = new ReconFunctions();
+        rfRecon.disconnect();
     }
 
     public void onSerialConnectError(Exception e) {
         Log.d("ReconSearchList","onSerialConnectError() called!");
         Log.d("ReconSearchList", e.toString());
-        disconnect();
+        ReconFunctions rfRecon = new ReconFunctions();
+        rfRecon.disconnect();
     }
 
 }
