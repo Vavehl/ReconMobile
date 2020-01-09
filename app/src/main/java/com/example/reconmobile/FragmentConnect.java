@@ -82,6 +82,17 @@ public class FragmentConnect extends Fragment {
             }
         });
 
+        btnDownload.setOnClickListener(v -> {
+            if (connected == ReconConnected.True) {
+                Log.d("FragmentConnect", "Download button pressed!");
+                Toast txtOnClick_Disconnect = Toast.makeText(getContext(), "Disconnecting...", Toast.LENGTH_SHORT);
+                txtOnClick_Disconnect.show();
+                ReconFunctions rfRecon = new ReconFunctions();
+            } else {
+                Log.d("FragmentConnect", "Download button pressed, but not connected!?");
+            }
+        });
+
         return view;
     }
 
