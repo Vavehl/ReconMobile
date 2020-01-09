@@ -229,7 +229,7 @@ public class ReconFunctions {
         }
     }
 
-    private void send(String str) {
+    public void send(String str) {
         Log.d("ReconFunctions","send() called!");
         if(connected != Globals.ReconConnected.True) {
             Log.d("ReconFunctions","send() was called, but no Recon is connected!");

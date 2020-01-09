@@ -254,33 +254,16 @@ public class ReconSearchList extends ListFragment implements ServiceConnection, 
                 Log.d("ReconSearchList","Attempting to Connect... [Current Connected State = " + connected + ")");
                 connect(true);
                 synchronized(socket) {
-                    send(cmdReconConfirm);
-                    send(cmdReadProtocol);
-                    send(cmdReadTime);
-                    send(cmdReadCalibrationFactors);
+                    ReconFunctions rfRecon = new ReconFunctions();
+                    rfRecon.send(cmdReconConfirm);
+                    rfRecon.send(cmdReadProtocol);
+                    rfRecon.send(cmdReadTime);
+                    rfRecon.send(cmdReadCalibrationFactors);
                 }
 
             } else if(usbManager.hasPermission(item.device) && connected == ReconConnected.True) {
                 Log.d("ReconSearchList","Already connected to this device... [Current Connected State = " + connected + ")");
             }
-        }
-    }
-
-    private void send(String str) {
-        Log.d("ReconSearchList","send() called!");
-        if(connected != ReconConnected.True) {
-            Toast.makeText(getActivity(), "No Recon Connection!", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        try {
-            socket.wait(50);
-            byte[] data = (str + newline).getBytes();
-            socket.write(data);
-            socket.wait(50);
-            globalLastWrite = str;
-            Log.d("ReconSearchList","Writing " + str + " " + Arrays.toString(data));
-        } catch (Exception e) {
-            onSerialIoError(e);
         }
     }
 
