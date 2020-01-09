@@ -23,6 +23,10 @@ import static com.example.reconmobile.Globals.globalReconFirmwareRevision;
 import static com.example.reconmobile.Globals.globalReconSerial;
 import static com.example.reconmobile.Globals.service;
 import static com.example.reconmobile.Globals.socket;
+import static com.example.reconmobile.Globals.boolRecordHeaderFound;
+import static com.example.reconmobile.Globals.boolRecordTrailerFound;
+import static com.example.reconmobile.Globals.intDataSessionPointer;
+import static com.example.reconmobile.Globals.arrayDataSession;
 
 public class ReconFunctions {
 
@@ -37,12 +41,19 @@ public class ReconFunctions {
         }
         switch(parsedResponse[2]) {
             case "H":
+                boolRecordHeaderFound = true;
                 break;
             case "S":
+                intDataSessionPointer++;
                 break;
             case "I":
+                intDataSessionPointer++;
                 break;
             case "E":
+                intDataSessionPointer++;
+                break;
+            case "Z":
+                boolRecordTrailerFound = true;
                 break;
             default:
                 break;

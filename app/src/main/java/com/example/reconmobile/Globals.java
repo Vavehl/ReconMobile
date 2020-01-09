@@ -21,4 +21,9 @@ class Globals {
     public static String globalLastWrite = "";
     public static String globalLastResponse = "";
 
+    //Data Session Variables
+    public static String[][] arrayDataSession = new String[6143][26];
+    public static Boolean boolRecordHeaderFound = false;
+    public static Boolean boolRecordTrailerFound = false;
+    public static int intDataSessionPointer= 0;
 }

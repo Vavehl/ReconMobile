@@ -47,7 +47,8 @@ public class DatabaseOperations extends SQLiteOpenHelper {
 
         //Create Downloaded Session Table
         createTable = "CREATE TABLE SESSION_DATA (SessionID INTEGER PRIMARY KEY AUTOINCREMENT," +
-                "MetaID INTEGER, RECON_RECORD TEXT, FLAG TEXT, DATETIME TEXT, RADON TEXT, TEMPERATURE TEXT, PRESSURE TEXT, TILTS TEXT)";
+                "MetaID INTEGER, RECON_RECORD TEXT, FLAG TEXT, DATETIME TEXT, RADON TEXT, TEMPERATURE TEXT, PRESSURE TEXT, TILTS TEXT," +
+                "CONSTRAINT [FK_MetaID] FOREIGN KEY (MetaID) REFERENCES SESSION_META(MetaID))";
         db.execSQL(createTable);
 
         //Default Report Text, to be inserted into a new database.
@@ -69,9 +70,11 @@ public class DatabaseOperations extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int i, int i1) {
-        db.execSQL("DROP TABLE IF EXISTS SETTINGS");
         db.execSQL("DROP TABLE IF EXISTS COMPANY");
         db.execSQL("DROP TABLE IF EXISTS REPORT_DEFAULTS");
+        db.execSQL("DROP TABLE IF EXISTS SESSION_META");
+        db.execSQL("DROP TABLE IF EXISTS SESSION_DATA");
+        db.execSQL("DROP TABLE IF EXISTS SETTINGS");
         onCreate(db);
     }
 
@@ -107,6 +110,11 @@ public class DatabaseOperations extends SQLiteOpenHelper {
     Cursor getCompanyData() {
         SQLiteDatabase db = this.getWritableDatabase();
         return db.rawQuery("SELECT * FROM COMPANY",null);
+    }
+
+    Cursor getMetaData() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        return db.rawQuery("SELECT * FROM SESSION_META", null);
     }
 
     Cursor getSettingsData() {
