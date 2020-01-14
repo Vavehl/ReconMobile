@@ -12,6 +12,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Objects;
 
+import static com.example.reconmobile.Constants.cmdCheckNewRecord;
+import static com.example.reconmobile.Constants.cmdReadNextRecord;
 import static com.example.reconmobile.Constants.newline;
 import static com.example.reconmobile.Globals.connected;
 import static com.example.reconmobile.Globals.globalDataSessions;
@@ -30,6 +32,15 @@ import static com.example.reconmobile.Globals.arrayDataSession;
 
 public class ReconFunctions {
 
+    public void checkNewRecord() {
+        Log.d("ReconFunctions","checkNewRecord called!");
+        boolRecordHeaderFound = false;
+        boolRecordTrailerFound = false;
+        arrayDataSession = null;
+        Log.d("ReconFunctions","boolRecordHeaderFound=" + boolRecordHeaderFound + " / boolRecordTrailerFound=" + boolRecordTrailerFound);
+        send(cmdCheckNewRecord);
+    }
+
     public void downloadDataSession(String response) {
         String[] parsedResponse = null;
         parsedResponse = response.split(",");
@@ -41,20 +52,49 @@ public class ReconFunctions {
         }
         switch(parsedResponse[2]) {
             case "H":
-                boolRecordHeaderFound = true;
-                break;
+                if(boolRecordHeaderFound) {
+                    Log.d("ReconFunctions","WARNING! MULTIPLE HEADER FILES ENCOUNTERED -- ABORTING DOWNLOAD!");
+                    break;
+                } else {
+                    boolRecordHeaderFound = true;
+                    send(cmdReadNextRecord);
+                    break;
+                }
             case "S":
-                intDataSessionPointer++;
-                break;
+                if(boolRecordHeaderFound) {
+                    intDataSessionPointer++;
+                    send(cmdReadNextRecord);
+                    break;
+                } else {
+                    Log.d("ReconFunctions","WARNING! START RECORD FOUND, BUT HEADER FILE NOT FOUND -- ABORTING DOWNLOAD!");
+                    break;
+                }
             case "I":
-                intDataSessionPointer++;
-                break;
+                if(boolRecordHeaderFound) {
+                    intDataSessionPointer++;
+                    send(cmdReadNextRecord);
+                    break;
+                } else {
+                    Log.d("ReconFunctions","WARNING! INTERIM RECORD FOUND, BUT HEADER FILE NOT FOUND -- ABORTING DOWNLOAD!");
+                    break;
+                }
             case "E":
-                intDataSessionPointer++;
-                break;
+                if(boolRecordHeaderFound) {
+                    intDataSessionPointer++;
+                    send(cmdReadNextRecord);
+                    break;
+                } else {
+                    Log.d("ReconFunctions","WARNING! END RECORD FOUND, BUT HEADER FILE NOT FOUND -- ABORTING DOWNLOAD!");
+                    break;
+                }
             case "Z":
                 boolRecordTrailerFound = true;
-                break;
+                if(boolRecordHeaderFound) {
+                    Log.d("ReconFunctions","Record Trailer found! Data session downloaded.");
+                    break;
+                } else {
+                    Log.d("ReconFunctions","WARNING! RECORD TRAILER FOUND, BUT NO RECCORD HEADER FOUND.");
+                }
             default:
                 break;
         }

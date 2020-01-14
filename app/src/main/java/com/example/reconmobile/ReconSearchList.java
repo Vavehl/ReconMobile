@@ -356,8 +356,11 @@ public class ReconSearchList extends ListFragment implements ServiceConnection, 
         if(parsedResponse.length<1) return;
         ReconFunctions rfRecon = new ReconFunctions();
         switch(parsedResponse[0]) {
+            case "=DB":
+                if(!boolRecordTrailerFound) rfRecon.downloadDataSession(response);
+                break;
             case "=DV":
-                rfRecon.getSerialAndFirmware(response, getView());
+                rfRecon.getSerialAndFirmware(response,getView());
                 break;
             case "=DP":
                 rfRecon.getDataSessions(response);
@@ -369,7 +372,7 @@ public class ReconSearchList extends ListFragment implements ServiceConnection, 
                 rfRecon.getCalibrationFactors(response);
                 break;
             case "=BD":
-                Log.d("ReconSearchList","onSerialRead():: =BD Response from Recon... invalid request?");
+                Log.d("ReconFunctions","onSerialRead():: =BD Response from Recon... invalid request?");
                 break;
         }
     }
