@@ -253,13 +253,11 @@ public class ReconSearchList extends ListFragment implements ServiceConnection, 
             if(usbManager.hasPermission(item.device) && connected != ReconConnected.True) {
                 Log.d("ReconSearchList","Attempting to Connect... [Current Connected State = " + connected + ")");
                 connect(true);
-                synchronized(socket) {
-                    ReconFunctions rfRecon = new ReconFunctions();
-                    rfRecon.send(cmdReconConfirm);
-                    rfRecon.send(cmdReadProtocol);
-                    rfRecon.send(cmdReadTime);
-                    rfRecon.send(cmdReadCalibrationFactors);
-                }
+                ReconFunctions rfRecon = new ReconFunctions();
+                rfRecon.send(cmdReconConfirm);
+                rfRecon.send(cmdReadProtocol);
+                rfRecon.send(cmdReadTime);
+                rfRecon.send(cmdReadCalibrationFactors);
 
             } else if(usbManager.hasPermission(item.device) && connected == ReconConnected.True) {
                 Log.d("ReconSearchList","Already connected to this device... [Current Connected State = " + connected + ")");

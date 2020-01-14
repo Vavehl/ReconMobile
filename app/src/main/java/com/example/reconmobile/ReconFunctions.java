@@ -276,12 +276,14 @@ public class ReconFunctions {
             return;
         }
         try {
-            socket.wait(50);
-            byte[] data = (str + newline).getBytes();
-            socket.write(data);
-            socket.wait(50);
-            globalLastWrite = str;
-            Log.d("ReconFunctions","Writing " + str + " " + Arrays.toString(data));
+            synchronized(socket) {
+                socket.wait(50);
+                byte[] data = (str + newline).getBytes();
+                socket.write(data);
+                socket.wait(50);
+                globalLastWrite = str;
+                Log.d("ReconFunctions", "Writing " + str + " " + Arrays.toString(data));
+            }
         } catch (Exception e) {
             onSerialIoError(e);
         }

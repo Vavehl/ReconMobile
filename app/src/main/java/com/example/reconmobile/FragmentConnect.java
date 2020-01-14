@@ -88,6 +88,7 @@ public class FragmentConnect extends Fragment {
                 Toast txtOnClick_Disconnect = Toast.makeText(getContext(), "Disconnecting...", Toast.LENGTH_SHORT);
                 txtOnClick_Disconnect.show();
                 ReconFunctions rfRecon = new ReconFunctions();
+                rfRecon.checkNewRecord();
             } else {
                 Log.d("FragmentConnect", "Download button pressed, but not connected!?");
             }
