@@ -78,9 +78,11 @@ public class SerialService extends Service implements SerialListener {
      * Api
      */
     public void connect(SerialListener listener, String notificationMsg) {
+        Log.d("SerialService","connect() called!");
         this.listener = listener;
         connected = true;
         this.notificationMsg = notificationMsg;
+        Log.d("SerialService","listener = " + listener.toString());
     }
 
     public void disconnect() {
@@ -121,12 +123,14 @@ public class SerialService extends Service implements SerialListener {
     }
 
     public void detach() {
+        Log.d("SerialService","detach() called!");
         if(connected)
             createNotification();
         // items already in event queue (posted before detach() to mainLooper) will end up in queue1
         // items occurring later, will be moved directly to queue2
         // detach() and mainLooper.post run in the main thread, so all items are caught
         listener = null;
+        Log.d("SerialService","listener = null");
     }
 
     private void createNotification() {

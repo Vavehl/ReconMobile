@@ -1,6 +1,18 @@
 package com.example.reconmobile;
 
+import android.app.Activity;
+import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.ServiceConnection;
+import android.hardware.usb.UsbDevice;
+import android.hardware.usb.UsbDeviceConnection;
+import android.hardware.usb.UsbManager;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,9 +26,16 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import static com.example.reconmobile.Globals.*;
+import com.hoho.android.usbserial.driver.UsbSerialDriver;
+import com.hoho.android.usbserial.driver.UsbSerialPort;
+import com.hoho.android.usbserial.driver.UsbSerialProber;
 
-public class FragmentConnect extends Fragment {
+import static com.example.reconmobile.Constants.INTENT_ACTION_GRANT_USB;
+import static com.example.reconmobile.Constants.baudRate;
+import static com.example.reconmobile.Globals.*;
+import static com.example.reconmobile.SerialSocket.WRITE_WAIT_MILLIS;
+
+public class FragmentConnect extends Fragment implements ServiceConnection, SerialListener {
 
     Button btnConnect;
     Button btnDownload;
@@ -25,7 +44,22 @@ public class FragmentConnect extends Fragment {
     TextView txtSystemConsole;
     Space spaceConnect_1;
 
+    private BroadcastReceiver broadcastReceiver;
+    private boolean initialStart = true;
+
     public FragmentConnect() {
+        Log.d("FragmentConnect","FragmentConnect() called!");
+        broadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                Log.d("FragmentConnect","broadcastReceiver.onReceive() called!");
+                if(intent.getAction().equals(INTENT_ACTION_GRANT_USB)) {
+                    Log.d("FragmentConnect","Permission Granted! Attempting to call connect()...");
+                    Boolean granted = intent.getBooleanExtra(UsbManager.EXTRA_PERMISSION_GRANTED, false);
+                    connect(granted);
+                }
+            }
+        };
     }
 
     @Nullable
@@ -85,8 +119,10 @@ public class FragmentConnect extends Fragment {
         btnDownload.setOnClickListener(v -> {
             if (connected == ReconConnected.True) {
                 Log.d("FragmentConnect", "Download button pressed!");
-                Toast txtOnClick_Disconnect = Toast.makeText(getContext(), "Disconnecting...", Toast.LENGTH_SHORT);
-                txtOnClick_Disconnect.show();
+                if(service != null)
+                    service.attach(this);
+                else
+                    getActivity().startService(new Intent(getActivity(), SerialService.class)); // prevents service destroy on unbind from recreated activity caused by orientation change
                 ReconFunctions rfRecon = new ReconFunctions();
                 rfRecon.checkNewRecord();
             } else {
@@ -113,17 +149,59 @@ public class FragmentConnect extends Fragment {
     public void onStart() {
         Log.d("FragmentConnect", "onStart() called!");
         super.onStart();
+        if(service != null)
+            service.attach(this);
+        else
+            getActivity().startService(new Intent(getActivity(), SerialService.class)); // prevents service destroy on unbind from recreated activity caused by orientation change
+    }
+
+    @Override
+    public void onStop() {
+        Log.d("FragmentConnect","onStop() called!");
+        if(service != null && !getActivity().isChangingConfigurations())
+            service.detach();
+        super.onStop();
     }
 
     public void onPause() {
         Log.d("FragmentConnect", "onPause() called!");
+        getActivity().unregisterReceiver(broadcastReceiver);
         super.onPause();
     }
 
     public void onResume() {
         Log.d("FragmentConnect", "onResume() called!");
         super.onResume();
+        getActivity().registerReceiver(broadcastReceiver, new IntentFilter(INTENT_ACTION_GRANT_USB));
+        Log.d("FragmentConnect", "onResume():: initialStart = " + initialStart);
+        if(initialStart && service !=null) {
+            Log.d("FragmentConnect", "onResume() :: initialStart = true && service != null");
+            initialStart = false;
+            getActivity().runOnUiThread(this::connect);
+        }
         checkConnectionStatus(); //This is needed to retain button configuration, system console, etc. when the screen orientation changes.
+    }
+
+    @SuppressWarnings("deprecation") // onAttach(context) was added with API 23. onAttach(activity) works for all API versions
+    @Override
+    public void onAttach(Activity activity) {
+        Log.d("FragmentConnect","onAttach() called!");
+        super.onAttach(activity);
+        getActivity().bindService(new Intent(getActivity(), SerialService.class), this, Context.BIND_AUTO_CREATE);
+    }
+
+    @Override
+    public void onDetach() {
+        Log.d("FragmentConnect","onDetach() called!");
+        try { getActivity().unbindService(this); } catch(Exception ignored) {}
+        super.onDetach();
+    }
+
+    @Override
+    public void onDestroy() {
+        Log.d("FragmentConnect","onDestroy() called!");
+        getActivity().stopService(new Intent(getActivity(), SerialService.class));
+        super.onDestroy();
     }
 
     public void checkConnectionStatus() {
@@ -160,6 +238,145 @@ public class FragmentConnect extends Fragment {
                 txtSystemConsole.setVisibility(View.GONE);
                 break;
         }
+    }
+
+    public void onServiceConnected(ComponentName name, IBinder binder) {
+        Log.d("FragmentConnect","onServiceConnected() called!");
+        service = ((SerialService.SerialBinder) binder).getService();
+        if(initialStart && isResumed()) {
+            initialStart = false;
+            getActivity().runOnUiThread(this::connect);
+        }
+    }
+
+    @Override
+    public void onServiceDisconnected(ComponentName name) {
+        Log.d("FragmentConnect","onServiceDisconnected() called!");
+        service = null;
+    }
+
+    private void connect() {
+        connect(null);
+    }
+
+    private void connect(Boolean permissionGranted) {
+        Log.d("FragmentConnect","connect(" + permissionGranted + ") called!");
+        UsbDevice device = null;
+        UsbManager usbManager = (UsbManager) getActivity().getSystemService(Context.USB_SERVICE);
+        for(UsbDevice v : usbManager.getDeviceList().values())
+            if (v.getDeviceId() == deviceId) {
+                device = v;
+                Log.d("FragmentConnect","connect(): Scanning Connected Devices = " + v.toString());
+            }
+        if(device == null) {
+            Log.d("FragmentConnect","connect(): Connection Failed / Recon Not Found or No Recon Selected!");
+            return;
+        }
+        Log.d("FragmentConnect","Device = " + device.toString());
+        UsbSerialDriver driver = UsbSerialProber.getDefaultProber().probeDevice(device);
+        if(driver == null) {
+            driver = CustomProber.getCustomProber().probeDevice(device);
+        }
+        if(driver == null) {
+            Log.d("FragmentConnect","connect(): Connection Failed / No Recon Driver Found!");
+            return;
+        }
+        if(driver.getPorts().size() < portNum) {
+            Log.d("FragmentConnect","connect(): Connection Failed / No Free Ports!");
+            return;
+        }
+        UsbSerialPort usbSerialPort = driver.getPorts().get(portNum);
+        UsbDeviceConnection usbConnection = usbManager.openDevice(driver.getDevice());
+        if(usbConnection == null && permissionGranted == null && !usbManager.hasPermission(driver.getDevice())) {
+            Log.d("FragmentConnect", "connect(): No Permission Granted -- attempting to request!");
+            PendingIntent usbPermissionIntent = PendingIntent.getBroadcast(getActivity(), 0, new Intent(INTENT_ACTION_GRANT_USB), 0);
+            usbManager.requestPermission(driver.getDevice(), usbPermissionIntent);
+            return;
+        }
+        if(usbConnection == null) {
+            if (!usbManager.hasPermission(driver.getDevice())) {
+                Log.d("FragmentConnect", "connect(): Connection Failed / Permission Denied!");
+            } else {
+                Log.d("FragmentConnect", "connect(): Connection Failed / Open Failed!");
+            }
+            return;
+        }
+
+        connected = ReconConnected.Pending;
+        Log.d("FragmentConnect","connect(): Connection Pending...");
+        try {
+            Log.d("FragmentConnect","connect(): socket = new SerialSocket();");
+            socket = new SerialSocket();
+            Log.d("FragmentConnect","connect(): service.connect(this, Connected);");
+            service.connect((SerialListener) this, "Connected");
+            Log.d("FragmentConnect","connect(): socket.connect(getContext(), service, usbConnection, usbSerialPort, baudRate);");
+            Log.d("FragmentConnect","connect(): usbSerialPort = " + usbSerialPort.toString() + " / baudRate = " + baudRate);
+            socket.connect(getContext(), service, usbConnection, usbSerialPort, baudRate);
+            // usb connect is not asynchronous. connect-success and connect-error are returned immediately from socket.connect
+            // for consistency to bluetooth/bluetooth-LE app use same SerialListener and SerialService classes
+            onSerialConnect();
+            Log.d("FragmentConnect", "WRITE_WAIT_MILLIS = " + WRITE_WAIT_MILLIS);
+        } catch (Exception e) {
+            onSerialConnectError(e);
+            Log.d("FragmentConnect","connect(): Exception!");
+        }
+    }
+
+    public void onSerialConnect() {
+        Log.d("FragmentConnect","onSerialConnect() called!");
+        connected = ReconConnected.True;
+        Log.d("FragmentConnect","onSerialConnect(): Connected!");
+    }
+
+    public void onSerialConnectError(Exception e) {
+        Log.d("FragmentConnect","onSerialConnectError() called!");
+        Log.d("FragmentConnect", e.toString());
+        ReconFunctions rfRecon = new ReconFunctions();
+        rfRecon.disconnect();
+    }
+
+    public void onSerialRead(byte[] data) {
+        Log.d("FragmentConnect","onSerialRead() called!");
+        receive(data);
+        String response = new String(data);
+        globalLastResponse = response;
+        Log.d("FragmentConnect","Receiving " + response);
+        String[] parsedResponse = null;
+        parsedResponse = response.split(",");
+        if(parsedResponse.length<1) return;
+        ReconFunctions rfRecon = new ReconFunctions();
+        switch(parsedResponse[0]) {
+            case "=DB":
+                if(!boolRecordTrailerFound) rfRecon.downloadDataSession(response);
+                break;
+            case "=DV":
+                rfRecon.getSerialAndFirmware(response,getView());
+                break;
+            case "=DP":
+                rfRecon.getDataSessions(response);
+                break;
+            case "=DT":
+                rfRecon.SyncDateTime(response);
+                break;
+            case "=RL":
+                rfRecon.getCalibrationFactors(response);
+                break;
+            case "=BD":
+                Log.d("ReconFunctions","onSerialRead():: =BD Response from Recon... invalid request?");
+                break;
+        }
+    }
+
+    public void onSerialIoError(Exception e) {
+        Log.d("FragmentConnect","onSerialIoError() called!");
+        Log.d("FragmentConnect", e.toString());
+        ReconFunctions rfRecon = new ReconFunctions();
+        rfRecon.disconnect();
+    }
+
+    private String receive(byte[] data) {
+        Log.d("FragmentConnect","receive() called!");
+        return (new String(data));
     }
 
 }
