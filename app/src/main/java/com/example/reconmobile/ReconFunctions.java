@@ -32,8 +32,15 @@ import static com.example.reconmobile.Globals.arrayDataSession;
 
 public class ReconFunctions {
 
+    ConsoleCallback consoleCallback = null;
+
+    public ReconFunctions(ConsoleCallback callback) {
+        this.consoleCallback = callback;
+    }
+
     public void checkNewRecord() {
-        Log.d("ReconFunctions","checkNewRecord called!");
+        Log.d("ReconFunctions","checkNewRecord() called!");
+        intDataSessionPointer = 0;
         boolRecordHeaderFound = false;
         boolRecordTrailerFound = false;
         arrayDataSession = null;
@@ -42,6 +49,8 @@ public class ReconFunctions {
     }
 
     public void downloadDataSession(String response) {
+        Log.d("ReconFunctions","downloadDataSession() called!");
+        String strSystemConsole = "System Console";
         String[] parsedResponse = null;
         parsedResponse = response.split(",");
         if(parsedResponse.length<15) {
@@ -60,9 +69,20 @@ public class ReconFunctions {
                     send(cmdReadNextRecord);
                     break;
                 }
+            case "W":
+                if(boolRecordHeaderFound) {
+                    intDataSessionPointer++;
+                    strSystemConsole = "Downloading Record #" + intDataSessionPointer;
+                    send(cmdReadNextRecord);
+                    break;
+                } else {
+                    Log.d("ReconFunctions","WARNING! WAIT RECORD FOUND, BUT HEADER FILE NOT FOUND -- ABORTING DOWNLOAD!");
+                    break;
+                }
             case "S":
                 if(boolRecordHeaderFound) {
                     intDataSessionPointer++;
+                    strSystemConsole = "Downloading Record #" + intDataSessionPointer;
                     send(cmdReadNextRecord);
                     break;
                 } else {
@@ -72,6 +92,7 @@ public class ReconFunctions {
             case "I":
                 if(boolRecordHeaderFound) {
                     intDataSessionPointer++;
+                    strSystemConsole = "Downloading Record #" + intDataSessionPointer;
                     send(cmdReadNextRecord);
                     break;
                 } else {
@@ -81,6 +102,7 @@ public class ReconFunctions {
             case "E":
                 if(boolRecordHeaderFound) {
                     intDataSessionPointer++;
+                    strSystemConsole = "Downloading Record #" + intDataSessionPointer;
                     send(cmdReadNextRecord);
                     break;
                 } else {
@@ -91,12 +113,16 @@ public class ReconFunctions {
                 boolRecordTrailerFound = true;
                 if(boolRecordHeaderFound) {
                     Log.d("ReconFunctions","Record Trailer found! Data session downloaded.");
+                    strSystemConsole = "Download Success!";
                     break;
                 } else {
                     Log.d("ReconFunctions","WARNING! RECORD TRAILER FOUND, BUT NO RECCORD HEADER FOUND.");
                 }
             default:
                 break;
+        }
+        if(consoleCallback != null) {
+            consoleCallback.updateSystemConsole(strSystemConsole);
         }
     }
 

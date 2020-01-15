@@ -35,7 +35,7 @@ import static com.example.reconmobile.Constants.baudRate;
 import static com.example.reconmobile.Globals.*;
 import static com.example.reconmobile.SerialSocket.WRITE_WAIT_MILLIS;
 
-public class FragmentConnect extends Fragment implements ServiceConnection, SerialListener {
+public class FragmentConnect extends Fragment implements ConsoleCallback, ServiceConnection, SerialListener {
 
     Button btnConnect;
     Button btnDownload;
@@ -98,7 +98,7 @@ public class FragmentConnect extends Fragment implements ServiceConnection, Seri
                         Log.d("FragmentConnect","Disconnect button pressed!");
                         Toast txtOnClick_Disconnect = Toast.makeText(getContext(),"Disconnecting...",Toast.LENGTH_SHORT);
                         txtOnClick_Disconnect.show();
-                        ReconFunctions rfRecon = new ReconFunctions();
+                        ReconFunctions rfRecon = new ReconFunctions(null);
                         rfRecon.disconnect();
                         checkConnectionStatus();
                         break;
@@ -123,7 +123,7 @@ public class FragmentConnect extends Fragment implements ServiceConnection, Seri
                     service.attach(this);
                 else
                     getActivity().startService(new Intent(getActivity(), SerialService.class)); // prevents service destroy on unbind from recreated activity caused by orientation change
-                ReconFunctions rfRecon = new ReconFunctions();
+                ReconFunctions rfRecon = new ReconFunctions(null);
                 rfRecon.checkNewRecord();
             } else {
                 Log.d("FragmentConnect", "Download button pressed, but not connected!?");
@@ -131,6 +131,11 @@ public class FragmentConnect extends Fragment implements ServiceConnection, Seri
         });
 
         return view;
+    }
+
+    @Override
+    public void updateSystemConsole(String strConsole) {
+        txtSystemConsole.setText(strConsole);
     }
 
     //Show Device Search popup
@@ -331,7 +336,7 @@ public class FragmentConnect extends Fragment implements ServiceConnection, Seri
     public void onSerialConnectError(Exception e) {
         Log.d("FragmentConnect","onSerialConnectError() called!");
         Log.d("FragmentConnect", e.toString());
-        ReconFunctions rfRecon = new ReconFunctions();
+        ReconFunctions rfRecon = new ReconFunctions(null);
         rfRecon.disconnect();
     }
 
@@ -344,7 +349,7 @@ public class FragmentConnect extends Fragment implements ServiceConnection, Seri
         String[] parsedResponse = null;
         parsedResponse = response.split(",");
         if(parsedResponse.length<1) return;
-        ReconFunctions rfRecon = new ReconFunctions();
+        ReconFunctions rfRecon = new ReconFunctions(null);
         switch(parsedResponse[0]) {
             case "=DB":
                 if(!boolRecordTrailerFound) rfRecon.downloadDataSession(response);
@@ -370,7 +375,7 @@ public class FragmentConnect extends Fragment implements ServiceConnection, Seri
     public void onSerialIoError(Exception e) {
         Log.d("FragmentConnect","onSerialIoError() called!");
         Log.d("FragmentConnect", e.toString());
-        ReconFunctions rfRecon = new ReconFunctions();
+        ReconFunctions rfRecon = new ReconFunctions(null);
         rfRecon.disconnect();
     }
 

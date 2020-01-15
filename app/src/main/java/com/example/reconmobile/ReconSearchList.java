@@ -253,7 +253,7 @@ public class ReconSearchList extends ListFragment implements ServiceConnection, 
             if(usbManager.hasPermission(item.device) && connected != ReconConnected.True) {
                 Log.d("ReconSearchList","Attempting to Connect... [Current Connected State = " + connected + ")");
                 connect(true);
-                ReconFunctions rfRecon = new ReconFunctions();
+                ReconFunctions rfRecon = new ReconFunctions(null);
                 rfRecon.send(cmdReconConfirm);
                 rfRecon.send(cmdReadProtocol);
                 rfRecon.send(cmdReadTime);
@@ -352,7 +352,7 @@ public class ReconSearchList extends ListFragment implements ServiceConnection, 
         String[] parsedResponse = null;
         parsedResponse = response.split(",");
         if(parsedResponse.length<1) return;
-        ReconFunctions rfRecon = new ReconFunctions();
+        ReconFunctions rfRecon = new ReconFunctions(null);
         switch(parsedResponse[0]) {
             case "=DB":
                 if(!boolRecordTrailerFound) rfRecon.downloadDataSession(response);
@@ -394,14 +394,14 @@ public class ReconSearchList extends ListFragment implements ServiceConnection, 
     public void onSerialIoError(Exception e) {
         Log.d("ReconSearchList","onSerialIoError() called!");
         Log.d("ReconSearchList", e.toString());
-        ReconFunctions rfRecon = new ReconFunctions();
+        ReconFunctions rfRecon = new ReconFunctions(null);
         rfRecon.disconnect();
     }
 
     public void onSerialConnectError(Exception e) {
         Log.d("ReconSearchList","onSerialConnectError() called!");
         Log.d("ReconSearchList", e.toString());
-        ReconFunctions rfRecon = new ReconFunctions();
+        ReconFunctions rfRecon = new ReconFunctions(null);
         rfRecon.disconnect();
     }
 
