@@ -349,7 +349,9 @@ public class FragmentConnect extends Fragment implements ConsoleCallback, Servic
         String[] parsedResponse = null;
         parsedResponse = response.split(",");
         if(parsedResponse.length<1) return;
-        ReconFunctions rfRecon = new ReconFunctions(null);
+        ConsoleCallback callback;
+        callback = this;
+        ReconFunctions rfRecon = new ReconFunctions(this);
         switch(parsedResponse[0]) {
             case "=DB":
                 if(!boolRecordTrailerFound) rfRecon.downloadDataSession(response);
