@@ -24,12 +24,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import static com.example.reconmobile.Constants.version_build;
+import static com.example.reconmobile.Constants.version_date;
+
 public class MainActivity extends AppCompatActivity
         implements  FragmentManager.OnBackStackChangedListener,
                     FragmentSearch.OnFragmentInteractionListener {
-
-    public static String version_build = "v0.3.1";
-    public static String version_date = "19 Dec 2019";
 
     DatabaseOperations db;
 
