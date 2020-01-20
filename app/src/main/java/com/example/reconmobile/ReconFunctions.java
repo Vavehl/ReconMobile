@@ -43,7 +43,7 @@ public class ReconFunctions {
         intDataSessionPointer = 0;
         boolRecordHeaderFound = false;
         boolRecordTrailerFound = false;
-        arrayDataSession = null;
+        arrayDataSession.clear();
         Log.d("ReconFunctions","boolRecordHeaderFound=" + boolRecordHeaderFound + " / boolRecordTrailerFound=" + boolRecordTrailerFound);
         send(cmdCheckNewRecord);
     }
@@ -113,6 +113,7 @@ public class ReconFunctions {
                 boolRecordTrailerFound = true;
                 if(boolRecordHeaderFound) {
                     Log.d("ReconFunctions","Record Trailer found! Data session downloaded.");
+                    Log.d("ReconFunctions","Record Length (intDataSessionPointer) = " + intDataSessionPointer);
                     strSystemConsole = "Download Success!";
                     break;
                 } else {
