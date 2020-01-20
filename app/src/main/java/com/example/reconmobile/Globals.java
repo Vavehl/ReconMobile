@@ -1,5 +1,7 @@
 package com.example.reconmobile;
 
+import java.util.ArrayList;
+
 class Globals {
 
     //Recon Globals
@@ -22,7 +24,7 @@ class Globals {
     public static String globalLastResponse = "";
 
     //Data Session Variables
-    public static String[][] arrayDataSession = new String[6143][26];
+    public static ArrayList<String> arrayDataSession = new ArrayList<>();
     public static Boolean boolRecordHeaderFound = false;
     public static Boolean boolRecordTrailerFound = false;
     public static int intDataSessionPointer= 0;
