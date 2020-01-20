@@ -3,8 +3,8 @@ package com.example.reconmobile;
 class Constants {
 
     //Version information
-    public static String version_build = "v0.3.1";
-    public static String version_date = "19 Dec 2019";
+    public static String version_build = "v0.4.0";
+    public static String version_date = "20 Jan 2020";
 
     //Recon commands
     public static final String cmdReconConfirm = ":RV";
