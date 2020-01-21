@@ -270,9 +270,4 @@ public class MainActivity extends AppCompatActivity
         msgSave.show();
     }
 
-    @Override
-    public void onFragmentInteraction(Uri uri) {
-        Log.d("MainActivity","onFragmentInteraction() called!");
-    }
-
 }

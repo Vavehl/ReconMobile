@@ -37,12 +37,12 @@ import static com.example.reconmobile.SerialSocket.WRITE_WAIT_MILLIS;
 
 public class FragmentConnect extends Fragment implements ConsoleCallback, ServiceConnection, SerialListener {
 
-    Button btnConnect;
-    Button btnDownload;
-    Button btnClear;
-    TextView txtReconSerial;
-    TextView txtSystemConsole;
-    Space spaceConnect_1;
+    private Button btnConnect;
+    private Button btnDownload;
+    private Button btnClear;
+    private TextView txtReconSerial;
+    private TextView txtSystemConsole;
+    private Space spaceConnect_1;
 
     private BroadcastReceiver broadcastReceiver;
     private boolean initialStart = true;
@@ -139,7 +139,7 @@ public class FragmentConnect extends Fragment implements ConsoleCallback, Servic
     }
 
     //Show Device Search popup
-    protected void showSearchList() {
+    private void showSearchList() {
         Log.d("FragmentConnect", "showSearchList() called!");
         FragmentSearch dialogSearch = new FragmentSearch();
         dialogSearch.setRetainInstance(true);
@@ -349,8 +349,6 @@ public class FragmentConnect extends Fragment implements ConsoleCallback, Servic
         String[] parsedResponse = null;
         parsedResponse = response.split(",");
         if(parsedResponse.length<1) return;
-        ConsoleCallback callback;
-        callback = this;
         ReconFunctions rfRecon = new ReconFunctions(this);
         switch(parsedResponse[0]) {
             case "=DB":
