@@ -36,7 +36,6 @@ import static com.radelec.reconmobile.SerialSocket.WRITE_WAIT_MILLIS;
 
 public class ReconSearchList extends ListFragment implements ServiceConnection, SerialListener {
 
-    private boolean initialStart = true;
     private BroadcastReceiver broadcastReceiver;
 
     class ListItem {

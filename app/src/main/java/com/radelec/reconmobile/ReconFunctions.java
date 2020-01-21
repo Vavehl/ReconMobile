@@ -15,20 +15,7 @@ import java.util.Objects;
 import static com.radelec.reconmobile.Constants.cmdCheckNewRecord;
 import static com.radelec.reconmobile.Constants.cmdReadNextRecord;
 import static com.radelec.reconmobile.Constants.newline;
-import static com.radelec.reconmobile.Globals.connected;
-import static com.radelec.reconmobile.Globals.globalDataSessions;
-import static com.radelec.reconmobile.Globals.globalLastWrite;
-import static com.radelec.reconmobile.Globals.globalReconCF1;
-import static com.radelec.reconmobile.Globals.globalReconCF2;
-import static com.radelec.reconmobile.Globals.globalReconCalibrationDate;
-import static com.radelec.reconmobile.Globals.globalReconFirmwareRevision;
-import static com.radelec.reconmobile.Globals.globalReconSerial;
-import static com.radelec.reconmobile.Globals.service;
-import static com.radelec.reconmobile.Globals.socket;
-import static com.radelec.reconmobile.Globals.boolRecordHeaderFound;
-import static com.radelec.reconmobile.Globals.boolRecordTrailerFound;
-import static com.radelec.reconmobile.Globals.intDataSessionPointer;
-import static com.radelec.reconmobile.Globals.arrayDataSession;
+import static com.radelec.reconmobile.Globals.*;
 
 class ReconFunctions {
 
@@ -317,10 +304,12 @@ class ReconFunctions {
         connected = Globals.ReconConnected.False;
         service.disconnect();
         socket.disconnect();
+        service = null;
         socket = null;
         globalReconSerial = "";
         globalReconFirmwareRevision = 0;
         globalReconCalibrationDate = null;
+        initialStart = false;
         Log.d("ReconFunctions","[connected = " + connected + "]");
     }
 

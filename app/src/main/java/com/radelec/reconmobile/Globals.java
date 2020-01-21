@@ -11,6 +11,7 @@ class Globals {
     public static int portNum;
     public static SerialSocket socket;
     public static SerialService service;
+    public static boolean initialStart = true;
 
     //Connected Recon Variables
     public static String globalReconSerial = "";
