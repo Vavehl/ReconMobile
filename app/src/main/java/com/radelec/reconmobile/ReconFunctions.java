@@ -30,15 +30,15 @@ import static com.radelec.reconmobile.Globals.boolRecordTrailerFound;
 import static com.radelec.reconmobile.Globals.intDataSessionPointer;
 import static com.radelec.reconmobile.Globals.arrayDataSession;
 
-public class ReconFunctions {
+class ReconFunctions {
 
-    ConsoleCallback consoleCallback = null;
+    private ConsoleCallback consoleCallback = null;
 
-    public ReconFunctions(ConsoleCallback callback) {
+    ReconFunctions(ConsoleCallback callback) {
         this.consoleCallback = callback;
     }
 
-    public void checkNewRecord() {
+    void checkNewRecord() {
         Log.d("ReconFunctions","checkNewRecord() called!");
         intDataSessionPointer = 0;
         boolRecordHeaderFound = false;
@@ -48,7 +48,7 @@ public class ReconFunctions {
         send(cmdCheckNewRecord);
     }
 
-    public void downloadDataSession(String response) {
+    void downloadDataSession(String response) {
         Log.d("ReconFunctions","downloadDataSession() called!");
         String strSystemConsole = "System Console";
         String[] parsedResponse = null;
@@ -127,7 +127,7 @@ public class ReconFunctions {
         }
     }
 
-    public void getCalibrationFactors(String response) {
+    void getCalibrationFactors(String response) {
         Log.d("ReconFunctions","getCalibrationFactors() called!");
         Date reconDateTime = Calendar.getInstance().getTime();
         String[] parsedResponse = null;
@@ -183,7 +183,7 @@ public class ReconFunctions {
         }
     }
 
-    public void getDataSessions(String response) {
+    void getDataSessions(String response) {
         String[] parsedResponse = null;
         boolean boolUnexpectedResponse = true;
         Log.d("ReconFunctions","getDataSessions() called!");
@@ -209,7 +209,7 @@ public class ReconFunctions {
         }
     }
 
-    public void getSerialAndFirmware(String response, View view) {
+    void getSerialAndFirmware(String response, View view) {
         boolean boolReconConnected = false;
         String[] parsedResponse = null;
         Log.d("ReconFunctions","getSerialAndFirmware() called!");
@@ -218,11 +218,7 @@ public class ReconFunctions {
             if(response != null) {
                 parsedResponse = response.split(",");
                 if(parsedResponse.length==4) {
-                    if (parsedResponse[0].equals("=DV") && parsedResponse[1].equals("CRM")) {
-                        boolReconConnected = true;
-                    } else {
-                        boolReconConnected = false;
-                    }
+                    boolReconConnected = parsedResponse[0].equals("=DV") && parsedResponse[1].equals("CRM");
                 } else {
                     boolReconConnected = false;
                 }
@@ -230,20 +226,20 @@ public class ReconFunctions {
         } else {
             Log.d("ReconFunctions", "getSerialAndFirmware():: Not Connected to Recon!");
         }
+        TextView ReconSerial = view.findViewById(R.id.txtFoundRecon_Serial);
+        TextView ReconFirmware = view.findViewById(R.id.txtFoundRecon_Firmware);
         if(boolReconConnected) {
             globalReconSerial = parsedResponse[3];
             globalReconFirmwareRevision = Double.parseDouble(parsedResponse[2]);
+            ReconSerial.setText("Rad Elec Recon #" + globalReconSerial);
+            ReconFirmware.setText("Firmware v" + globalReconFirmwareRevision);
         } else {
             globalReconSerial = "";
             globalReconFirmwareRevision = 0;
         }
-        TextView ReconSerial = view.findViewById(R.id.txtFoundRecon_Serial);
-        TextView ReconFirmware = view.findViewById(R.id.txtFoundRecon_Firmware);
-        ReconSerial.setText("Rad Elec Recon #" + globalReconSerial);
-        ReconFirmware.setText("Firmware v" + globalReconFirmwareRevision);
     }
 
-    public void SyncDateTime(String response) {
+    void SyncDateTime(String response) {
         Log.d("ReconFunctions","SyncDateTime() called!");
         String[] parsedResponse = null;
         parsedResponse = response.split(",");
@@ -296,7 +292,7 @@ public class ReconFunctions {
         }
     }
 
-    public void send(String str) {
+    void send(String str) {
         Log.d("ReconFunctions","send() called!");
         if(connected != Globals.ReconConnected.True) {
             Log.d("ReconFunctions","send() was called, but no Recon is connected!");
@@ -316,7 +312,7 @@ public class ReconFunctions {
         }
     }
 
-    public void disconnect() {
+    void disconnect() {
         Log.d("ReconFunctions","disconnect() called!");
         connected = Globals.ReconConnected.False;
         service.disconnect();
@@ -324,6 +320,8 @@ public class ReconFunctions {
         socket = null;
         globalReconSerial = "";
         globalReconFirmwareRevision = 0;
+        globalReconCalibrationDate = null;
+        Log.d("ReconFunctions","[connected = " + connected + "]");
     }
 
     private void onSerialIoError(Exception e) {
