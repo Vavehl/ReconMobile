@@ -1,4 +1,4 @@
-package com.example.reconmobile;
+package com.radelec.reconmobile;
 
 import android.app.Activity;
 import android.app.PendingIntent;
@@ -30,10 +30,10 @@ import com.hoho.android.usbserial.driver.UsbSerialDriver;
 import com.hoho.android.usbserial.driver.UsbSerialPort;
 import com.hoho.android.usbserial.driver.UsbSerialProber;
 
-import static com.example.reconmobile.Constants.INTENT_ACTION_GRANT_USB;
-import static com.example.reconmobile.Constants.baudRate;
-import static com.example.reconmobile.Globals.*;
-import static com.example.reconmobile.SerialSocket.WRITE_WAIT_MILLIS;
+import static com.radelec.reconmobile.Constants.INTENT_ACTION_GRANT_USB;
+import static com.radelec.reconmobile.Constants.baudRate;
+import static com.radelec.reconmobile.Globals.*;
+import static com.radelec.reconmobile.SerialSocket.WRITE_WAIT_MILLIS;
 
 public class FragmentConnect extends Fragment implements ConsoleCallback, ServiceConnection, SerialListener {
 

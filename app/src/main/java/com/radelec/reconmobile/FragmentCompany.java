@@ -1,4 +1,4 @@
-package com.example.reconmobile;
+package com.radelec.reconmobile;
 
 import android.app.Activity;
 import android.content.Context;

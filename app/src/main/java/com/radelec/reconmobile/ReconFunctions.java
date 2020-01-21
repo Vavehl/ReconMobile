@@ -1,4 +1,4 @@
-package com.example.reconmobile;
+package com.radelec.reconmobile;
 
 import android.text.format.DateFormat;
 import android.util.Log;
@@ -12,23 +12,23 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Objects;
 
-import static com.example.reconmobile.Constants.cmdCheckNewRecord;
-import static com.example.reconmobile.Constants.cmdReadNextRecord;
-import static com.example.reconmobile.Constants.newline;
-import static com.example.reconmobile.Globals.connected;
-import static com.example.reconmobile.Globals.globalDataSessions;
-import static com.example.reconmobile.Globals.globalLastWrite;
-import static com.example.reconmobile.Globals.globalReconCF1;
-import static com.example.reconmobile.Globals.globalReconCF2;
-import static com.example.reconmobile.Globals.globalReconCalibrationDate;
-import static com.example.reconmobile.Globals.globalReconFirmwareRevision;
-import static com.example.reconmobile.Globals.globalReconSerial;
-import static com.example.reconmobile.Globals.service;
-import static com.example.reconmobile.Globals.socket;
-import static com.example.reconmobile.Globals.boolRecordHeaderFound;
-import static com.example.reconmobile.Globals.boolRecordTrailerFound;
-import static com.example.reconmobile.Globals.intDataSessionPointer;
-import static com.example.reconmobile.Globals.arrayDataSession;
+import static com.radelec.reconmobile.Constants.cmdCheckNewRecord;
+import static com.radelec.reconmobile.Constants.cmdReadNextRecord;
+import static com.radelec.reconmobile.Constants.newline;
+import static com.radelec.reconmobile.Globals.connected;
+import static com.radelec.reconmobile.Globals.globalDataSessions;
+import static com.radelec.reconmobile.Globals.globalLastWrite;
+import static com.radelec.reconmobile.Globals.globalReconCF1;
+import static com.radelec.reconmobile.Globals.globalReconCF2;
+import static com.radelec.reconmobile.Globals.globalReconCalibrationDate;
+import static com.radelec.reconmobile.Globals.globalReconFirmwareRevision;
+import static com.radelec.reconmobile.Globals.globalReconSerial;
+import static com.radelec.reconmobile.Globals.service;
+import static com.radelec.reconmobile.Globals.socket;
+import static com.radelec.reconmobile.Globals.boolRecordHeaderFound;
+import static com.radelec.reconmobile.Globals.boolRecordTrailerFound;
+import static com.radelec.reconmobile.Globals.intDataSessionPointer;
+import static com.radelec.reconmobile.Globals.arrayDataSession;
 
 public class ReconFunctions {
 

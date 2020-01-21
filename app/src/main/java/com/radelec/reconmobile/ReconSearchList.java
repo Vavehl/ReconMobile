@@ -1,4 +1,4 @@
-package com.example.reconmobile;
+package com.radelec.reconmobile;
 
 import android.app.Activity;
 import android.app.PendingIntent;
@@ -28,12 +28,11 @@ import com.hoho.android.usbserial.driver.UsbSerialPort;
 import com.hoho.android.usbserial.driver.UsbSerialProber;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Locale;
 
-import static com.example.reconmobile.Constants.*;
-import static com.example.reconmobile.Globals.*;
-import static com.example.reconmobile.SerialSocket.WRITE_WAIT_MILLIS;
+import static com.radelec.reconmobile.Constants.*;
+import static com.radelec.reconmobile.Globals.*;
+import static com.radelec.reconmobile.SerialSocket.WRITE_WAIT_MILLIS;
 
 public class ReconSearchList extends ListFragment implements ServiceConnection, SerialListener {
 

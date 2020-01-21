@@ -1,4 +1,4 @@
-package com.example.reconmobile;
+package com.radelec.reconmobile;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

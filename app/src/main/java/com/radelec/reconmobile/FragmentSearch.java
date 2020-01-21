@@ -1,7 +1,6 @@
-package com.example.reconmobile;
+package com.radelec.reconmobile;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.DialogFragment;
@@ -13,7 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import static com.example.reconmobile.Globals.*;
+import static com.radelec.reconmobile.Globals.*;
 
 public class FragmentSearch extends DialogFragment {
 

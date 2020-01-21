@@ -1,4 +1,4 @@
-package com.example.reconmobile;
+package com.radelec.reconmobile;
 
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -21,7 +21,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Queue;
 
-import static com.example.reconmobile.Globals.*;
+import static com.radelec.reconmobile.Globals.*;
 
 /**
  * create notification and queue serial data while activity is not in the foreground

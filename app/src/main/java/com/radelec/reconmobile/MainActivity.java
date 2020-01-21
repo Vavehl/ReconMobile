@@ -1,4 +1,4 @@
-package com.example.reconmobile;
+package com.radelec.reconmobile;
 
 import android.app.Dialog;
 import android.content.ActivityNotFoundException;
@@ -24,8 +24,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import static com.example.reconmobile.Constants.version_build;
-import static com.example.reconmobile.Constants.version_date;
+import static com.radelec.reconmobile.Constants.version_build;
+import static com.radelec.reconmobile.Constants.version_date;
 
 public class MainActivity extends AppCompatActivity
         implements  FragmentManager.OnBackStackChangedListener,
