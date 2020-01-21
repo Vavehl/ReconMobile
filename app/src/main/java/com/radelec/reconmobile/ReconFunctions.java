@@ -302,8 +302,8 @@ class ReconFunctions {
     void disconnect() {
         Log.d("ReconFunctions","disconnect() called!");
         connected = Globals.ReconConnected.False;
-        service.disconnect();
-        socket.disconnect();
+        if(service != null) service.disconnect();
+        if(socket != null) socket.disconnect();
         service = null;
         socket = null;
         globalReconSerial = "";

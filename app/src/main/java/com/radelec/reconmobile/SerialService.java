@@ -89,6 +89,7 @@ public class SerialService extends Service implements SerialListener {
         listener = null;
         connected = false;
         notificationMsg = null;
+        cancelNotification();
     }
 
     public void attach(SerialListener listener) {
@@ -163,7 +164,9 @@ public class SerialService extends Service implements SerialListener {
     }
 
     private void cancelNotification() {
+        Log.d("SerialService","cancelNotification() called!");
         stopForeground(true);
+        Log.d("SerialService","[connected = " + connected + "]");
     }
 
     /**
@@ -196,13 +199,11 @@ public class SerialService extends Service implements SerialListener {
                             listener.onSerialConnectError(e);
                         } else {
                             queue1.add(new QueueItem(QueueType.ConnectError, null, e));
-                            cancelNotification();
                             disconnect();
                         }
                     });
                 } else {
                     queue2.add(new QueueItem(QueueType.ConnectError, null, e));
-                    cancelNotification();
                     disconnect();
                 }
             }
@@ -240,13 +241,11 @@ public class SerialService extends Service implements SerialListener {
                             listener.onSerialIoError(e);
                         } else {
                             queue1.add(new QueueItem(QueueType.IoError, null, e));
-                            cancelNotification();
                             disconnect();
                         }
                     });
                 } else {
                     queue2.add(new QueueItem(QueueType.IoError, null, e));
-                    cancelNotification();
                     disconnect();
                 }
             }

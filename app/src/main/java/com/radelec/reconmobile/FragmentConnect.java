@@ -214,33 +214,33 @@ public class FragmentConnect extends Fragment implements ConsoleCallback, Servic
         switch(connected) {
             case True:
                 Log.d("FragmentConnect","Setting button to Disconnect [connected = " + connected + "]");
-                btnClear.setVisibility(View.VISIBLE);
-                btnConnect.setText("Disconnect");
-                btnDownload.setVisibility(View.VISIBLE);
-                spaceConnect_1.setVisibility(View.GONE);
-                txtReconSerial.setText(String.format("Recon #%s", globalReconSerial));
-                txtReconSerial.setVisibility(View.VISIBLE);
-                txtSystemConsole.setVisibility(View.VISIBLE);
+                if(btnClear != null) btnClear.setVisibility(View.VISIBLE);
+                if(btnConnect != null) btnConnect.setText("Disconnect");
+                if(btnDownload != null) btnDownload.setVisibility(View.VISIBLE);
+                if(spaceConnect_1 != null) spaceConnect_1.setVisibility(View.GONE);
+                if(txtReconSerial != null) txtReconSerial.setText(String.format("Recon #%s", globalReconSerial));
+                if(txtReconSerial != null) txtReconSerial.setVisibility(View.VISIBLE);
+                if(txtSystemConsole != null) txtSystemConsole.setVisibility(View.VISIBLE);
                 break;
             case False:
                 Log.d("FragmentConnect","Setting button to Connect [connected = " + connected + "]");
-                btnClear.setVisibility(View.GONE);
-                btnConnect.setText("Connect");
-                btnDownload.setVisibility(View.GONE);
-                spaceConnect_1.setVisibility(View.VISIBLE);
-                txtReconSerial.setText("No Recon Connected");
-                txtReconSerial.setVisibility(View.GONE);
-                txtSystemConsole.setVisibility(View.GONE);
+                if(btnClear != null) btnClear.setVisibility(View.GONE);
+                if(btnConnect != null) btnConnect.setText("Connect");
+                if(btnDownload != null) btnDownload.setVisibility(View.GONE);
+                if(spaceConnect_1 != null) spaceConnect_1.setVisibility(View.VISIBLE);
+                if(txtReconSerial != null) txtReconSerial.setText("No Recon Connected");
+                if(txtReconSerial != null) txtReconSerial.setVisibility(View.GONE);
+                if(txtSystemConsole != null) txtSystemConsole.setVisibility(View.GONE);
                 break;
             case Pending: //This should never proc...
                 Log.d("FragmentConnect","Pending connection... [connected = " + connected + "]");
-                btnClear.setVisibility(View.GONE);
-                btnConnect.setText("Disconnect");
-                btnDownload.setVisibility(View.GONE);
-                spaceConnect_1.setVisibility(View.GONE);
-                txtReconSerial.setText("Please Wait...");
-                txtReconSerial.setVisibility(View.GONE);
-                txtSystemConsole.setVisibility(View.GONE);
+                if(btnClear != null) btnClear.setVisibility(View.GONE);
+                if(btnConnect != null) btnConnect.setText("Disconnect");
+                if(btnDownload != null) btnDownload.setVisibility(View.GONE);
+                if(spaceConnect_1 != null) spaceConnect_1.setVisibility(View.GONE);
+                if(txtReconSerial != null) txtReconSerial.setText("Please Wait...");
+                if(txtReconSerial != null) txtReconSerial.setVisibility(View.GONE);
+                if(txtSystemConsole != null) txtSystemConsole.setVisibility(View.GONE);
                 break;
         }
     }
