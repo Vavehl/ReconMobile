@@ -1,6 +1,7 @@
 package com.radelec.reconmobile;
 
-import java.util.ArrayList;
+import java.io.File;
+import java.util.LinkedList;
 
 class Globals {
 
@@ -25,8 +26,17 @@ class Globals {
     public static String globalLastResponse = "";
 
     //Data Session Variables
-    public static ArrayList<String> arrayDataSession = new ArrayList<>();
+    public static LinkedList<String[]> arrayDataSession = new LinkedList<>();
     public static Boolean boolRecordHeaderFound = false;
     public static Boolean boolRecordTrailerFound = false;
     public static int intDataSessionPointer= 0;
+
+    //Options
+    public static boolean boolDiagnosticMode = false;
+    public static boolean boolExcludeFirst4Hours = true;
+    public static boolean boolLongTermMode = false;
+    public static String globalUnitType = "US";
+
+    //File Directory
+    public static File fileDir = null;
 }

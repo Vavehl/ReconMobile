@@ -24,8 +24,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import static com.radelec.reconmobile.Constants.version_build;
-import static com.radelec.reconmobile.Constants.version_date;
+import static com.radelec.reconmobile.Constants.*;
+import static com.radelec.reconmobile.Globals.*;
 
 public class MainActivity extends AppCompatActivity
         implements  FragmentManager.OnBackStackChangedListener,
@@ -53,6 +53,9 @@ public class MainActivity extends AppCompatActivity
         //Initialize database (in DatabaseOperations)
         db = new DatabaseOperations(this);
 
+        //Get file directory
+        fileDir = getApplicationContext().getFilesDir();
+
         //Programmatically initialize fragmentConnect tab -- there has to be a better way to implement this??
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
@@ -69,7 +72,6 @@ public class MainActivity extends AppCompatActivity
                         .setAction("Action", null).show();
             }
         });
-
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override

@@ -37,4 +37,7 @@ class Constants {
 
     //Baud Rate
     static final int baudRate = 9600;
+
+    //Consecutive Zero Limit (for determining photodiode failure)
+    public static double ConsecutiveZeroLimit = 5; //If this number of consecutive zeros is met (or exceeded) by a chamber when creating a TXT or loading a file, we will alert the user to a potential photodiode failure.
 }
