@@ -344,8 +344,9 @@ public class FragmentConnect extends Fragment implements ConsoleCallback, Servic
         Log.d("FragmentConnect","onSerialRead() called!");
         receive(data);
         String response = new String(data);
-        globalLastResponse = response;
         Log.d("FragmentConnect","Receiving " + response);
+        response = response.replaceAll("[\\n\\r+]", ""); // strip line feeds
+        globalLastResponse = response;
         String[] parsedResponse = null;
         parsedResponse = response.split(",");
         if(parsedResponse.length<1) return;
