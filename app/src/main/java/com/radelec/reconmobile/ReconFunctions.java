@@ -55,6 +55,8 @@ class ReconFunctions {
                     break;
                 } else {
                     boolRecordHeaderFound = true;
+                    Log.d("ReconFunctions","Header found!");
+                    intDataSessionPointer++;
                     send(cmdReadNextRecord);
                     break;
                 }
