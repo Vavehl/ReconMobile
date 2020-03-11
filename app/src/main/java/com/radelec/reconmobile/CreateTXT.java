@@ -86,8 +86,8 @@ public class CreateTXT {
         LinkedList<CountContainer> AllHourlyCounts = new LinkedList(); // list which will hold groups of hourly counts
 
         // pull CF's
-        CF1 = globalReconCF1 / 1000; //We need to add error-handling for this...
-        CF2 = globalReconCF2 / 1000; //We need to add error-handling for this, too...
+        CF1 = globalReconCF1; //We need to add error-handling for this...
+        CF2 = globalReconCF2; //We need to add error-handling for this, too...
         ReconCalDate = globalReconCalibrationDate;
         strInstrumentSerial = globalReconSerial;
 
@@ -95,6 +95,7 @@ public class CreateTXT {
         ReconDurationSetting = arrayDataSession.get(0)[13]; //Needs error handling!
 
         Log.d("CreateTXT","All variables initialized!");
+        Log.d("CreateTXT","CF1 = " + CF1 + " / CF2 = " + CF2);
         // create text file
         try {
             Log.d("CreateTXT","Beginning to create TXT file. Array size = " + arrayDataSession.size());
