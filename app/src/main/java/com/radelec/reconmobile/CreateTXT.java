@@ -6,17 +6,21 @@ package com.radelec.reconmobile;
 import android.os.Environment;
 import android.util.Log;
 
+import com.github.mikephil.charting.data.Entry;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.Arrays;
 import java.io.FileNotFoundException;
 import java.io.UnsupportedEncodingException;
+import java.util.List;
 
 import static com.radelec.reconmobile.Globals.*;
 import static com.radelec.reconmobile.Constants.*;
@@ -84,6 +88,8 @@ public class CreateTXT {
         Calendar calendar = Calendar.getInstance();
 
         LinkedList<CountContainer> AllHourlyCounts = new LinkedList(); // list which will hold groups of hourly counts
+
+        //List<Entry> listRadon = new ArrayList<Entry>();
 
         // pull CF's
         CF1 = globalReconCF1; //We need to add error-handling for this...
@@ -187,6 +193,7 @@ public class CreateTXT {
                 sessionCounter++;
             }  // end while loop
 
+            Log.d("CreateTXT","BeginAveraging= " + BeginAveraging);
             // do this if we're in diagnostic mode
             if (BeginAveraging == true && boolDiagnosticMode) {
                 // write customer info to file
@@ -200,11 +207,11 @@ public class CreateTXT {
                 //writer.println(MainMenuUI.txtTestSiteInfo.getText());
                 writer.println(newline);
 
-                if(photodiodeFailure_Ch1==true || photodiodeFailure_Ch2==true) {
-                    if(photodiodeFailure_Ch1==true) {
+                if (photodiodeFailure_Ch1 == true || photodiodeFailure_Ch2 == true) {
+                    if (photodiodeFailure_Ch1 == true) {
                         writer.println("POSSIBLE DETECTOR FAILURE IN CHAMBER 1!");
                     }
-                    if(photodiodeFailure_Ch2==true) {
+                    if (photodiodeFailure_Ch2 == true) {
                         writer.println("POSSIBLE DETECTOR FAILURE IN CHAMBER 2!");
                     }
                     writer.println(newline);
@@ -242,8 +249,7 @@ public class CreateTXT {
                 writer.println("Deployed By: ");
                 writer.println("Retrieved By: ");
                 writer.println(newline);
-            } // or this if we're in regular user mode
-            else if (BeginAveraging == true) {
+            } else if (BeginAveraging == true) { // or this if we're in regular user mode
                 // write customer info to file
                 writer.println(newline);
                 writer.println("Customer information:");
