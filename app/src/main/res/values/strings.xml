@@ -56,6 +56,7 @@
     <string name="display_temperature">Temperature</string>
     <string name="display_radon">Radon</string>
     <string name="close_search_window">Close Search Window</string>
+    <string name="close_file_window">Close File Window</string>
     <string name="no_recon_connected">No Recon Connected</string>
     <string name="download">Download</string>
     <string name="clear">Clear</string>

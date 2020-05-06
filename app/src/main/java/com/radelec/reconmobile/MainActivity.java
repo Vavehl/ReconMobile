@@ -268,8 +268,13 @@ public class MainActivity extends AppCompatActivity
     //We should offload this to its own class, too...
     protected void openFile() {
         Log.d("MainActivity","openFile() called!");
-        Toast msgSave = Toast.makeText(getApplicationContext(),"TODO: Open File",Toast.LENGTH_SHORT);
-        msgSave.show();
+        FragmentOpen fragmentOpen = new FragmentOpen();
+        fragmentOpen.setRetainInstance(true);
+        fragmentOpen.show(getSupportFragmentManager(),"");
+
+        if(fragmentOpen.isDetached()) {
+            Log.d("MainActivity","FRAGMENT_OPEN DETACHED!");
+        }
     }
 
 }
