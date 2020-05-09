@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/layoutSearch"
+    android:id="@+id/layoutReconDataFiles"
     android:orientation="vertical"
     android:layout_width="350dp"
     android:layout_height="475dp"
@@ -9,26 +9,23 @@
     android:padding="5dp"
     android:layout_gravity="center">
 
-    <LinearLayout
-        android:id="@+id/openFile_layout"
+    <ImageView
+        android:id="@+id/imgClose_openFile"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_gravity="end"
+        android:clickable="true"
+        android:contentDescription="@string/close_file_window"
+        android:focusable="true"
+        app:srcCompat="@drawable/ic_close_black_24dp" />
+
+    <Space
         android:layout_width="match_parent"
-        android:layout_height="437dp"
-        android:orientation="vertical">
+        android:layout_height="25dp" />
 
-        <ImageView
-            android:id="@+id/imgClose_openFile"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_gravity="end"
-            android:clickable="true"
-            android:contentDescription="@string/close_file_window"
-            android:focusable="true"
-            app:srcCompat="@drawable/ic_close_black_24dp" />
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvReconDataFiles"
+        android:layout_width="match_parent"
+        android:layout_height="400dp" />
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="25dp" />
-
-    </LinearLayout>
-
-</ScrollView>
+</LinearLayout>

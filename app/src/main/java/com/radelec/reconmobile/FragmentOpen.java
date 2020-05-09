@@ -1,6 +1,5 @@
 package com.radelec.reconmobile;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,11 +8,17 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.FragmentManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.ArrayList;
+import java.util.Objects;
 
 public class FragmentOpen extends DialogFragment {
 
-    private FragmentSearch.OnFragmentInteractionListener mListener;
+    //RecyclerView stuff
+    private ArrayList<ListDataFiles> alDataFiles;
+    private RecyclerView mRecyclerView;
 
     public FragmentOpen() {
         // Required empty public constructor
@@ -33,6 +38,10 @@ public class FragmentOpen extends DialogFragment {
         Log.d("FragmentOpen","FragmentOpen.onCreateView() called!");
         View view = inflater.inflate(R.layout.fragment_open, container, false);
         ImageView imgCloseSearch = view.findViewById(R.id.imgClose_openFile);
+        alDataFiles = ListDataFiles.CreateDataFileList(Objects.requireNonNull(getContext()));
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.rvReconDataFiles);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        mRecyclerView.setAdapter(new FileSearchList(ListDataFiles.CreateDataFileList(Objects.requireNonNull(getContext()))));
 
         imgCloseSearch.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -42,32 +51,10 @@ public class FragmentOpen extends DialogFragment {
             }
         });
 
-        //Begin searching for Recons and populate the Dialog fragment with the discovered devices...
-        getChildFragmentManager().beginTransaction().add(R.id.openFile_layout, new FileSearchList()).addToBackStack(null).commit();
-
         //The dialog box looks too small if we don't set a minimum height (regardless of whether we discover a Recon or not)
         view.setMinimumHeight(1000);
 
         return view;
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        Log.d("FragmentOpen","onAttach() called!");
-        super.onAttach(context);
-        if (context instanceof FragmentSearch.OnFragmentInteractionListener) {
-            mListener = (FragmentSearch.OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        Log.d("FragmentOpen","onDetach() called!");
-        super.onDetach();
-        mListener = null;
     }
 
 }
