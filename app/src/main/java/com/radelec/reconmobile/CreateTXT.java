@@ -3,24 +3,17 @@
 
 package com.radelec.reconmobile;
 
-import android.os.Environment;
 import android.util.Log;
 
-import com.github.mikephil.charting.data.Entry;
-
-import java.io.File;
-import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.Arrays;
 import java.io.FileNotFoundException;
 import java.io.UnsupportedEncodingException;
-import java.util.List;
 
 import static com.radelec.reconmobile.Globals.*;
 import static com.radelec.reconmobile.Constants.*;

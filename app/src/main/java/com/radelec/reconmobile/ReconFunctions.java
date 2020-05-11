@@ -5,8 +5,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
-import java.io.FileNotFoundException;
-import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;

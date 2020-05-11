@@ -1,7 +1,6 @@
 package com.radelec.reconmobile;
 
 import android.content.Context;
-import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +14,6 @@ import java.util.ArrayList;
 
 public class FileSearchList extends RecyclerView.Adapter<FileSearchList.ReconFileViewHolder> {
 
-    private String[] arrayDataFiles;
     private ArrayList<ListDataFiles> alDataFiles;
 
     public static class ReconFileViewHolder extends RecyclerView.ViewHolder {
