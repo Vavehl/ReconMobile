@@ -15,21 +15,31 @@ import java.util.ArrayList;
 public class FileSearchListAdapter extends RecyclerView.Adapter<FileSearchListAdapter.ReconFileViewHolder> {
 
     private ArrayList<ListDataFiles> alDataFiles;
+    private OnFileSearchListAdapterListener mOnFileSearchListAdapterListener;
 
-    public static class ReconFileViewHolder extends RecyclerView.ViewHolder {
+    public class ReconFileViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         public TextView tvFileName;
         public TextView tvDateModified;
+        OnFileSearchListAdapterListener onFileSearchListAdapterListener;
 
-        public ReconFileViewHolder(View itemView) {
+        public ReconFileViewHolder(@NonNull View itemView, OnFileSearchListAdapterListener onFileSearchListAdapterListener) {
             super(itemView);
             tvFileName = (TextView) itemView.findViewById(R.id.tvFileName);
             tvDateModified = (TextView) itemView.findViewById(R.id.tvDateModified);
+            this.onFileSearchListAdapterListener = onFileSearchListAdapterListener;
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            onFileSearchListAdapterListener.onFileSearchListAdapterClick(getAdapterPosition());
         }
     }
 
-    public FileSearchListAdapter(ArrayList<ListDataFiles> data) {
-        alDataFiles = data;
+    public FileSearchListAdapter(ArrayList<ListDataFiles> data, OnFileSearchListAdapterListener onFileSearchListAdapterListener) {
+        this.alDataFiles = data;
+        this.mOnFileSearchListAdapterListener = onFileSearchListAdapterListener;
     }
 
     @NonNull
@@ -41,7 +51,7 @@ public class FileSearchListAdapter extends RecyclerView.Adapter<FileSearchListAd
 
         View vw = inflater.inflate(R.layout.file_list_item, parent, false);
 
-        ReconFileViewHolder vh = new ReconFileViewHolder(vw);
+        ReconFileViewHolder vh = new ReconFileViewHolder(vw, mOnFileSearchListAdapterListener);
         return vh;
     }
 
@@ -58,5 +68,9 @@ public class FileSearchListAdapter extends RecyclerView.Adapter<FileSearchListAd
     public int getItemCount() {
         Log.d("FileSearchList","FileSearchList.getItemCount() called! File count = " + alDataFiles.size());
         return alDataFiles.size();
+    }
+
+    public interface OnFileSearchListAdapterListener {
+        void onFileSearchListAdapterClick(int position);
     }
 }

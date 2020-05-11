@@ -1,5 +1,6 @@
 package com.radelec.reconmobile;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class FragmentOpen extends DialogFragment {
+public class FragmentOpen extends DialogFragment implements FileSearchListAdapter.OnFileSearchListAdapterListener {
 
     //RecyclerView stuff
     private ArrayList<ListDataFiles> alDataFiles;
@@ -41,7 +42,7 @@ public class FragmentOpen extends DialogFragment {
         alDataFiles = ListDataFiles.CreateDataFileList(Objects.requireNonNull(getContext()));
         mRecyclerView = (RecyclerView) view.findViewById(R.id.rvReconDataFiles);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        mRecyclerView.setAdapter(new FileSearchListAdapter(ListDataFiles.CreateDataFileList(Objects.requireNonNull(getContext()))));
+        mRecyclerView.setAdapter(new FileSearchListAdapter(ListDataFiles.CreateDataFileList(Objects.requireNonNull(getContext())),this));
 
         imgCloseSearch.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,4 +58,11 @@ public class FragmentOpen extends DialogFragment {
         return view;
     }
 
+    @Override
+    public void onFileSearchListAdapterClick(int position) {
+        Log.d("FragmentOpen","onFileSearchListAdapterClick called for position[" + position + "]");
+        alDataFiles.get(position);
+        //Intent intent = new Intent(this, LoadSavedFile.java);
+        //startActivity(intent);
+    }
 }
