@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-public class FileSearchList extends RecyclerView.Adapter<FileSearchList.ReconFileViewHolder> {
+public class FileSearchListAdapter extends RecyclerView.Adapter<FileSearchListAdapter.ReconFileViewHolder> {
 
     private ArrayList<ListDataFiles> alDataFiles;
 
@@ -28,13 +28,13 @@ public class FileSearchList extends RecyclerView.Adapter<FileSearchList.ReconFil
         }
     }
 
-    public FileSearchList(ArrayList<ListDataFiles> data) {
+    public FileSearchListAdapter(ArrayList<ListDataFiles> data) {
         alDataFiles = data;
     }
 
     @NonNull
     @Override
-    public FileSearchList.ReconFileViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public FileSearchListAdapter.ReconFileViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         Log.d("FileSearchList","FileSearchList.onCreateViewHolder() called!");
         Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);

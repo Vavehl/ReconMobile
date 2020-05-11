@@ -41,7 +41,7 @@ public class FragmentOpen extends DialogFragment {
         alDataFiles = ListDataFiles.CreateDataFileList(Objects.requireNonNull(getContext()));
         mRecyclerView = (RecyclerView) view.findViewById(R.id.rvReconDataFiles);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        mRecyclerView.setAdapter(new FileSearchList(ListDataFiles.CreateDataFileList(Objects.requireNonNull(getContext()))));
+        mRecyclerView.setAdapter(new FileSearchListAdapter(ListDataFiles.CreateDataFileList(Objects.requireNonNull(getContext()))));
 
         imgCloseSearch.setOnClickListener(new View.OnClickListener() {
             @Override
