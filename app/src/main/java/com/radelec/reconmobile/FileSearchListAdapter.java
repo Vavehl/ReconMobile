@@ -16,6 +16,7 @@ public class FileSearchListAdapter extends RecyclerView.Adapter<FileSearchListAd
 
     private ArrayList<ListDataFiles> alDataFiles;
     private OnFileSearchListAdapterListener mOnFileSearchListAdapterListener;
+    private int selectedPos = RecyclerView.NO_POSITION;
 
     public class ReconFileViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
@@ -60,6 +61,11 @@ public class FileSearchListAdapter extends RecyclerView.Adapter<FileSearchListAd
         Log.d("FileSearchList","FileSearchList.onBindViewHolder() called!");
         ListDataFiles element = alDataFiles.get(position);
         Log.d("FileSearchList","Position [" + position + "] FileName=" + element.getFileName() + " / DateModified=" + element.getDateModified());
+        holder.itemView.setSelected(selectedPos == position);
+        if (selectedPos == position) {
+            Log.d("FileSearchList","HIGHLIGHT ROW " + position);
+            holder.itemView.setBackgroundColor(holder.itemView.getResources().getColor(R.color.colorIvoryText));
+        }
         holder.tvFileName.setText(element.getFileName());
         holder.tvDateModified.setText(element.getDateModified());
     }
