@@ -1,6 +1,7 @@
 package com.radelec.reconmobile;
 
 import android.content.Context;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -67,7 +68,7 @@ public class FileSearchListAdapter extends RecyclerView.Adapter<FileSearchListAd
             holder.itemView.setBackgroundColor(holder.itemView.getResources().getColor(R.color.colorIvoryText));
         }
         holder.tvFileName.setText(element.getFileName());
-        holder.tvDateModified.setText(element.getDateModified());
+        holder.tvDateModified.setText(DateFormat.format("dd-MMM-yyyy hh:mm", element.getDateModified()));
     }
 
     @Override

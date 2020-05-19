@@ -10,17 +10,17 @@ import java.util.Objects;
 public class ListDataFiles {
 
     private String FileName;
-    private String DateModified;
+    private Long DateModified;
     private String FilePath;
 
-    public ListDataFiles(String FileName, String DateModified, String FilePath) {
+    public ListDataFiles(String FileName, Long DateModified, String FilePath) {
     }
 
     public String getFileName() {
         return FileName;
     }
 
-    public String getDateModified() {
+    public Long getDateModified() {
         return DateModified;
     }
 
@@ -37,9 +37,9 @@ public class ListDataFiles {
             Log.d("ListDataFiles","Generating list of internal Recon data files...");
             alDataFiles.clear();
             for (File file : files) {
-                ListDataFiles element = new ListDataFiles("","","");
+                ListDataFiles element = new ListDataFiles("", (long) 0,"");
                 element.FileName = file.getName();
-                element.DateModified = Long.toString(file.lastModified());
+                element.DateModified = file.lastModified();
                 element.FilePath = file.getAbsolutePath();
                 alDataFiles.add(element);
                 Log.d("ListDataFiles","Found " + file.getName());
