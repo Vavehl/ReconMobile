@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -23,18 +24,21 @@ public class FileSearchListAdapter extends RecyclerView.Adapter<FileSearchListAd
 
         public TextView tvFileName;
         public TextView tvDateModified;
+        public ImageView ibTrashDelete;
         OnFileSearchListAdapterListener onFileSearchListAdapterListener;
 
         public ReconFileViewHolder(@NonNull View itemView, OnFileSearchListAdapterListener onFileSearchListAdapterListener) {
             super(itemView);
             tvFileName = (TextView) itemView.findViewById(R.id.tvFileName);
             tvDateModified = (TextView) itemView.findViewById(R.id.tvDateModified);
+            ibTrashDelete = (ImageView) itemView.findViewById(R.id.ibTrashDelete);
             this.onFileSearchListAdapterListener = onFileSearchListAdapterListener;
             itemView.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
+            Log.d("FileSearchListAdapter","onClick() pressed! [position = " + getAdapterPosition() + "]");
             onFileSearchListAdapterListener.onFileSearchListAdapterClick(getAdapterPosition());
         }
     }
@@ -47,7 +51,7 @@ public class FileSearchListAdapter extends RecyclerView.Adapter<FileSearchListAd
     @NonNull
     @Override
     public FileSearchListAdapter.ReconFileViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        Log.d("FileSearchList","FileSearchList.onCreateViewHolder() called!");
+        Log.d("FileSearchListAdapter","FileSearchList.onCreateViewHolder() called!");
         Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
 
@@ -59,21 +63,22 @@ public class FileSearchListAdapter extends RecyclerView.Adapter<FileSearchListAd
 
     @Override
     public void onBindViewHolder(@NonNull ReconFileViewHolder holder, int position) {
-        Log.d("FileSearchList","FileSearchList.onBindViewHolder() called!");
+        Log.d("FileSearchListAdapter","FileSearchList.onBindViewHolder() called!");
         ListDataFiles element = alDataFiles.get(position);
-        Log.d("FileSearchList","Position [" + position + "] FileName=" + element.getFileName() + " / DateModified=" + element.getDateModified());
+        Log.d("FileSearchListAdapter","Position [" + position + "] FileName=" + element.getFileName() + " / DateModified=" + element.getDateModified());
         holder.itemView.setSelected(selectedPos == position);
         if (selectedPos == position) {
-            Log.d("FileSearchList","HIGHLIGHT ROW " + position);
+            Log.d("FileSearchListAdapter","HIGHLIGHT ROW " + position);
             holder.itemView.setBackgroundColor(holder.itemView.getResources().getColor(R.color.colorIvoryText));
         }
         holder.tvFileName.setText(element.getFileName());
         holder.tvDateModified.setText(DateFormat.format("dd-MMM-yyyy hh:mm", element.getDateModified()));
+        holder.ibTrashDelete.setImageResource(R.drawable.ic_trash_24dp);
     }
 
     @Override
     public int getItemCount() {
-        Log.d("FileSearchList","FileSearchList.getItemCount() called! File count = " + alDataFiles.size());
+        Log.d("FileSearchListAdapter","FileSearchList.getItemCount() called! File count = " + alDataFiles.size());
         return alDataFiles.size();
     }
 

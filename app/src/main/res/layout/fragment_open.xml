@@ -27,7 +27,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvReconDataFiles"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="400dp"
         android:foregroundGravity="center_horizontal"
         android:minWidth="200dp"
         android:minHeight="400dp"
