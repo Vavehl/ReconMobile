@@ -40,6 +40,13 @@ public class FileSearchListAdapter extends RecyclerView.Adapter<FileSearchListAd
         public void onClick(View v) {
             Log.d("FileSearchListAdapter","onClick() pressed! [position = " + getAdapterPosition() + "]");
             onFileSearchListAdapterListener.onFileSearchListAdapterClick(getAdapterPosition());
+            selectedPos = getAdapterPosition();
+            if(selectedPos == getAdapterPosition()) {
+                Log.d("FileSearchListAdapter","IT true! selectedPos = " + selectedPos + " // position = " + getAdapterPosition());
+            } else {
+                Log.d("FileSearchListAdapter","IT false! selectedPos = " + selectedPos + " // position = " + getAdapterPosition());
+            }
+            notifyDataSetChanged();
         }
     }
 
@@ -67,13 +74,25 @@ public class FileSearchListAdapter extends RecyclerView.Adapter<FileSearchListAd
         ListDataFiles element = alDataFiles.get(position);
         Log.d("FileSearchListAdapter","Position [" + position + "] FileName=" + element.getFileName() + " / DateModified=" + element.getDateModified());
         holder.itemView.setSelected(selectedPos == position);
+        Log.d("FileSearchListAdapter","selectedPos=" + selectedPos);
         if (selectedPos == position) {
-            Log.d("FileSearchListAdapter","HIGHLIGHT ROW " + position);
             holder.itemView.setBackgroundColor(holder.itemView.getResources().getColor(R.color.colorIvoryText));
+            holder.tvFileName.setTextColor(holder.itemView.getResources().getColor(R.color.colorPrimaryDark));
+            holder.tvDateModified.setTextColor(holder.itemView.getResources().getColor(R.color.colorPrimaryDark));
+            holder.ibTrashDelete.findViewById(R.id.ibTrashDelete);
+            holder.ibTrashDelete.setImageResource(R.drawable.ic_trash_24dp); //...do we really need this? It will leech resources.
+            holder.ibTrashDelete.setVisibility(View.VISIBLE);
+            holder.ibTrashDelete.setFocusable(true);
+        } else {
+            holder.itemView.setBackgroundColor(holder.itemView.getResources().getColor(R.color.colorPrimaryDark));
+            holder.tvFileName.setTextColor(holder.itemView.getResources().getColor(R.color.colorIvoryText));
+            holder.tvDateModified.setTextColor(holder.itemView.getResources().getColor(R.color.colorIvoryText));
+            //holder.ibTrashDelete.findViewById(R.id.ibTrashDelete);
+            //holder.ibTrashDelete.setVisibility(View.INVISIBLE);
+            //holder.ibTrashDelete.setFocusable(false);
         }
-        holder.tvFileName.setText(element.getFileName());
         holder.tvDateModified.setText(DateFormat.format("dd-MMM-yyyy hh:mm", element.getDateModified()));
-        holder.ibTrashDelete.setImageResource(R.drawable.ic_trash_24dp);
+        holder.tvFileName.setText(element.getFileName());
     }
 
     @Override
