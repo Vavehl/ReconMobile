@@ -79,10 +79,10 @@ public class FileSearchListAdapter extends RecyclerView.Adapter<FileSearchListAd
             holder.itemView.setBackgroundColor(holder.itemView.getResources().getColor(R.color.colorIvoryText));
             holder.tvFileName.setTextColor(holder.itemView.getResources().getColor(R.color.colorPrimaryDark));
             holder.tvDateModified.setTextColor(holder.itemView.getResources().getColor(R.color.colorPrimaryDark));
-            holder.ibTrashDelete.findViewById(R.id.ibTrashDelete);
-            holder.ibTrashDelete.setImageResource(R.drawable.ic_trash_24dp); //...do we really need this? It will leech resources.
-            holder.ibTrashDelete.setVisibility(View.VISIBLE);
-            holder.ibTrashDelete.setFocusable(true);
+            //holder.ibTrashDelete.findViewById(R.id.ibTrashDelete);
+            //holder.ibTrashDelete.setImageResource(R.drawable.ic_trash_24dp); //...do we really need this? It will leech resources.
+            //holder.ibTrashDelete.setVisibility(View.VISIBLE);
+            //holder.ibTrashDelete.setFocusable(true);
         } else {
             holder.itemView.setBackgroundColor(holder.itemView.getResources().getColor(R.color.colorPrimaryDark));
             holder.tvFileName.setTextColor(holder.itemView.getResources().getColor(R.color.colorIvoryText));
