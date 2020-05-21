@@ -1,6 +1,5 @@
 package com.radelec.reconmobile;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -65,7 +64,5 @@ public class FragmentOpen extends DialogFragment implements FileSearchListAdapte
         String strFileName = alDataFiles.get(position).getFileName();
         String strFilePath = alDataFiles.get(position).getFilePath();
         LoadSavedFile.main(strFilePath,strFileName);
-        //Intent intent = new Intent(this, LoadSavedFile.main(strFilePath,strFileName));
-        //startActivity(intent);
     }
 }
