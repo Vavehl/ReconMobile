@@ -60,6 +60,7 @@
     <string name="no_recon_connected">No Recon Connected</string>
     <string name="download">Download</string>
     <string name="clear">Clear</string>
+    <string name="close_file">Close File</string>
     <string name="system_console">System Console</string>
     <string-array name="spinnerUnitSystem">
         <item>US</item>

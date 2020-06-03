@@ -45,6 +45,7 @@ public class FileSearchListAdapter extends RecyclerView.Adapter<FileSearchListAd
                 Log.d("FileSearchListAdapter","IT true! selectedPos = " + selectedPos + " // position = " + getAdapterPosition());
             } else {
                 Log.d("FileSearchListAdapter","IT false! selectedPos = " + selectedPos + " // position = " + getAdapterPosition());
+                Globals.boolClickToLoad = false;
             }
             notifyDataSetChanged();
         }

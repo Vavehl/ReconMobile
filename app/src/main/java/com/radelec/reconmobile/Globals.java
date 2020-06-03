@@ -6,7 +6,7 @@ import java.util.LinkedList;
 class Globals {
 
     //Recon Globals
-    public enum ReconConnected { False, Pending, True }
+    public enum ReconConnected { False, Pending, True, Loaded }
     public static ReconConnected connected = ReconConnected.False;
     public static int deviceId;
     public static int portNum;
@@ -39,4 +39,8 @@ class Globals {
 
     //File Directory
     public static File fileDir = null;
+
+    //File Loading
+    public static boolean boolClickToLoad = false;
+    public static String globalLoadedFileName = "";
 }

@@ -40,6 +40,7 @@ public class FragmentConnect extends Fragment implements ConsoleCallback, Servic
     private Button btnConnect;
     private Button btnDownload;
     private Button btnClear;
+    private Button btnCloseFile;
     private TextView txtReconSerial;
     private TextView txtSystemConsole;
     private Space spaceConnect_1;
@@ -70,6 +71,7 @@ public class FragmentConnect extends Fragment implements ConsoleCallback, Servic
         btnConnect = view.findViewById(R.id.buttonConnect);
         btnDownload = view.findViewById(R.id.buttonDownload);
         btnClear = view.findViewById(R.id.buttonClear);
+        btnCloseFile = view.findViewById(R.id.buttonCloseFile);
         txtReconSerial = view.findViewById(R.id.txtReconSerial);
         txtSystemConsole = view.findViewById(R.id.txtConsole);
         spaceConnect_1 = view.findViewById(R.id.spaceConnect_1);
@@ -87,6 +89,8 @@ public class FragmentConnect extends Fragment implements ConsoleCallback, Servic
                 Log.d("FragmentConnect","Setting button to Wait [connected = " + connected + "]");
                 btnConnect.setText("Wait");
                 break;
+            case Loaded:
+                Log.d("FragmentConnect","Setting status to Loaded File [connected = " + connected + "]");
         }
         checkConnectionStatus();
 
@@ -114,6 +118,17 @@ public class FragmentConnect extends Fragment implements ConsoleCallback, Servic
                         break;
                 }
             }
+        });
+
+        btnCloseFile.setOnClickListener(v -> {
+            if (connected == ReconConnected.Loaded) {
+                Log.d("FragmentConnect", "Close File button pressed!");
+            } else {
+                Log.d("FragmentConnect", "Close File button pressed, but no file was loaded!?");
+            }
+            Globals.globalLoadedFileName = "";
+            connected = ReconConnected.False;
+            checkConnectionStatus();
         });
 
         btnDownload.setOnClickListener(v -> {
@@ -217,6 +232,8 @@ public class FragmentConnect extends Fragment implements ConsoleCallback, Servic
                 if(btnClear != null) btnClear.setVisibility(View.VISIBLE);
                 if(btnConnect != null) btnConnect.setText("Disconnect");
                 if(btnDownload != null) btnDownload.setVisibility(View.VISIBLE);
+                if(btnConnect != null) btnConnect.setVisibility(View.VISIBLE);
+                if(btnCloseFile != null) btnCloseFile.setVisibility(View.GONE);
                 if(spaceConnect_1 != null) spaceConnect_1.setVisibility(View.GONE);
                 if(txtReconSerial != null) txtReconSerial.setText(String.format("Recon #%s", globalReconSerial));
                 if(txtReconSerial != null) txtReconSerial.setVisibility(View.VISIBLE);
@@ -226,7 +243,9 @@ public class FragmentConnect extends Fragment implements ConsoleCallback, Servic
                 Log.d("FragmentConnect","Setting button to Connect [connected = " + connected + "]");
                 if(btnClear != null) btnClear.setVisibility(View.GONE);
                 if(btnConnect != null) btnConnect.setText("Connect");
+                if(btnConnect != null) btnConnect.setVisibility(View.VISIBLE);
                 if(btnDownload != null) btnDownload.setVisibility(View.GONE);
+                if(btnCloseFile != null) btnCloseFile.setVisibility(View.GONE);
                 if(spaceConnect_1 != null) spaceConnect_1.setVisibility(View.VISIBLE);
                 if(txtReconSerial != null) txtReconSerial.setText("No Recon Connected");
                 if(txtReconSerial != null) txtReconSerial.setVisibility(View.GONE);
@@ -236,12 +255,24 @@ public class FragmentConnect extends Fragment implements ConsoleCallback, Servic
                 Log.d("FragmentConnect","Pending connection... [connected = " + connected + "]");
                 if(btnClear != null) btnClear.setVisibility(View.GONE);
                 if(btnConnect != null) btnConnect.setText("Disconnect");
+                if(btnConnect != null) btnConnect.setVisibility(View.VISIBLE);
                 if(btnDownload != null) btnDownload.setVisibility(View.GONE);
+                if(btnCloseFile != null) btnCloseFile.setVisibility(View.GONE);
                 if(spaceConnect_1 != null) spaceConnect_1.setVisibility(View.GONE);
                 if(txtReconSerial != null) txtReconSerial.setText("Please Wait...");
                 if(txtReconSerial != null) txtReconSerial.setVisibility(View.GONE);
                 if(txtSystemConsole != null) txtSystemConsole.setVisibility(View.GONE);
                 break;
+            case Loaded: //This should only be displayed when a file is loaded
+                Log.d("FragmentConnect","Loaded File... [connected = " + connected + "]");
+                if(btnClear != null) btnClear.setVisibility(View.GONE);
+                if(btnConnect != null) btnConnect.setVisibility(View.GONE);
+                if(btnDownload != null) btnDownload.setVisibility(View.GONE);
+                if(btnCloseFile != null) btnCloseFile.setVisibility(View.VISIBLE);
+                if(spaceConnect_1 != null) spaceConnect_1.setVisibility(View.VISIBLE);
+                if(txtReconSerial != null) txtReconSerial.setText("No Recon Connected");
+                if(txtReconSerial != null) txtReconSerial.setVisibility(View.GONE);
+                if(txtSystemConsole != null) txtSystemConsole.setText(Globals.globalLoadedFileName);
         }
     }
 

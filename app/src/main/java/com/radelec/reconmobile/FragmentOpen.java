@@ -60,9 +60,14 @@ public class FragmentOpen extends DialogFragment implements FileSearchListAdapte
     @Override
     public void onFileSearchListAdapterClick(int position) {
         Log.d("FragmentOpen","onFileSearchListAdapterClick called for position[" + position + "]");
-        alDataFiles.get(position);
-        String strFileName = alDataFiles.get(position).getFileName();
-        String strFilePath = alDataFiles.get(position).getFilePath();
-        LoadSavedFile.main(strFilePath,strFileName);
+        if(Globals.boolClickToLoad) {
+            String strFileName = alDataFiles.get(position).getFileName();
+            String strFilePath = alDataFiles.get(position).getFilePath();
+            Globals.globalLoadedFileName = "";
+            LoadSavedFile.main(strFilePath, strFileName);
+            Globals.connected = Globals.ReconConnected.Loaded;
+        } else {
+            Globals.boolClickToLoad = true;
+        }
     }
 }
