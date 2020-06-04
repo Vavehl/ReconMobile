@@ -12,6 +12,7 @@
     android:paddingTop="10dp"
     android:paddingRight="10dp"
     android:scrollbarAlwaysDrawVerticalTrack="false"
+    android:tag="fragCompany"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
     <LinearLayout
@@ -75,9 +76,9 @@
             android:id="@+id/CompanyLogo"
             android:layout_width="match_parent"
             android:layout_height="200dp"
+            android:background="@drawable/company_logo_background"
             android:contentDescription="@string/company_logo_image"
             android:padding="1dp"
-            android:background="@drawable/company_logo_background"
             app:srcCompat="@color/colorIvoryText" />
 
         <Space

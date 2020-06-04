@@ -12,6 +12,7 @@
     android:paddingTop="10dp"
     android:paddingRight="10dp"
     android:scrollbarAlwaysDrawVerticalTrack="false"
+    android:tag="fragSettings"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
 
@@ -154,8 +155,7 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/colorPrimaryDark"
-            android:orientation="vertical">
-        </LinearLayout>
+            android:orientation="vertical"></LinearLayout>
 
         <TextView
             android:id="@+id/txtReconDisplayOptions"

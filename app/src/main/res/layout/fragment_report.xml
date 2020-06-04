@@ -10,6 +10,7 @@
     android:paddingTop="10dp"
     android:paddingRight="10dp"
     android:scrollbarAlwaysDrawVerticalTrack="false"
+    android:tag="fragReport"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
     <LinearLayout
