@@ -6,8 +6,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -66,6 +69,21 @@ public class FragmentOpen extends DialogFragment implements FileSearchListAdapte
             Globals.globalLoadedFileName = "";
             LoadSavedFile.main(strFilePath, strFileName);
             Globals.connected = Globals.ReconConnected.Loaded;
+            Toast msgSave = Toast.makeText(getContext(),"Loading file...",Toast.LENGTH_SHORT);
+            msgSave.show();
+
+            //BEGIN: Refresh FragmentConnect
+            Fragment frg = null;
+            if (getFragmentManager() != null) {
+                frg = getFragmentManager().findFragmentByTag("fragConnect");
+            }
+            FragmentTransaction ft = getFragmentManager().beginTransaction();
+            ft.detach(frg);
+            ft.attach(frg);
+            ft.commit();
+            //END: Refresh FragmentConnect
+
+            dismiss();
         } else {
             Globals.boolClickToLoad = true;
         }

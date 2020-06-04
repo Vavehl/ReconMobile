@@ -268,10 +268,10 @@ public class MainActivity extends AppCompatActivity
     //We should offload this to its own class, too...
     protected void openFile() {
         Log.d("MainActivity","openFile() called!");
+        Globals.boolClickToLoad = false;
         FragmentOpen fragmentOpen = new FragmentOpen();
         fragmentOpen.setRetainInstance(true);
         fragmentOpen.show(getSupportFragmentManager(),"");
-
         if(fragmentOpen.isDetached()) {
             Log.d("MainActivity","FRAGMENT_OPEN DETACHED!");
         }

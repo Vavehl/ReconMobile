@@ -264,7 +264,7 @@ public class FragmentConnect extends Fragment implements ConsoleCallback, Servic
                 if(txtSystemConsole != null) txtSystemConsole.setVisibility(View.GONE);
                 break;
             case Loaded: //This should only be displayed when a file is loaded
-                Log.d("FragmentConnect","Loaded File... [connected = " + connected + "]");
+                Log.d("FragmentConnect","Loaded File " + globalLoadedFileName + "... [connected = " + connected + "]");
                 if(btnClear != null) btnClear.setVisibility(View.GONE);
                 if(btnConnect != null) btnConnect.setVisibility(View.GONE);
                 if(btnDownload != null) btnDownload.setVisibility(View.GONE);

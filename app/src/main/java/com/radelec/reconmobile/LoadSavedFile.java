@@ -173,9 +173,6 @@ public class LoadSavedFile {
                         }
                         //END: Parse test Location string
 
-                        Globals.globalLoadedFileName = strFileName;
-                        Log.d("LoadSavedFile","File successfully loaded!");
-
                         // reload customer and test site info in MainMenuUI in case user wants to re-edit
                         //MainMenu.MainMenuUI.txtCustomerInfo.setText(strCustomerInfo);
                         //MainMenu.MainMenuUI.txtTestSiteInfo.setText(strTestSiteInfo);
@@ -187,6 +184,9 @@ public class LoadSavedFile {
                 }
 
                 br.close();
+
+                Globals.globalLoadedFileName = strFileName;
+                Log.d("LoadSavedFile","File successfully loaded!");
 
                 //Creates graph
                 String test_args[] = {"Radon Concentration", strFileName};

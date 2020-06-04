@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:gravity="center|top"
     android:orientation="vertical"
+    android:tag="fragConnect"
     tools:context=".FragmentConnect">
 
     <LinearLayout
