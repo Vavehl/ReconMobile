@@ -75,10 +75,9 @@ public class MainActivity extends AppCompatActivity
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
-
             public void onTabSelected(TabLayout.Tab tab) {
-
-                Fragment fragment = null;Log.d("MainActivity","onTabSelected(TabLayout.Tab " + tab.toString() + ") called!");
+                Log.d("MainActivity","onTabSelected(TabLayout.Tab " + tab.toString() + ") called!");
+                Fragment fragment = null;
                 switch (tab.getPosition()) {
                     case 0:
                         fragment = new FragmentConnect();
@@ -272,6 +271,15 @@ public class MainActivity extends AppCompatActivity
         FragmentOpen fragmentOpen = new FragmentOpen();
         fragmentOpen.setRetainInstance(true);
         fragmentOpen.show(getSupportFragmentManager(),"");
+
+        //Programmatically initialize fragmentConnect tab -- there has to be a better way to implement this??
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        ft.replace(R.id.simpleConstraintContainer, new FragmentConnect(),"fragConnect");
+        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        ft.commit();
+        //End initial implementation of fragmentConnect
+
         if(fragmentOpen.isDetached()) {
             Log.d("MainActivity","FRAGMENT_OPEN DETACHED!");
         }

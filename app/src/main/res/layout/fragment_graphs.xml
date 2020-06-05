@@ -53,4 +53,9 @@
             android:text="@string/graph_tilts" />
 
     </com.google.android.material.tabs.TabLayout>
+
+    <include
+        layout="@layout/content_chart"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 </LinearLayout>
