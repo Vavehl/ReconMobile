@@ -127,6 +127,8 @@ public class FragmentConnect extends Fragment implements ConsoleCallback, Servic
                 Log.d("FragmentConnect", "Close File button pressed, but no file was loaded!?");
             }
             Globals.globalLoadedFileName = "";
+            Globals.globalReconCF1 = 6;
+            Globals.globalReconCF2 = 6;
             connected = ReconConnected.False;
             checkConnectionStatus();
         });

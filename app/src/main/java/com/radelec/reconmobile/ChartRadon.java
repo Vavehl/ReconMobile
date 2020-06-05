@@ -10,6 +10,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.github.mikephil.charting.charts.LineChart;
+
 public class ChartRadon extends Fragment {
 
     @Override
@@ -17,5 +19,12 @@ public class ChartRadon extends Fragment {
         Log.d("ChartRadon","OnCreateView() called!");
         View view = inflater.inflate(R.layout.chart_radon, container, false);
         return view;
+    }
+
+    public void populateRadonChart(View view) {
+        LineChart lcRadon;
+        lcRadon = view.findViewById(R.id.chartRadon);
+        lcRadon.setTouchEnabled(true);
+        lcRadon.setPinchZoom(true);
     }
 }

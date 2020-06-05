@@ -14,7 +14,6 @@ import org.apache.commons.lang3.StringUtils;
 
 public class LoadSavedFile {
 
-        public static ArrayList<ArrayList<String>> LoadedReconTXTFile = new ArrayList<>(); //This ArrayList will be used to build the chart, and is populated when loading the file.
         public static double LoadedReconCF1 = 6;
         public static double LoadedReconCF2 = 6;
         public static ArrayList<Double> LoadedReconTXTFile_Ch1RnC; //This array will store Ch1RnC
@@ -59,7 +58,7 @@ public class LoadSavedFile {
 
                 BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(ReconTXTFile)));
 
-                LoadedReconTXTFile.clear(); //We should definitely clear this each time a file is loaded, or else it will continue to grow...
+                Globals.LoadedReconTXTFile.clear(); //We should definitely clear this each time a file is loaded, or else it will continue to grow...
 
                 for (String strLine = br.readLine(); strLine != null; strLine = br.readLine()) {
                     if(strLine.length()>0) { //If the line is blank, then we definitely don't want to try to split the string.
@@ -71,11 +70,11 @@ public class LoadSavedFile {
                                 arrLine.add(arrayCounter, strLine_parsed[arrayCounter].trim()); //This will add each element in strLine_parsed to the temporary arrLine ArrayList.
                             }
                             arrLine_temp = (ArrayList<String>) arrLine.clone(); //This seems really stupid, but if you don't clone the ArrayList to a temporary holder, it'll be lost after arrLine.clear() below.
-                            LoadedReconTXTFile.add(arrLine_temp); //This will add the temporary arrLine into the primary LoadedReconTXTFile ArrayList.
-                            Log.d("LoadSavedFile",Arrays.toString(LoadedReconTXTFile.get(i).toArray()));
-                            Log.d("LoadSavedFile","Adding record #"+LoadedReconTXTFile.get(i).get(1)+" to ArrayList, whose new size is now "+LoadedReconTXTFile.size()+".");
+                            Globals.LoadedReconTXTFile.add(arrLine_temp); //This will add the temporary arrLine into the primary LoadedReconTXTFile ArrayList.
+                            Log.d("LoadSavedFile",Arrays.toString(Globals.LoadedReconTXTFile.get(i).toArray()));
+                            Log.d("LoadSavedFile","Adding record #"+Globals.LoadedReconTXTFile.get(i).get(1)+" to ArrayList, whose new size is now "+Globals.LoadedReconTXTFile.size()+".");
                             arrLine.clear(); //If we don't clear arrLine, it will turn into one massive, single-dimensional string array...
-                            Log.d("LoadSavedFile","Checking Status: "+ Arrays.toString(LoadedReconTXTFile.get(i).toArray()));
+                            Log.d("LoadSavedFile","Checking Status: "+ Arrays.toString(Globals.LoadedReconTXTFile.get(i).toArray()));
                             i++;
                         }
                         if(strLine.contains("Instrument Serial: ")) {
@@ -186,10 +185,14 @@ public class LoadSavedFile {
                 br.close();
 
                 Globals.globalLoadedFileName = strFileName;
-                Log.d("LoadSavedFile","File successfully loaded!");
+                Globals.LoadedReconCF1 = LoadedReconCF1;
+                Globals.LoadedReconCF2 = LoadedReconCF2;
+                Log.d("LoadSavedFile", "Assigning LoadedReconCF1 to Globals.LoadedReconCF1 = " + Globals.LoadedReconCF1);
+                Log.d("LoadSavedFile", "Assigning LoadedReconCF2 to Globals.LoadedReconCF2 = " + Globals.LoadedReconCF2);
+                Log.d("LoadSavedFile","File (" + Globals.globalLoadedFileName + ") successfully loaded!");
 
                 //Creates graph
-                String test_args[] = {"Radon Concentration", strFileName};
+                //String test_args[] = {"Radon Concentration", strFileName};
                 //Reset photodiode failure booleans...
                 //CreateGraph.photodiodeFailure_Ch1 = false;
                 //CreateGraph.photodiodeFailure_Ch2 = false;
