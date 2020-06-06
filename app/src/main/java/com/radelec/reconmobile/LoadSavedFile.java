@@ -197,6 +197,7 @@ public class LoadSavedFile {
                 //CreateGraph.photodiodeFailure_Ch1 = false;
                 //CreateGraph.photodiodeFailure_Ch2 = false;
                 //CreateGraph.main(test_args);
+                CreateGraphArrays.main();
 
             } catch (FileNotFoundException ex) {
                 Log.d("LoadSavedFile","ERROR: Unable to find the requested Recon TXT file in LoadSavedFile.java!");
