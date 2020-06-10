@@ -35,6 +35,7 @@ public class ChartRadon extends Fragment {
     public View populateRadonChart(View view) {
         Log.d("ChartRadon","populateRadonChart() called!");
 
+        Float minAxisRange = Float.valueOf(0);
         LineChart lcRadon;
         LineData lineData;
 
@@ -47,9 +48,13 @@ public class ChartRadon extends Fragment {
         lineDataSet.setFillAlpha(110);
         lineData = new LineData(lineDataSet);
         lcRadon.setData(lineData);
-        lcRadon.setVisibleXRangeMaximum(50);
-        lcRadon.invalidate();
+        //lcRadon.setVisibleYRangeMinimum(Float.valueOf(0));
+        //lcRadon.setVisibleXRangeMinimum(0);
+        lcRadon.setVisibleXRangeMaximum(24);
+        lcRadon.moveViewToX(20);
+        //lcRadon.invalidate();
         //lineDataSet = new LineDataSet(Globals.LoadedReconTXTFile, "Radon");
+        lcRadon.setMinimumHeight(400); //Minimum height, just in case.
         return view;
     }
 

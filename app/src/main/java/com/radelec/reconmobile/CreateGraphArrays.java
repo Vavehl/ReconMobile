@@ -1,5 +1,6 @@
 package com.radelec.reconmobile;
 
+import android.os.Build;
 import android.util.Log;
 
 import com.github.mikephil.charting.components.AxisBase;
@@ -12,6 +13,8 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 import static com.radelec.reconmobile.Constants.ConsecutiveZeroLimit;
 import static com.radelec.reconmobile.Constants.boolPhotodiodeFailureRecovery;
@@ -31,6 +34,8 @@ public class CreateGraphArrays {
         SimpleDateFormat DateTimeDisplay = new SimpleDateFormat("dd-mmm-yyyy hh:mm");
         LocalDateTime ReconDate = null;
         LocalDateTime HourCounter = null;
+        Date deprecatedHourCounter = null;
+        Date deprecatedReconDate = null;
 
         //Number Format Stuff
         NumberFormat formatUS_RnC = new DecimalFormat("#0.0");
@@ -81,12 +86,25 @@ public class CreateGraphArrays {
 
                 if (LoadedReconTXTFile.get(arrayCounter).get(2).equals("S")) { //Make sure we assign the hour counter to the first record.
                     TempYear = 2000 + Integer.parseInt(LoadedReconTXTFile.get(arrayCounter).get(3));
-                    HourCounter = LocalDateTime.of(TempYear,
-                            Integer.parseInt(LoadedReconTXTFile.get(arrayCounter).get(4)),
-                            Integer.parseInt(LoadedReconTXTFile.get(arrayCounter).get(5)),
-                            Integer.parseInt(LoadedReconTXTFile.get(arrayCounter).get(6)),
-                            Integer.parseInt(LoadedReconTXTFile.get(arrayCounter).get(7)),
-                            Integer.parseInt(LoadedReconTXTFile.get(arrayCounter).get(8)));
+                    if (Build.VERSION.SDK_INT >= 26) {
+                        HourCounter = LocalDateTime.of(TempYear,
+                                Integer.parseInt(LoadedReconTXTFile.get(arrayCounter).get(4)),
+                                Integer.parseInt(LoadedReconTXTFile.get(arrayCounter).get(5)),
+                                Integer.parseInt(LoadedReconTXTFile.get(arrayCounter).get(6)),
+                                Integer.parseInt(LoadedReconTXTFile.get(arrayCounter).get(7)),
+                                Integer.parseInt(LoadedReconTXTFile.get(arrayCounter).get(8)));
+                        Log.d("CreateGraphArrays","Beginning Exposure (HourCounter) = " + HourCounter.toString());
+                    } else {
+                        Log.d("CreateGraphArrays","Android API " + Build.VERSION.SDK_INT + " will use deprecated Date format.");
+                        deprecatedHourCounter = new Date();
+                        deprecatedHourCounter.setYear(TempYear);
+                        deprecatedHourCounter.setMonth(Integer.parseInt(LoadedReconTXTFile.get(arrayCounter).get(4))-1); //Old java.util.date has date range of 0 (January) to 11 (December). Let's subtract one to match this.
+                        deprecatedHourCounter.setDate(Integer.parseInt(LoadedReconTXTFile.get(arrayCounter).get(5)));
+                        deprecatedHourCounter.setHours(Integer.parseInt(LoadedReconTXTFile.get(arrayCounter).get(6)));
+                        deprecatedHourCounter.setMinutes(Integer.parseInt(LoadedReconTXTFile.get(arrayCounter).get(7)));
+                        deprecatedHourCounter.setSeconds(Integer.parseInt(LoadedReconTXTFile.get(arrayCounter).get(8)));
+                        Log.d("CreateGraphArrays","Beginning Exposure (deprecatedHourCounter) = " + deprecatedHourCounter.toString());
+                    }
                 }
 
                 Ch1Counts = Long.parseLong(LoadedReconTXTFile.get(arrayCounter).get(10)); //pull Chamber #1 counts from LoadedReconTXTFile ArrayList
@@ -166,25 +184,53 @@ public class CreateGraphArrays {
                 }
 
                 TempYear = 2000 + Integer.parseInt(LoadedReconTXTFile.get(arrayCounter).get(3));
-                ReconDate = LocalDateTime.of(TempYear,
-                        Integer.parseInt(LoadedReconTXTFile.get(arrayCounter).get(4)),
-                        Integer.parseInt(LoadedReconTXTFile.get(arrayCounter).get(5)),
-                        Integer.parseInt(LoadedReconTXTFile.get(arrayCounter).get(6)),
-                        Integer.parseInt(LoadedReconTXTFile.get(arrayCounter).get(7)),
-                        Integer.parseInt(LoadedReconTXTFile.get(arrayCounter).get(8)));
+                if (Build.VERSION.SDK_INT >= 26) {
+                    ReconDate = LocalDateTime.of(TempYear,
+                            Integer.parseInt(LoadedReconTXTFile.get(arrayCounter).get(4)),
+                            Integer.parseInt(LoadedReconTXTFile.get(arrayCounter).get(5)),
+                            Integer.parseInt(LoadedReconTXTFile.get(arrayCounter).get(6)),
+                            Integer.parseInt(LoadedReconTXTFile.get(arrayCounter).get(7)),
+                            Integer.parseInt(LoadedReconTXTFile.get(arrayCounter).get(8)));
+                } else {
+                    deprecatedReconDate = new Date();
+                    deprecatedReconDate.setYear(TempYear);
+                    deprecatedReconDate.setMonth(Integer.parseInt(LoadedReconTXTFile.get(arrayCounter).get(4))-1); //Old java.util.date has date range of 0 (January) to 11 (December). Let's subtract one to match this.
+                    deprecatedReconDate.setDate(Integer.parseInt(LoadedReconTXTFile.get(arrayCounter).get(5)));
+                    deprecatedReconDate.setHours(Integer.parseInt(LoadedReconTXTFile.get(arrayCounter).get(6)));
+                    deprecatedReconDate.setMinutes(Integer.parseInt(LoadedReconTXTFile.get(arrayCounter).get(7)));
+                    deprecatedReconDate.setSeconds(Integer.parseInt(LoadedReconTXTFile.get(arrayCounter).get(8)));
+                    Log.d("CreateGraphArrays","Beginning Exposure (deprecatedHourCounter) = " + deprecatedHourCounter.toString());
+                }
 
-                //logic to be implemented at later time...
-                if(HourCounter != null && ReconDate != null) {
-                    diffMinutes = ChronoUnit.MINUTES.between(HourCounter, ReconDate);
+
+                if((Build.VERSION.SDK_INT >= 26 && HourCounter != null && ReconDate != null)||(Build.VERSION.SDK_INT < 26 && deprecatedHourCounter!= null && deprecatedReconDate != null)) {
+                    if(Build.VERSION.SDK_INT >= 26) {
+                        diffMinutes = ChronoUnit.MINUTES.between(HourCounter, ReconDate);
+                    } else {
+                        long diffInMilliseconds = Math.abs(deprecatedReconDate.getTime() - deprecatedHourCounter.getTime());
+                        long diff = TimeUnit.MINUTES.convert(diffInMilliseconds, TimeUnit.MILLISECONDS);
+                        Log.d("CreateGraphArrays","diffMinutes = " + diffMinutes);
+                        diffMinutes = diff;
+                    }
                     if (diffMinutes >= 60) { //Every time we have more than 60 minutes, let's calculate our hourly radon concentration
                         //Reset Hour Counter and display hourly average
                         TempYear = 2000 + Integer.parseInt(LoadedReconTXTFile.get(arrayCounter).get(3));
-                        HourCounter = LocalDateTime.of(TempYear,
-                                Integer.parseInt(LoadedReconTXTFile.get(arrayCounter).get(4)),
-                                Integer.parseInt(LoadedReconTXTFile.get(arrayCounter).get(5)),
-                                Integer.parseInt(LoadedReconTXTFile.get(arrayCounter).get(6)),
-                                Integer.parseInt(LoadedReconTXTFile.get(arrayCounter).get(7)),
-                                Integer.parseInt(LoadedReconTXTFile.get(arrayCounter).get(8)));
+                        if (Build.VERSION.SDK_INT >= 26) {
+                            HourCounter = LocalDateTime.of(TempYear,
+                                    Integer.parseInt(LoadedReconTXTFile.get(arrayCounter).get(4)),
+                                    Integer.parseInt(LoadedReconTXTFile.get(arrayCounter).get(5)),
+                                    Integer.parseInt(LoadedReconTXTFile.get(arrayCounter).get(6)),
+                                    Integer.parseInt(LoadedReconTXTFile.get(arrayCounter).get(7)),
+                                    Integer.parseInt(LoadedReconTXTFile.get(arrayCounter).get(8)));
+                        } else {
+                            deprecatedHourCounter = new Date();
+                            deprecatedHourCounter.setYear(TempYear);
+                            deprecatedHourCounter.setMonth(Integer.parseInt(LoadedReconTXTFile.get(arrayCounter).get(4))-1); //Old java.util.date has date range of 0 (January) to 11 (December). Let's subtract one to match this.
+                            deprecatedHourCounter.setDate(Integer.parseInt(LoadedReconTXTFile.get(arrayCounter).get(5)));
+                            deprecatedHourCounter.setHours(Integer.parseInt(LoadedReconTXTFile.get(arrayCounter).get(6)));
+                            deprecatedHourCounter.setMinutes(Integer.parseInt(LoadedReconTXTFile.get(arrayCounter).get(7)));
+                            deprecatedHourCounter.setSeconds(Integer.parseInt(LoadedReconTXTFile.get(arrayCounter).get(8)));
+                        }
 
                         //Increase our hour counter (temporary until we figure out x-axis dates)
                         hourCounter++;
@@ -230,8 +276,11 @@ public class CreateGraphArrays {
                             arrLine.add(9, (rawCountsExist ? formatSI_RnC.format((rawTempCounts_Ch1 / LoadedReconCF1) * 37) : formatSI_RnC.format((tempCounts_Ch1 / LoadedReconCF1) * 37))); //Raw Hourly Chamber 1 radon concentration Index = 7
                             arrLine.add(10, (rawCountsExist ? formatSI_RnC.format((rawTempCounts_Ch2 / LoadedReconCF2) * 37) : formatSI_RnC.format((tempCounts_Ch2 / LoadedReconCF2) * 37))); //Raw Hourly Chamber 2 radon concentration Index = 8
 
-                            chartdataRadon.add(new Entry(ReconDate.getHour(),Float.parseFloat(formatSI_RnC.format(((tempCounts_Ch1 / LoadedReconCF1 + tempCounts_Ch2 / LoadedReconCF2) / 2) * 37))));
-
+                            if(Build.VERSION.SDK_INT >= 26) {
+                                chartdataRadon.add(new Entry(ReconDate.getHour(), Float.parseFloat(formatSI_RnC.format(((tempCounts_Ch1 / LoadedReconCF1 + tempCounts_Ch2 / LoadedReconCF2) / 2) * 37))));
+                            } else {
+                                chartdataRadon.add(new Entry(deprecatedReconDate.getTime(), Float.parseFloat(formatSI_RnC.format(((tempCounts_Ch1 / LoadedReconCF1 + tempCounts_Ch2 / LoadedReconCF2) / 2) * 37))));
+                            }
                             System.out.println(arrLine);
 
                         } else {
@@ -256,7 +305,11 @@ public class CreateGraphArrays {
 
                             //Add to HourlyReconData array, to be used in our PDF (only US-specific elements to be added)
                             arrLine.add(0, Long.toString(TotalHourCounter)); //Total Hour Counter Index = 0
-                            arrLine.add(1, (ReconDate.toString())); //Datetime Index = 1;
+                            if(Build.VERSION.SDK_INT >= 26) {
+                                arrLine.add(1, (ReconDate.toString())); //Datetime Index = 1;
+                            } else {
+                                arrLine.add(1, (deprecatedReconDate.toString())); //Datetime Index = 1;
+                            }
                             arrLine.add(2, formatUS_RnC.format((tempCounts_Ch1 / LoadedReconCF1 + tempCounts_Ch2 / LoadedReconCF2) / 2)); //Hourly Avg Radon Index = 2
                             arrLine.add(3, formatZero.format((hourlyAvgTemp / avgCounter) * 9 / 5 + 32)); //Hourly Avg Temperature (in Fahrenheit) Index = 3
                             arrLine.add(4, formatTenth.format((hourlyAvgPress / avgCounter) * 0.02952998751)); //Hourly Avg Pressure (in inHg) Index = 4
@@ -267,8 +320,11 @@ public class CreateGraphArrays {
                             arrLine.add(9, (rawCountsExist ? formatUS_RnC.format((rawTempCounts_Ch1 / LoadedReconCF1)) : formatUS_RnC.format((tempCounts_Ch1 / LoadedReconCF1)))); //Raw hourly Chamber 1 radon concentration Index = 9
                             arrLine.add(10, (rawCountsExist ? formatUS_RnC.format((rawTempCounts_Ch2 / LoadedReconCF2)) : formatUS_RnC.format((tempCounts_Ch2 / LoadedReconCF2)))); //Raw Hourly Chamber 2 radon concentration Index = 10
 
-                            chartdataRadon.add(new Entry(ReconDate.getHour(),Float.parseFloat(formatUS_RnC.format((tempCounts_Ch1 / LoadedReconCF1 + tempCounts_Ch2 / LoadedReconCF2) / 2))));
-
+                            if(Build.VERSION.SDK_INT >= 26) {
+                                chartdataRadon.add(new Entry(ReconDate.getHour(), Float.parseFloat(formatUS_RnC.format((tempCounts_Ch1 / LoadedReconCF1 + tempCounts_Ch2 / LoadedReconCF2) / 2))));
+                            } else {
+                                chartdataRadon.add(new Entry(deprecatedReconDate.getTime(), Float.parseFloat(formatUS_RnC.format((tempCounts_Ch1 / LoadedReconCF1 + tempCounts_Ch2 / LoadedReconCF2) / 2))));
+                            }
                             System.out.println(arrLine);
                         }
 

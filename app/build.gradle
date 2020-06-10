@@ -5,7 +5,7 @@ android {
     buildToolsVersion "29.0.2"
     defaultConfig {
         applicationId 'com.radelec.reconmobile'
-        minSdkVersion 26
+        minSdkVersion 18
         targetSdkVersion 29
         versionCode 1
         versionName "0.4.0"
