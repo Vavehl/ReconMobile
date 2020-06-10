@@ -11,9 +11,13 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.util.ArrayList;
+
+import static com.radelec.reconmobile.Globals.chartdataRadon;
 
 public class ChartRadon extends Fragment {
 
@@ -32,14 +36,19 @@ public class ChartRadon extends Fragment {
         Log.d("ChartRadon","populateRadonChart() called!");
 
         LineChart lcRadon;
-        ArrayList alEntries;
+        LineData lineData;
 
         lcRadon = view.findViewById(R.id.chartRadon);
         lcRadon.setTouchEnabled(true);
         lcRadon.setPinchZoom(true);
 
-
-
+        LineDataSet lineDataSet = new LineDataSet(chartdataRadon,"Radon");
+        lineDataSet.setColors(ColorTemplate.getHoloBlue());
+        lineDataSet.setFillAlpha(110);
+        lineData = new LineData(lineDataSet);
+        lcRadon.setData(lineData);
+        lcRadon.setVisibleXRangeMaximum(50);
+        lcRadon.invalidate();
         //lineDataSet = new LineDataSet(Globals.LoadedReconTXTFile, "Radon");
         return view;
     }

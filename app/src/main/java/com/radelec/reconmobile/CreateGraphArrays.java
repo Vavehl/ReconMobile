@@ -2,6 +2,10 @@ package com.radelec.reconmobile;
 
 import android.util.Log;
 
+import com.github.mikephil.charting.components.AxisBase;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
+
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
@@ -65,6 +69,12 @@ public class CreateGraphArrays {
         //Needed for building HourlyReconData arraylist...
         ArrayList<String> arrLine = new ArrayList<>();
         ArrayList<String> arrLine_temp = new ArrayList<>();
+
+        chartdataRadon = new ArrayList<Entry>();
+        chartdataTemp = new ArrayList<Entry>();
+        chartdataPressure = new ArrayList<Entry>();
+        chartdataHumidity = new ArrayList<Entry>();
+        chartdataTilts = new ArrayList<Entry>();
 
         for(int arrayCounter = 0; arrayCounter < LoadedReconTXTFile.size(); arrayCounter++) {
             if(LoadedReconTXTFile.get(arrayCounter).get(2).equals("S")||(LoadedReconTXTFile.get(arrayCounter).get(2).equals("I"))||(LoadedReconTXTFile.get(arrayCounter).get(2).equals("E"))) { //Only build data from S, I, and E flags.
@@ -220,6 +230,10 @@ public class CreateGraphArrays {
                             arrLine.add(9, (rawCountsExist ? formatSI_RnC.format((rawTempCounts_Ch1 / LoadedReconCF1) * 37) : formatSI_RnC.format((tempCounts_Ch1 / LoadedReconCF1) * 37))); //Raw Hourly Chamber 1 radon concentration Index = 7
                             arrLine.add(10, (rawCountsExist ? formatSI_RnC.format((rawTempCounts_Ch2 / LoadedReconCF2) * 37) : formatSI_RnC.format((tempCounts_Ch2 / LoadedReconCF2) * 37))); //Raw Hourly Chamber 2 radon concentration Index = 8
 
+                            chartdataRadon.add(new Entry(ReconDate.getHour(),Float.parseFloat(formatSI_RnC.format(((tempCounts_Ch1 / LoadedReconCF1 + tempCounts_Ch2 / LoadedReconCF2) / 2) * 37))));
+
+                            System.out.println(arrLine);
+
                         } else {
                             //Ch1_Series.add(hourCounter, tempCounts_Ch1 / LoadedReconCF1);
                             //Ch2_Series.add(hourCounter, tempCounts_Ch2 / LoadedReconCF2);
@@ -252,6 +266,9 @@ public class CreateGraphArrays {
                             arrLine.add(8, (formatUS_RnC.format((tempCounts_Ch2 / LoadedReconCF2)))); //Hourly Chamber 2 radon concentration Index = 8
                             arrLine.add(9, (rawCountsExist ? formatUS_RnC.format((rawTempCounts_Ch1 / LoadedReconCF1)) : formatUS_RnC.format((tempCounts_Ch1 / LoadedReconCF1)))); //Raw hourly Chamber 1 radon concentration Index = 9
                             arrLine.add(10, (rawCountsExist ? formatUS_RnC.format((rawTempCounts_Ch2 / LoadedReconCF2)) : formatUS_RnC.format((tempCounts_Ch2 / LoadedReconCF2)))); //Raw Hourly Chamber 2 radon concentration Index = 10
+
+                            chartdataRadon.add(new Entry(ReconDate.getHour(),Float.parseFloat(formatUS_RnC.format((tempCounts_Ch1 / LoadedReconCF1 + tempCounts_Ch2 / LoadedReconCF2) / 2))));
+
                             System.out.println(arrLine);
                         }
 
