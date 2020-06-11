@@ -11,6 +11,7 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Date;
@@ -42,6 +43,9 @@ public class CreateGraphArrays {
         NumberFormat formatSI_RnC = new DecimalFormat("#0");
         NumberFormat formatZero = new DecimalFormat("#0"); //redundant, but easier to read
         NumberFormat formatTenth = new DecimalFormat("#0.0");
+
+        //Axis Format Stuff
+        GraphAxisFormatter gafXAxis = new GraphAxisFormatter();
 
         long Ch1Counts = 0;
         long Ch2Counts = 0;
@@ -321,7 +325,8 @@ public class CreateGraphArrays {
                             arrLine.add(10, (rawCountsExist ? formatUS_RnC.format((rawTempCounts_Ch2 / LoadedReconCF2)) : formatUS_RnC.format((tempCounts_Ch2 / LoadedReconCF2)))); //Raw Hourly Chamber 2 radon concentration Index = 10
 
                             if(Build.VERSION.SDK_INT >= 26) {
-                                chartdataRadon.add(new Entry(ReconDate.getHour(), Float.parseFloat(formatUS_RnC.format((tempCounts_Ch1 / LoadedReconCF1 + tempCounts_Ch2 / LoadedReconCF2) / 2))));
+                                chartdataRadon.add(new Entry(ReconDate.toEpochSecond(ZoneOffset.UTC), Float.parseFloat(formatUS_RnC.format((tempCounts_Ch1 / LoadedReconCF1 + tempCounts_Ch2 / LoadedReconCF2) / 2))));
+                                System.out.println("EPOCH SECOND = " + ReconDate.toEpochSecond(ZoneOffset.UTC));
                             } else {
                                 chartdataRadon.add(new Entry(deprecatedReconDate.getTime(), Float.parseFloat(formatUS_RnC.format((tempCounts_Ch1 / LoadedReconCF1 + tempCounts_Ch2 / LoadedReconCF2) / 2))));
                             }

@@ -11,6 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
@@ -38,23 +39,24 @@ public class ChartRadon extends Fragment {
         Float minAxisRange = Float.valueOf(0);
         LineChart lcRadon;
         LineData lineData;
+        XAxis xAxis;
+        GraphAxisFormatter gafXAxis = new GraphAxisFormatter();
 
         lcRadon = view.findViewById(R.id.chartRadon);
         lcRadon.setTouchEnabled(true);
         lcRadon.setPinchZoom(true);
 
-        LineDataSet lineDataSet = new LineDataSet(chartdataRadon,"Radon");
+        LineDataSet lineDataSet = new LineDataSet(chartdataRadon,"");
         lineDataSet.setColors(ColorTemplate.getHoloBlue());
         lineDataSet.setFillAlpha(110);
         lineData = new LineData(lineDataSet);
         lcRadon.setData(lineData);
-        //lcRadon.setVisibleYRangeMinimum(Float.valueOf(0));
-        //lcRadon.setVisibleXRangeMinimum(0);
-        lcRadon.setVisibleXRangeMaximum(24);
-        lcRadon.moveViewToX(20);
-        //lcRadon.invalidate();
-        //lineDataSet = new LineDataSet(Globals.LoadedReconTXTFile, "Radon");
-        lcRadon.setMinimumHeight(400); //Minimum height, just in case.
+        xAxis = lcRadon.getXAxis();
+        xAxis.setValueFormatter(new GraphAxisFormatter());
+        if(lcRadon.getHeight()<400) {
+            Log.d("ChartRadon","chartRadon has a current height of " + lcRadon.getHeight() + " -- this is too small! Setting minimum height to 400...");
+            lcRadon.setMinimumHeight(400); //Minimum height, just in case.
+        }
         return view;
     }
 
