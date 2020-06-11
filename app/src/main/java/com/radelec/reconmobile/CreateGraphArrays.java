@@ -101,6 +101,7 @@ public class CreateGraphArrays {
                     } else {
                         Log.d("CreateGraphArrays","Android API " + Build.VERSION.SDK_INT + " will use deprecated Date format.");
                         deprecatedHourCounter = new Date();
+                        TempYear = Integer.parseInt(LoadedReconTXTFile.get(arrayCounter).get(3))+100; //deprecatedHourCounter years start at 1900, not zero!
                         deprecatedHourCounter.setYear(TempYear);
                         deprecatedHourCounter.setMonth(Integer.parseInt(LoadedReconTXTFile.get(arrayCounter).get(4))-1); //Old java.util.date has date range of 0 (January) to 11 (December). Let's subtract one to match this.
                         deprecatedHourCounter.setDate(Integer.parseInt(LoadedReconTXTFile.get(arrayCounter).get(5)));
@@ -197,6 +198,7 @@ public class CreateGraphArrays {
                             Integer.parseInt(LoadedReconTXTFile.get(arrayCounter).get(8)));
                 } else {
                     deprecatedReconDate = new Date();
+                    TempYear = Integer.parseInt(LoadedReconTXTFile.get(arrayCounter).get(3))+100; //deprecatedHourCounter years start at 1900, not zero!
                     deprecatedReconDate.setYear(TempYear);
                     deprecatedReconDate.setMonth(Integer.parseInt(LoadedReconTXTFile.get(arrayCounter).get(4))-1); //Old java.util.date has date range of 0 (January) to 11 (December). Let's subtract one to match this.
                     deprecatedReconDate.setDate(Integer.parseInt(LoadedReconTXTFile.get(arrayCounter).get(5)));
@@ -228,6 +230,7 @@ public class CreateGraphArrays {
                                     Integer.parseInt(LoadedReconTXTFile.get(arrayCounter).get(8)));
                         } else {
                             deprecatedHourCounter = new Date();
+                            TempYear = Integer.parseInt(LoadedReconTXTFile.get(arrayCounter).get(3))+100; //deprecatedHourCounter years start at 1900, not zero!
                             deprecatedHourCounter.setYear(TempYear);
                             deprecatedHourCounter.setMonth(Integer.parseInt(LoadedReconTXTFile.get(arrayCounter).get(4))-1); //Old java.util.date has date range of 0 (January) to 11 (December). Let's subtract one to match this.
                             deprecatedHourCounter.setDate(Integer.parseInt(LoadedReconTXTFile.get(arrayCounter).get(5)));
@@ -325,7 +328,8 @@ public class CreateGraphArrays {
                             arrLine.add(10, (rawCountsExist ? formatUS_RnC.format((rawTempCounts_Ch2 / LoadedReconCF2)) : formatUS_RnC.format((tempCounts_Ch2 / LoadedReconCF2)))); //Raw Hourly Chamber 2 radon concentration Index = 10
 
                             if(Build.VERSION.SDK_INT >= 26) {
-                                chartdataRadon.add(new Entry(ReconDate.toEpochSecond(ZoneOffset.UTC), Float.parseFloat(formatUS_RnC.format((tempCounts_Ch1 / LoadedReconCF1 + tempCounts_Ch2 / LoadedReconCF2) / 2))));
+                                //We multiply ReconDate.toEpochSeconds by 1000 to ensure that we are using Epoch Milliseconds, which is also produced by deprecatedReconDate.getTime() below.
+                                chartdataRadon.add(new Entry(ReconDate.toEpochSecond(ZoneOffset.UTC)*1000, Float.parseFloat(formatUS_RnC.format((tempCounts_Ch1 / LoadedReconCF1 + tempCounts_Ch2 / LoadedReconCF2) / 2))));
                                 System.out.println("EPOCH SECOND = " + ReconDate.toEpochSecond(ZoneOffset.UTC));
                             } else {
                                 chartdataRadon.add(new Entry(deprecatedReconDate.getTime(), Float.parseFloat(formatUS_RnC.format((tempCounts_Ch1 / LoadedReconCF1 + tempCounts_Ch2 / LoadedReconCF2) / 2))));
