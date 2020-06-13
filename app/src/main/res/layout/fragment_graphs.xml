@@ -5,12 +5,14 @@
     android:layout_height="match_parent"
     android:gravity="top"
     android:orientation="vertical"
-    android:tag="fragGraphs">
+    android:tag="fragGraphs"
+    android:weightSum="10">
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabLayout_Graphs"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -25,31 +27,31 @@
         <com.google.android.material.tabs.TabItem
             android:id="@+id/tabRadon"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:text="@string/graph_radon" />
 
         <com.google.android.material.tabs.TabItem
             android:id="@+id/tabPressure"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:text="@string/graph_pressure" />
 
         <com.google.android.material.tabs.TabItem
             android:id="@+id/tabTemperature"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:text="@string/graph_temp" />
 
         <com.google.android.material.tabs.TabItem
             android:id="@+id/tabHumidity"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:text="@string/graph_humidity" />
 
         <com.google.android.material.tabs.TabItem
             android:id="@+id/tabTilts"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:text="@string/graph_tilts" />
 
     </com.google.android.material.tabs.TabLayout>
@@ -57,5 +59,6 @@
     <include
         layout="@layout/content_chart"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="0dp"
+        android:layout_weight="9"/>
 </LinearLayout>
