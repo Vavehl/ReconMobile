@@ -21,6 +21,7 @@ import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.DefaultValueFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.Utils;
 
@@ -44,18 +45,11 @@ public class ChartRadon extends Fragment {
     public View populateRadonChart(View view) {
         Log.d("ChartRadon","populateRadonChart() called!");
 
-        Float minAxisRange = Float.valueOf(0);
         LineChart lcRadon;
         LineData lineData;
         XAxis xAxis;
         final YAxis yAxis;
         float yMin = 0;
-        GraphAxisFormatter gafXAxis = new GraphAxisFormatter();
-        HorizontalScrollView svChartRadon = view.findViewById(R.id.svChartRadon);
-        //ConstraintLayout layoutFragmentGraphs = view.findViewById(R.id.chartConstraintContainer);
-
-        //System.out.println("chartConstraintContainer Height = " + layoutFragmentGraphs.getHeight());
-        System.out.println("svChartRadon Height = " + svChartRadon.getHeight());
 
         //General graph settings
         lcRadon = view.findViewById(R.id.chartRadon);
@@ -65,42 +59,51 @@ public class ChartRadon extends Fragment {
         lcRadon.setPinchZoom(true);
         lcRadon.setScaleEnabled(true);
         lcRadon.setDragEnabled(true);
-        lcRadon.setAutoScaleMinMaxEnabled(false);
+        //lcRadon.setAutoScaleMinMaxEnabled(false);
         lcRadon.getAxisRight().setEnabled(false);
-        lcRadon.getDescription().setEnabled(false);
-        lcRadon.setVisibleXRangeMaximum(24);
+        lcRadon.getDescription().setEnabled(true);
+        //lcRadon.setVisibleXRangeMaximum(24);
 
         //Y-Axis formatting
         yAxis = lcRadon.getAxisLeft();
         yAxis.setPosition(YAxis.YAxisLabelPosition.INSIDE_CHART);
         yAxis.setLabelCount(4,true);
+        yAxis.setDrawGridLines(false);
+        yAxis.setValueFormatter(new DefaultValueFormatter(1));
         yAxis.setAxisMinimum(yMin);
+        //yAxis.setAxisMaximum(yAxis.getAxisMaximum()*(float)1.25);
 
         //X-Axis formatting
         xAxis = lcRadon.getXAxis();
+        xAxis.setLabelRotationAngle(45);
+        //xAxis.setLabelCount(24);
         xAxis.setDrawGridLines(false);
         xAxis.setValueFormatter(new GraphAxisFormatter());
+        xAxis.setAvoidFirstLastClipping(true);
 
         LineDataSet lineDataSet = new LineDataSet(chartdataRadon,"pCi/L");
-
-        if(Globals.globalUnitType=="SI") {
-            lineDataSet.setLabel("Bq/m³");
-        }
 
         //lineDataSet.setColors(ColorTemplate.getHoloBlue());
         lineDataSet.setFillAlpha(110);
         lineDataSet.setDrawCircles(true);
         lineDataSet.setCircleColor(R.color.colorPrimary);
         lineDataSet.setColor(R.color.colorPrimary);
-        lineDataSet.setLineWidth(3f);
+        lineDataSet.setLineWidth(5f);
         lineDataSet.setDrawFilled(true);
         lineDataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+        lineDataSet.setValueTextSize(10f);
+        lineDataSet.setValueFormatter(new DefaultValueFormatter(1));
+        lineDataSet.setFillColor(Color.argb(200,99,2,10));
         lineData = new LineData(lineDataSet);
-        lineDataSet.setFillColor(Color.RED);
-
         //Draw the actual graph with lineData
         //lcRadon.fitScreen();
         lcRadon.setData(lineData);
+
+        //Modifiers if SI units are selected.
+        if(Globals.globalUnitType=="SI") {
+            lineDataSet.setLabel("Bq/m³");
+            yAxis.setValueFormatter(new DefaultValueFormatter(0));
+        }
 
         return view;
     }
