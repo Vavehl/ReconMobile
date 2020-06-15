@@ -338,6 +338,7 @@ public class CreateGraphArrays {
                             chartdataRadon.add(new Entry((float)dblEpochMinute, Float.parseFloat(formatUS_RnC.format((tempCounts_Ch1 / LoadedReconCF1 + tempCounts_Ch2 / LoadedReconCF2) / 2))));
                             chartdataPressure.add(new Entry((float)dblEpochMinute,Float.parseFloat(formatTenth.format((hourlyAvgPress / avgCounter) * 0.02952998751))));
                             chartdataHumidity.add(new Entry((float)dblEpochMinute,Float.parseFloat(formatZero.format(hourlyAvgHumidity / avgCounter))));
+                            chartdataTemp.add(new Entry((float)dblEpochMinute,Float.parseFloat(formatZero.format((hourlyAvgTemp / avgCounter) * 9 / 5 + 32))));
                             System.out.println(arrLine);
                         }
 

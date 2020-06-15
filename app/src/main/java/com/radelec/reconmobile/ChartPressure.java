@@ -64,7 +64,6 @@ public class ChartPressure extends Fragment {
         lcPressure.setData(lineData);
 
         //General graph settings (applied after setData)
-        //lcRadon.setVisibleXRangeMaximum(24);
         lcPressure.fitScreen();
         lcPressure.setDrawBorders(false);
         lcPressure.setDrawGridBackground(false);
@@ -91,8 +90,6 @@ public class ChartPressure extends Fragment {
         xAxis.setCenterAxisLabels(true);
         xAxis.setDrawGridLines(false);
         xAxis.setValueFormatter(new GraphAxisFormatter());
-        //xAxis.setGranularity(1f);
-        //xAxis.setGranularityEnabled(true);
         xAxis.setAvoidFirstLastClipping(true);
 
         //Modifiers if SI units are selected.
