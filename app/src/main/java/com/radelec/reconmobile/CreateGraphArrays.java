@@ -331,9 +331,12 @@ public class CreateGraphArrays {
                                 //We multiply ReconDate.toEpochSeconds by 1000 to ensure that we are using Epoch Milliseconds, which is also produced by deprecatedReconDate.getTime() below.
                                 double dblEpochMinute = (double)ReconDate.toEpochSecond(ZoneOffset.UTC)/60;
                                 chartdataRadon.add(new Entry((float)dblEpochMinute, Float.parseFloat(formatUS_RnC.format((tempCounts_Ch1 / LoadedReconCF1 + tempCounts_Ch2 / LoadedReconCF2) / 2))));
+                                chartdataPressure.add(new Entry((float)dblEpochMinute,Float.parseFloat(formatTenth.format((hourlyAvgPress / avgCounter) * 0.02952998751))));
                                 System.out.println("EPOCH SECOND = " + ReconDate.toEpochSecond(ZoneOffset.UTC));
                             } else {
-                                chartdataRadon.add(new Entry(deprecatedReconDate.getTime()/60000, Float.parseFloat(formatUS_RnC.format((tempCounts_Ch1 / LoadedReconCF1 + tempCounts_Ch2 / LoadedReconCF2) / 2))));
+                                double dblEpochMinute = (double)deprecatedReconDate.getTime()/60000;
+                                chartdataRadon.add(new Entry((float)dblEpochMinute, Float.parseFloat(formatUS_RnC.format((tempCounts_Ch1 / LoadedReconCF1 + tempCounts_Ch2 / LoadedReconCF2) / 2))));
+                                chartdataPressure.add(new Entry((float)dblEpochMinute,Float.parseFloat(formatTenth.format((hourlyAvgPress / avgCounter) * 0.02952998751))));
                             }
                             System.out.println(arrLine);
                         }

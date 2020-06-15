@@ -65,7 +65,7 @@ public class ChartRadon extends Fragment {
         xAxis.setAvoidFirstLastClipping(true);
 
         LineDataSet lineDataSet = new LineDataSet(chartdataRadon,"pCi/L");
-        
+
         lineDataSet.setFillAlpha(110);
         lineDataSet.setDrawCircles(true);
         lineDataSet.setCircleColor(R.color.colorPrimary);
@@ -92,7 +92,7 @@ public class ChartRadon extends Fragment {
         lcRadon.setDragEnabled(true);
         lcRadon.setAutoScaleMinMaxEnabled(true);
         lcRadon.getAxisRight().setEnabled(false);
-        lcRadon.getDescription().setEnabled(true);
+        lcRadon.getDescription().setEnabled(false);
 
         //Modifiers if SI units are selected.
         if(Globals.globalUnitType=="SI") {
