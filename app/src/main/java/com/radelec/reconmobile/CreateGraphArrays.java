@@ -4,6 +4,7 @@ import android.os.Build;
 import android.util.Log;
 
 import com.github.mikephil.charting.components.AxisBase;
+import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 
@@ -84,7 +85,7 @@ public class CreateGraphArrays {
         chartdataTemp = new ArrayList<Entry>();
         chartdataPressure = new ArrayList<Entry>();
         chartdataHumidity = new ArrayList<Entry>();
-        chartdataTilts = new ArrayList<Entry>();
+        chartdataTilts = new ArrayList<BarEntry>();
 
         for(int arrayCounter = 0; arrayCounter < LoadedReconTXTFile.size(); arrayCounter++) {
             if(LoadedReconTXTFile.get(arrayCounter).get(2).equals("S")||(LoadedReconTXTFile.get(arrayCounter).get(2).equals("I"))||(LoadedReconTXTFile.get(arrayCounter).get(2).equals("E"))) { //Only build data from S, I, and E flags.
@@ -339,6 +340,7 @@ public class CreateGraphArrays {
                             chartdataPressure.add(new Entry((float)dblEpochMinute,Float.parseFloat(formatTenth.format((hourlyAvgPress / avgCounter) * 0.02952998751))));
                             chartdataHumidity.add(new Entry((float)dblEpochMinute,Float.parseFloat(formatZero.format(hourlyAvgHumidity / avgCounter))));
                             chartdataTemp.add(new Entry((float)dblEpochMinute,Float.parseFloat(formatZero.format((hourlyAvgTemp / avgCounter) * 9 / 5 + 32))));
+                            chartdataTilts.add(new BarEntry((float)dblEpochMinute,Float.parseFloat(formatZero.format(Math.round(hourlyMovement)))));
                             System.out.println(arrLine);
                         }
 

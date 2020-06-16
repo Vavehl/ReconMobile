@@ -1,5 +1,6 @@
 package com.radelec.reconmobile;
 
+import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
 
 import java.io.File;
@@ -55,6 +56,6 @@ class Globals {
     public static ArrayList<Entry> chartdataPressure;
     public static ArrayList<Entry> chartdataRadon;
     public static ArrayList<Entry> chartdataTemp;
-    public static ArrayList<Entry> chartdataTilts;
+    public static ArrayList<BarEntry> chartdataTilts;
 
 }
