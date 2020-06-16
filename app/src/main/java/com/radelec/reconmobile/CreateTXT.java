@@ -3,13 +3,17 @@
 
 package com.radelec.reconmobile;
 
+import android.os.Build;
 import android.util.Log;
 
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.text.DecimalFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.Arrays;
 import java.io.FileNotFoundException;
@@ -42,8 +46,11 @@ public class CreateTXT {
         long ActiveRecordCounts = 0;
         int TempYear = 0;
         //DateTimeFormatter DateTimeDisplay = DateTimeFormatter.ofPattern("MM-dd-yyyy HH:mm");
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy HH:mm");
         LocalDateTime StartDate = null;
         LocalDateTime EndDate = null;
+        Date deprecatedStartDate = null;
+        Date deprecatedEndDate = null;
         DecimalFormat RoundAvg = new DecimalFormat("####0.00");
         long totalSeconds = 0;
         long testHours = 0;
@@ -106,12 +113,22 @@ public class CreateTXT {
             while (sessionCounter < arrayDataSession.size()) {
                 Log.d("CreateTXT","Creating TXT file with Record #" + sessionCounter);
                 if (arrayDataSession.get(sessionCounter)[2].equals("S")) {
-                    Log.d("CreateTXT","Found S flag! Beginning to average...");
+                    Log.d("CreateTXT", "Found S flag! Beginning to average...");
                     BeginAveraging = true;
                     TempYear = 2000 + Integer.parseInt(arrayDataSession.get(sessionCounter)[3]);
-                    //StartDate = LocalDateTime.of(TempYear, Integer.parseInt(arrayDataSession.get(sessionCounter)[4]), Integer.parseInt(arrayDataSession.get(sessionCounter)[5]), Integer.parseInt(arrayDataSession.get(sessionCounter)[6]), Integer.parseInt(arrayDataSession.get(sessionCounter)[7]), Integer.parseInt(arrayDataSession.get(sessionCounter)[8]));
+                    if (Build.VERSION.SDK_INT >= 26) {
+                        StartDate = LocalDateTime.of(TempYear, Integer.parseInt(arrayDataSession.get(sessionCounter)[4]), Integer.parseInt(arrayDataSession.get(sessionCounter)[5]), Integer.parseInt(arrayDataSession.get(sessionCounter)[6]), Integer.parseInt(arrayDataSession.get(sessionCounter)[7]), Integer.parseInt(arrayDataSession.get(sessionCounter)[8]));
+                    } else {
+                        deprecatedStartDate = new Date();
+                        TempYear = Integer.parseInt(arrayDataSession.get(sessionCounter)[3])+100; //deprecatedHourCounter years start at 1900, not zero!
+                        deprecatedStartDate.setYear(TempYear);
+                        deprecatedStartDate.setMonth(Integer.parseInt(arrayDataSession.get(sessionCounter)[4])-1); //Old java.util.date has date range of 0 (January) to 11 (December). Let's subtract one to match this.
+                        deprecatedStartDate.setDate(Integer.parseInt(arrayDataSession.get(sessionCounter)[5]));
+                        deprecatedStartDate.setHours(Integer.parseInt(arrayDataSession.get(sessionCounter)[6]));
+                        deprecatedStartDate.setMinutes(Integer.parseInt(arrayDataSession.get(sessionCounter)[7]));
+                        deprecatedStartDate.setSeconds(Integer.parseInt(arrayDataSession.get(sessionCounter)[8]));
+                    }
                 }
-
                 if (arrayDataSession.get(sessionCounter)[2].equals("I") && BeginAveraging == true) {
                     tenMinuteCounter++;
                 }
@@ -119,11 +136,21 @@ public class CreateTXT {
                 if (arrayDataSession.get(sessionCounter)[2].equals("E")) {
                     TempYear = 2000 + Integer.parseInt(arrayDataSession.get(sessionCounter)[3]);
                     Log.d("CreateTXT","Found E flag! Wrapping up...");
-                    //EndDate = LocalDateTime.of(TempYear, Integer.parseInt(arrayDataSession.get(sessionCounter)[4]), Integer.parseInt(arrayDataSession.get(sessionCounter)[5]), Integer.parseInt(arrayDataSession.get(sessionCounter)[6]), Integer.parseInt(arrayDataSession.get(sessionCounter)[7]), Integer.parseInt(arrayDataSession.get(sessionCounter)[8]));
+                    if (Build.VERSION.SDK_INT >= 26) {
+                        EndDate = LocalDateTime.of(TempYear, Integer.parseInt(arrayDataSession.get(sessionCounter)[4]), Integer.parseInt(arrayDataSession.get(sessionCounter)[5]), Integer.parseInt(arrayDataSession.get(sessionCounter)[6]), Integer.parseInt(arrayDataSession.get(sessionCounter)[7]), Integer.parseInt(arrayDataSession.get(sessionCounter)[8]));
+                    } else {
+                        deprecatedEndDate = new Date();
+                        TempYear = Integer.parseInt(arrayDataSession.get(sessionCounter)[3])+100; //deprecatedHourCounter years start at 1900, not zero!
+                        deprecatedEndDate.setYear(TempYear);
+                        deprecatedEndDate.setMonth(Integer.parseInt(arrayDataSession.get(sessionCounter)[4])-1); //Old java.util.date has date range of 0 (January) to 11 (December). Let's subtract one to match this.
+                        deprecatedEndDate.setDate(Integer.parseInt(arrayDataSession.get(sessionCounter)[5]));
+                        deprecatedEndDate.setHours(Integer.parseInt(arrayDataSession.get(sessionCounter)[6]));
+                        deprecatedEndDate.setMinutes(Integer.parseInt(arrayDataSession.get(sessionCounter)[7]));
+                        deprecatedEndDate.setSeconds(Integer.parseInt(arrayDataSession.get(sessionCounter)[8]));
+                    }
                 }
                 if (arrayDataSession.get(sessionCounter)[2].equals("Z")) {
                     Log.d("CreateTXT","Found Z flag! Let's get out of here...");
-                    BeginAveraging = false;
                 }
                 if (BeginAveraging == true && !arrayDataSession.get(sessionCounter)[2].equals("Z")) {
                     ActiveRecordCounts++;
@@ -171,7 +198,6 @@ public class CreateTXT {
                     else {
                         if (tenMinuteCounter == 6) {
                             AllHourlyCounts.addLast(new CountContainer(ch1Counter, ch2Counter)); // add new grouping of hourly totals to the list
-
                             // clear chamber counters
                             ch1Counter = 0;
                             ch2Counter = 0;
@@ -189,6 +215,7 @@ public class CreateTXT {
             Log.d("CreateTXT","BeginAveraging= " + BeginAveraging);
             // do this if we're in diagnostic mode
             if (BeginAveraging == true && boolDiagnosticMode) {
+                Log.d("CreateTXT","Creating TXT details in diagnostic mode.");
                 // write customer info to file
                 writer.println(newline);
                 writer.println("Customer information:");
@@ -212,10 +239,17 @@ public class CreateTXT {
 
                 writer.println("SUMMARY:");
                 writer.println("Instrument Serial: " + strInstrumentSerial);
-                writer.println("Start Date/Time: ");
-                writer.println("End Date/Time: ");
-                //Duration radonDuration = Duration.between(StartDate, EndDate);
-                //totalSeconds = radonDuration.getSeconds();
+                if (Build.VERSION.SDK_INT >= 26) {
+                    writer.println("Start Date/Time: " + sdf.format(StartDate));
+                    writer.println("End Date/Time: " + sdf.format(EndDate));
+                    Duration radonDuration = Duration.between(StartDate, EndDate);
+                    totalSeconds = radonDuration.getSeconds();
+                } else {
+                    writer.println("Start Date/Time: " + sdf.format(deprecatedStartDate));
+                    writer.println("End Date/Time: " + sdf.format(deprecatedEndDate));
+                    long diffInMilliseconds = Math.abs(deprecatedEndDate.getTime() - deprecatedStartDate.getTime());
+                    totalSeconds = diffInMilliseconds / 1000;
+                }
                 testHours = totalSeconds / 3600;
                 testMinutes = ((totalSeconds % 3600) / 60);
                 testSeconds = (totalSeconds % 60);
@@ -243,6 +277,7 @@ public class CreateTXT {
                 writer.println("Retrieved By: ");
                 writer.println(newline);
             } else if (BeginAveraging == true) { // or this if we're in regular user mode
+                Log.d("CreateTXT","Creating TXT details...");
                 // write customer info to file
                 writer.println(newline);
                 writer.println("Customer information:");
@@ -255,15 +290,20 @@ public class CreateTXT {
                 writer.println(newline);
 
                 writer.println("Instrument Serial: " + strInstrumentSerial);
-                writer.println("Start Date/Time: ");
-                writer.println("End Date/Time: ");
-
-                // format time data
-                //Duration radonDuration = Duration.between(StartDate, EndDate);
-                //totalSeconds = radonDuration.getSeconds();
-                //testHours = totalSeconds / 3600;
-                //testMinutes = ((totalSeconds % 3600) / 60);
-                //testSeconds = (totalSeconds % 60);
+                if (Build.VERSION.SDK_INT >= 26) {
+                    writer.println("Start Date/Time: " + sdf.format(StartDate));
+                    writer.println("End Date/Time: " + sdf.format(EndDate));
+                    Duration radonDuration = Duration.between(StartDate, EndDate);
+                    totalSeconds = radonDuration.getSeconds();
+                } else {
+                    writer.println("Start Date/Time: " + sdf.format(deprecatedStartDate));
+                    writer.println("End Date/Time: " + sdf.format(deprecatedEndDate));
+                    long diffInMilliseconds = Math.abs(deprecatedEndDate.getTime() - deprecatedStartDate.getTime());
+                    totalSeconds = diffInMilliseconds / 1000;
+                }
+                testHours = totalSeconds / 3600;
+                testMinutes = ((totalSeconds % 3600) / 60);
+                testSeconds = (totalSeconds % 60);
 
                 writer.println("Total Test Duration: " + testHours + " hours, " + testMinutes + " minutes, " + testSeconds + " seconds");
                 writer.println("Total Movements: " + TotalMovements);
@@ -301,7 +341,6 @@ public class CreateTXT {
                     writer.println("Ch1: " + df.format((double) AllHourlyCounts.get(loopCount1).getCh1HourlyCount() / CF1) + "\tCh2: " + df.format((double) AllHourlyCounts.get(loopCount1).getCh2HourlyCount() / CF2));
                 } else { // assuming SI
                     writer.println("Hour: " + (Integer.toString(loopCount1)));
-
                     writer.println("Ch1: " + si.format((double) AllHourlyCounts.get(loopCount1).getCh1HourlyCount() / CF1 * 37) + "\tCh2: " + si.format((double) AllHourlyCounts.get(loopCount1).getCh2HourlyCount() / CF2 * 37));
                 }
             }
