@@ -50,6 +50,18 @@ class Globals {
     public static ArrayList<ArrayList<String>> LoadedReconTXTFile = new ArrayList<>(); //This ArrayList will be used to build the chart, and is populated when loading the file.
     public static double LoadedReconCF1 = 6;
     public static double LoadedReconCF2 = 6;
+    public static String loadedTestSiteInfo = "";
+    public static String loadedCustomerInfo = "";
+    public static String loadedReportProtocol = "";
+    public static String loadedReportTampering = "";
+    public static String loadedReportWeather = "";
+    public static String loadedReportMitigation = "";
+    public static String loadedReportComment = "";
+    public static String loadedLocationDeployed = "";
+    public static String loadedDeployedBy = "";
+    public static String loadedRetrievedBy = "";
+    public static String loadedAnalyzedBy = "";
+    public static String loadedCalibrationDate = "";
 
     //Graph Arrays
     public static ArrayList<Entry> chartdataHumidity;

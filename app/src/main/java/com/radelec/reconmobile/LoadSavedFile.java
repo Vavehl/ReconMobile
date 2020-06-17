@@ -11,6 +11,7 @@ import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.commons.lang3.StringUtils;
+import static com.radelec.reconmobile.Globals.*;
 
 public class LoadSavedFile {
 
@@ -102,29 +103,50 @@ public class LoadSavedFile {
                         }
                         if(strLine.contains("Deployed By:")) {
                             strDeployedBy = strLine.substring(12);
+                            loadedDeployedBy = strDeployedBy;
+                            Log.d("LoadSavedFile","DeployedBy found and parsed: " + loadedDeployedBy);
                         }
                         if(strLine.contains("Retrieved By:")) {
                             strRetrievedBy = strLine.substring(13);
+                            loadedRetrievedBy = strRetrievedBy;
+                            Log.d("LoadSavedFile","RetrievedBy found and parsed: " + loadedRetrievedBy);
                         }
                         if(strLine.contains("Analyzed By:")) {
                             strAnalyzedBy = strLine.substring(12);
+                            loadedAnalyzedBy = strAnalyzedBy;
+                            Log.d("LoadSavedFile","AnalyzedBy found and parsed: " + loadedAnalyzedBy);
                         }
                         if(strLine.contains("Calibration Date =")) {
                             strLine_parsed = StringUtils.split(strLine, "=");
                             strCalDate = strLine_parsed[1].trim();
+                            loadedCalibrationDate = strCalDate;
+                            Log.d("LoadSavedFile","Calibration Date found and parsed: " + loadedCalibrationDate);
                         }
                         if(strLine.length() > 8 && strLine.substring(0,9).contains("Protocol:")) {
                             strReportProtocol = strLine.substring(9).trim(); //Should robustly parse protocol.
+                            loadedReportProtocol = strReportProtocol;
+                            Log.d("LoadSavedFile","Protocol found and parsed: " + loadedReportProtocol);
                         } else if(strLine.length() > 9 && strLine.substring(0,10).contains("Tampering:")) {
                             strReportTampering = strLine.substring(10).trim(); //Should robustly parse tampering.
+                            loadedReportTampering = strReportTampering;
+                            Log.d("LoadSavedFile","Tampering found and parsed: " + loadedReportTampering);
                         } else if(strLine.length() > 7 && strLine.substring(0,8).contains("Weather:")) {
                             strReportWeather = strLine.substring(8).trim(); //Should robustly parse weather.
+                            loadedReportWeather = strReportWeather;
+                            Log.d("LoadSavedFile","Weather found and parsed: " + loadedReportWeather);
                         } else if(strLine.length() > 10 && strLine.substring(0,11).contains("Mitigation:")) {
                             strReportMitigation = strLine.substring(11).trim(); //Should robustly parse mitigation.
+                            loadedReportMitigation = strReportMitigation;
+                            Log.d("LoadSavedFile","Mitigation found and parsed: " + loadedReportMitigation);
                         } else if(strLine.length() > 7 && strLine.substring(0,8).contains("Comment:")) {
                             strReportComment = strLine.substring(8).trim(); //Should robustly parse comment.
-                        } else if(strLine.length() > 8 && strLine.substring(0,9).contains("Location:")) {
-                            strRoomDeployed = strLine.substring(10).trim();
+                            loadedReportComment = strReportComment;
+                            Log.d("LoadSavedFile","Comment found and parsed: " + loadedReportComment);
+                        } else if((strLine.length() > 8 && strLine.substring(0,9).contains("Location:"))||(strLine.length()>5 && strLine.substring(0,5).contains("Room:"))) {
+                            if(strLine.length() > 8 && strLine.substring(0,9).contains("Location:")) strRoomDeployed = strLine.substring(10).trim();
+                            if(strLine.substring(0,5).contains("Room:")) strRoomDeployed = strLine.substring(6).trim();
+                            loadedLocationDeployed = strRoomDeployed;
+                            Log.d("LoadSavedFile","Location found and parsed: " + loadedLocationDeployed);
                         }
                         //BEGIN: Test Site Parsing Block
                         if(testSiteFlag) {
@@ -132,12 +154,14 @@ public class LoadSavedFile {
                                 testSiteFlag = false;
                                 if (strTestSiteInfo.length() > 1) {
                                     strTestSiteInfo = strTestSiteInfo.trim(); //trim any anteceding or succeeding line-feeds...
+                                    loadedTestSiteInfo = strTestSiteInfo;
                                     Log.d("LoadSavedFile","Test Site Info: " + strTestSiteInfo);
                                 } else {
                                     Log.d("LoadSavedFile","Unable to find any Test Site Info in " + strFileName + "!");
                                 }
                             } else {
                                 strTestSiteInfo = strTestSiteInfo + "\n" + strLine;
+                                loadedTestSiteInfo = strTestSiteInfo;
                             }
                         }
                         if(strLine.contains("Test site information:")) { //if we find this, then we know that our test site info will be in the next line.
@@ -151,12 +175,14 @@ public class LoadSavedFile {
                                 customerInfoFlag = false;
                                 if (strCustomerInfo.length() > 1) {
                                     strCustomerInfo = strCustomerInfo.trim(); //trim any anteceding or succeeding line-feeds...
+                                    loadedCustomerInfo = strCustomerInfo;
                                     Log.d("LoadSavedFile","Customer Info: " + strCustomerInfo);
                                 } else {
                                     Log.d("LoadSavedFile","Unable to find any Customer Info in " + strFileName + "!");
                                 }
                             } else {
                                 strCustomerInfo = strCustomerInfo + "\n" + strLine;
+                                loadedCustomerInfo = strCustomerInfo;
                             }
                         }
                         if(strLine.contains("Customer information:")) { //if we find this, then we know that our customer info will be in the next line.
@@ -169,6 +195,7 @@ public class LoadSavedFile {
                             strLocation = strLine;
                             strLocation = strLocation.trim();
                             strLocation = strLocation.substring(10);
+                            loadedLocationDeployed = strLocation;
                         }
                         //END: Parse test Location string
 

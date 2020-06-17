@@ -130,6 +130,18 @@ public class FragmentConnect extends Fragment implements ConsoleCallback, Servic
             Globals.globalReconCF1 = 6;
             Globals.globalReconCF2 = 6;
             connected = ReconConnected.False;
+            loadedTestSiteInfo = "";
+            loadedCustomerInfo = "";
+            loadedReportProtocol = "";
+            loadedReportTampering = "";
+            loadedReportWeather = "";
+            loadedReportMitigation = "";
+            loadedReportComment = "";
+            loadedLocationDeployed = "";
+            loadedDeployedBy = "";
+            loadedRetrievedBy = "";
+            loadedAnalyzedBy = "";
+            loadedCalibrationDate = "";
             checkConnectionStatus();
         });
 

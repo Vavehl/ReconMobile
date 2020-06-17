@@ -12,6 +12,8 @@ import androidx.fragment.app.Fragment;
 
 import com.google.android.material.textfield.TextInputEditText;
 
+import static com.radelec.reconmobile.Globals.*;
+
 public class FragmentReport extends Fragment {
     private DatabaseOperations db_report;
 
@@ -56,20 +58,36 @@ public class FragmentReport extends Fragment {
         cursorReportDefaults = db_report.getReportDefaultData();
         cursorReportDefaults.moveToFirst(); //Critical to moveToFirst() here, or else we're sitting at an invalid index.
 
-        //Set the Report Defaults to the TextInputEditText boxes
-        //No need to set defaults for Customer or Test Site, as these will change every time...
-        etLocation.setText((String)cursorReportDefaults.getString(1));
-        etCustomer.setText((String)cursorReportDefaults.getString(2));
-        etTestSite.setText((String)cursorReportDefaults.getString(3));
-        etDeployedBy.setText((String)cursorReportDefaults.getString(4));
-        etRetrievedBy.setText((String)cursorReportDefaults.getString(5));
-        etAnalyzedBy.setText((String)cursorReportDefaults.getString(6));
-        etProtocol.setText((String)cursorReportDefaults.getString(7));
-        etTampering.setText((String)cursorReportDefaults.getString(8));
-        etWeather.setText((String)cursorReportDefaults.getString(9));
-        etMitigation.setText((String)cursorReportDefaults.getString(10));
-        etComment.setText((String)cursorReportDefaults.getString(11));
-        etReportText.setText((String)cursorReportDefaults.getString(12));
+        if (connected == Globals.ReconConnected.Loaded) {
+            etLocation.setText((String) loadedLocationDeployed);
+            etCustomer.setText((String) loadedCustomerInfo);
+            etTestSite.setText((String) loadedTestSiteInfo);
+            etDeployedBy.setText((String) loadedDeployedBy);
+            etRetrievedBy.setText((String) loadedRetrievedBy);
+            etAnalyzedBy.setText((String) loadedAnalyzedBy);
+            etProtocol.setText((String) loadedReportProtocol);
+            etTampering.setText((String) loadedReportTampering);
+            etWeather.setText((String) loadedReportWeather);
+            etMitigation.setText((String) loadedReportMitigation);
+            etComment.setText((String) loadedReportComment);
+        } else {
+            //Set the Report Defaults to the TextInputEditText boxes
+            //No need to set defaults for Customer or Test Site, as these will change every time...
+            etLocation.setText((String) cursorReportDefaults.getString(1));
+            etCustomer.setText((String) cursorReportDefaults.getString(2));
+            etTestSite.setText((String) cursorReportDefaults.getString(3));
+            etDeployedBy.setText((String) cursorReportDefaults.getString(4));
+            etRetrievedBy.setText((String) cursorReportDefaults.getString(5));
+            etAnalyzedBy.setText((String) cursorReportDefaults.getString(6));
+            etProtocol.setText((String) cursorReportDefaults.getString(7));
+            etTampering.setText((String) cursorReportDefaults.getString(8));
+            etWeather.setText((String) cursorReportDefaults.getString(9));
+            etMitigation.setText((String) cursorReportDefaults.getString(10));
+            etComment.setText((String) cursorReportDefaults.getString(11));
+        }
+
+        //Report Text default will always be the same, at least for now...
+        etReportText.setText((String) cursorReportDefaults.getString(12));
 
         //Instrument Location Listener
         etLocation.setOnClickListener(new View.OnClickListener() {
