@@ -3,6 +3,9 @@
 
 package com.radelec.reconmobile;
 
+import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.util.Log;
 
@@ -98,6 +101,10 @@ public class CreateTXT {
 
         ReconWaitTime = arrayDataSession.get(0)[12]; //Needs error handling!
         ReconDurationSetting = arrayDataSession.get(0)[13]; //Needs error handling!
+
+        Cursor cursorReportDefaults;
+        cursorReportDefaults = globalDBDefaults.getReportDefaultData();
+        cursorReportDefaults.moveToFirst(); //Critical to moveToFirst() here, or else we're sitting at an invalid index.
 
         Log.d("CreateTXT","All variables initialized!");
         Log.d("CreateTXT","CF1 = " + CF1 + " / CF2 = " + CF2);
@@ -264,16 +271,16 @@ public class CreateTXT {
                 writer.println("Chamber 1 CF: " + cfDec.format(CF1));
                 writer.println("Chamber 2 CF: " + cfDec.format(CF2));
                 writer.println("Calibration Date = " + ReconCalDate);
-                writer.println("Protocol: ");
-                writer.println("Tampering: ");
-                writer.println("Weather: ");
-                writer.println("Mitigation: ");
-                writer.println("Comment: ");
-                writer.println("Location: ");
+                writer.println("Protocol: " + cursorReportDefaults.getString(7));
+                writer.println("Tampering: " + cursorReportDefaults.getString(8));
+                writer.println("Weather: " + cursorReportDefaults.getString(9));
+                writer.println("Mitigation: " + cursorReportDefaults.getString(10));
+                writer.println("Comment: " + cursorReportDefaults.getString(11));
+                writer.println("Location: " + cursorReportDefaults.getString(1));
                 writer.println(newline);
-                writer.println("Analyzed By: ");
-                writer.println("Deployed By: ");
-                writer.println("Retrieved By: ");
+                writer.println("Analyzed By: " + cursorReportDefaults.getString(6));
+                writer.println("Deployed By: " + cursorReportDefaults.getString(4));
+                writer.println("Retrieved By: " + cursorReportDefaults.getString(5));
                 writer.println(newline);
             } else if (BeginAveraging == true) { // or this if we're in regular user mode
                 Log.d("CreateTXT","Creating TXT details...");
@@ -313,16 +320,16 @@ public class CreateTXT {
                 writer.println("Chamber 1 CF: " + cfDec.format(CF1));
                 writer.println("Chamber 2 CF: " + cfDec.format(CF2));
                 writer.println("Calibration Date = " + ReconCalDate);
-                writer.println("Protocol: ");
-                writer.println("Tampering: ");
-                writer.println("Weather: ");
-                writer.println("Mitigation: ");
-                writer.println("Comment: ");
-                writer.println("Location: ");
+                writer.println("Protocol: " + cursorReportDefaults.getString(7));
+                writer.println("Tampering: " + cursorReportDefaults.getString(8));
+                writer.println("Weather: " + cursorReportDefaults.getString(9));
+                writer.println("Mitigation: " + cursorReportDefaults.getString(10));
+                writer.println("Comment: " + cursorReportDefaults.getString(11));
+                writer.println("Location: " + cursorReportDefaults.getString(1));
                 writer.println(newline);
-                writer.println("Analyzed By: ");
-                writer.println("Deployed By: ");
-                writer.println("Retrieved By: ");
+                writer.println("Analyzed By: " + cursorReportDefaults.getString(6));
+                writer.println("Deployed By: " + cursorReportDefaults.getString(4));
+                writer.println("Retrieved By: " + cursorReportDefaults.getString(5));
                 writer.println(newline);
             }
             // do following regardless of mode

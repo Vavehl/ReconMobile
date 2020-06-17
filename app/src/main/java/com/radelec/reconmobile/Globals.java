@@ -63,6 +63,9 @@ class Globals {
     public static String loadedAnalyzedBy = "";
     public static String loadedCalibrationDate = "";
 
+    //Database
+    public static DatabaseOperations globalDBDefaults;
+
     //Graph Arrays
     public static ArrayList<Entry> chartdataHumidity;
     public static ArrayList<Entry> chartdataPressure;

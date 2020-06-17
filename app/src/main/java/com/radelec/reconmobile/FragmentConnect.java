@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
+import android.database.Cursor;
 import android.hardware.usb.UsbDevice;
 import android.hardware.usb.UsbDeviceConnection;
 import android.hardware.usb.UsbManager;
@@ -152,6 +153,10 @@ public class FragmentConnect extends Fragment implements ConsoleCallback, Servic
                     service.attach(this);
                 else
                     getActivity().startService(new Intent(getActivity(), SerialService.class)); // prevents service destroy on unbind from recreated activity caused by orientation change
+
+                // pull Defaults for TXT file
+                globalDBDefaults = new DatabaseOperations(getContext());
+
                 ReconFunctions rfRecon = new ReconFunctions(null);
                 rfRecon.checkNewRecord();
             } else {
