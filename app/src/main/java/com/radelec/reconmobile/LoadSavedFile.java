@@ -78,26 +78,51 @@ public class LoadSavedFile {
                         }
                         if(strLine.contains("Instrument Serial: ")) {
                             strLine_parsed = StringUtils.split(strLine, " "); //Need to parse again to segregate spaces, not commas.
-                            strInstrumentSerial = strLine_parsed[2];
-                            Log.d("LoadSavedFile","Serial# found and parsed: " + strInstrumentSerial);
+                            try {
+                                strInstrumentSerial = strLine_parsed[2];
+                                Log.d("LoadSavedFile","Serial# found and parsed: " + strInstrumentSerial);
+                            } catch(ArrayIndexOutOfBoundsException ex) {
+                                strInstrumentSerial = "Unknown";
+                                Log.d("LoadSavedFile","WARNING Out Of Bounds: Serial# not parsed.");
+                            }
                         }
                         if(strLine.contains("Chamber 1 CF: ")) {
                             strLine_parsed = StringUtils.split(strLine, " "); //Need to parse again to segregate spaces, not commas.
-                            LoadedReconCF1 = Double.parseDouble(strLine_parsed[3]);
-                            Log.d("LoadSavedFile","CF1 found and parsed: " + LoadedReconCF1);
+                            try {
+                                LoadedReconCF1 = Double.parseDouble(strLine_parsed[3]);
+                                Log.d("LoadSavedFile", "CF1 found and parsed: " + LoadedReconCF1);
+                            } catch(ArrayIndexOutOfBoundsException ex) {
+                                LoadedReconCF1 = 6;
+                                Log.d("LoadSavedFile","WARNING Out of Bounds: CF1 not parsed. Defaulting to 6...");
+                            }
                         }
                         if(strLine.contains("Chamber 2 CF: ")) {
                             strLine_parsed = StringUtils.split(strLine, " "); //Need to parse again to segregate spaces, not commas.
-                            LoadedReconCF2 = Double.parseDouble(strLine_parsed[3]);
-                            Log.d("LoadSavedFile","CF2 found and parsed: " + LoadedReconCF2);
+                            try {
+                                LoadedReconCF2 = Double.parseDouble(strLine_parsed[3]);
+                                Log.d("LoadSavedFile", "CF2 found and parsed: " + LoadedReconCF2);
+                            } catch(ArrayIndexOutOfBoundsException ex) {
+                                LoadedReconCF2 = 6;
+                                Log.d("LoadSavedFile","WARNING Out of Bounds: CF2 not parsed. Defaulting to 6...");
+                            }
                         }
                         if(strLine.contains("Start Date/Time:")) {
                             strLine_parsed = StringUtils.split(strLine, " ");
-                            strStartDate = strLine_parsed[2] + " " + strLine_parsed[3];
+                            try {
+                                strStartDate = strLine_parsed[2] + " " + strLine_parsed[3];
+                            } catch(Exception ex) {
+                                strStartDate = "Unknown Start Date";
+                                Log.d("LoadSavedFile","WARNING: Start Date not parsed...");
+                            }
                         }
                         if(strLine.contains("End Date/Time:")) {
                             strLine_parsed = StringUtils.split(strLine, " ");
-                            strEndDate = strLine_parsed[2] + " " + strLine_parsed[3];
+                            try {
+                                strEndDate = strLine_parsed[2] + " " + strLine_parsed[3];
+                            } catch(Exception ex) {
+                                strEndDate = "Unknown End Date";
+                                Log.d("LoadSavedFile","WARNING: End Date not parsed...");
+                            }
                         }
                         if(strLine.contains("Deployed By:")) {
                             strDeployedBy = strLine.substring(12);
