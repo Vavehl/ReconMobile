@@ -17,8 +17,6 @@ public class LoadSavedFile {
 
         public static double LoadedReconCF1 = 6;
         public static double LoadedReconCF2 = 6;
-        public static ArrayList<Double> LoadedReconTXTFile_Ch1RnC; //This array will store Ch1RnC
-        public static ArrayList<Double> LoadedReconTXTFile_Ch2RnC; //This array will store Ch2RnC
         public static String strTestSiteInfo = "";
         public static String strCustomerInfo = "";
         public static String strLocation = "";
@@ -198,14 +196,6 @@ public class LoadSavedFile {
                             loadedLocationDeployed = strLocation;
                         }
                         //END: Parse test Location string
-
-                        // reload customer and test site info in MainMenuUI in case user wants to re-edit
-                        //MainMenu.MainMenuUI.txtCustomerInfo.setText(strCustomerInfo);
-                        //MainMenu.MainMenuUI.txtTestSiteInfo.setText(strTestSiteInfo);
-                        //MainMenu.MainMenuUI.txtLocation.setText(strLocation);
-
-                        //Display Main Menu Console label
-                        //MainMenu.MainMenuUI.lblSystemConsole.setText("File successfully loaded.");
                     }
                 }
 
@@ -219,7 +209,6 @@ public class LoadSavedFile {
                 Log.d("LoadSavedFile","File (" + Globals.globalLoadedFileName + ") successfully loaded!");
 
                 //Creates graph
-                //String test_args[] = {"Radon Concentration", strFileName};
                 //Reset photodiode failure booleans...
                 //CreateGraph.photodiodeFailure_Ch1 = false;
                 //CreateGraph.photodiodeFailure_Ch2 = false;
