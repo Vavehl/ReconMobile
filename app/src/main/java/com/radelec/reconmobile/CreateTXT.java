@@ -45,7 +45,6 @@ public class CreateTXT {
         boolean BeginAveraging = false;
         long ActiveRecordCounts = 0;
         int TempYear = 0;
-        //DateTimeFormatter DateTimeDisplay = DateTimeFormatter.ofPattern("MM-dd-yyyy HH:mm");
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy HH:mm");
         LocalDateTime StartDate = null;
         LocalDateTime EndDate = null;
@@ -291,8 +290,9 @@ public class CreateTXT {
 
                 writer.println("Instrument Serial: " + strInstrumentSerial);
                 if (Build.VERSION.SDK_INT >= 26) {
-                    writer.println("Start Date/Time: " + sdf.format(StartDate));
-                    writer.println("End Date/Time: " + sdf.format(EndDate));
+                    DateTimeFormatter DateTimeDisplay = DateTimeFormatter.ofPattern("MM-dd-yyyy HH:mm");
+                    writer.println("Start Date/Time: " + DateTimeDisplay.format(StartDate));
+                    writer.println("End Date/Time: " + DateTimeDisplay.format(EndDate));
                     Duration radonDuration = Duration.between(StartDate, EndDate);
                     totalSeconds = radonDuration.getSeconds();
                 } else {
