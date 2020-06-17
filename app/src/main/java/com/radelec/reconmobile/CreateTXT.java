@@ -225,12 +225,12 @@ public class CreateTXT {
                 // write customer info to file
                 writer.println(newline);
                 writer.println("Customer information:");
-                //writer.println(MainMenuUI.txtCustomerInfo.getText());
+                writer.println(cursorReportDefaults.getString(2));
                 writer.println(newline);
 
                 // write test site info to file
                 writer.println("Test site information:");
-                //writer.println(MainMenuUI.txtTestSiteInfo.getText());
+                writer.println(cursorReportDefaults.getString(3));
                 writer.println(newline);
 
                 if (photodiodeFailure_Ch1 == true || photodiodeFailure_Ch2 == true) {
@@ -287,12 +287,12 @@ public class CreateTXT {
                 // write customer info to file
                 writer.println(newline);
                 writer.println("Customer information:");
-                //writer.println(MainMenuUI.txtCustomerInfo.getText());
+                writer.println(cursorReportDefaults.getString(2));
                 writer.println(newline);
 
                 // write test site info to file
                 writer.println("Test site information:");
-                //writer.println(MainMenuUI.txtTestSiteInfo.getText());
+                writer.println(cursorReportDefaults.getString(3));
                 writer.println(newline);
 
                 writer.println("Instrument Serial: " + strInstrumentSerial);
