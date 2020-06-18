@@ -73,4 +73,7 @@ class Globals {
     public static ArrayList<Entry> chartdataTemp;
     public static ArrayList<BarEntry> chartdataTilts;
 
+    //Use new filenaming method?
+    public static boolean boolUseTestSiteFileName = true;
+    public static boolean boolInvalidFileName = true;
 }

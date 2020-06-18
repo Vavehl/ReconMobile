@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.util.Log;
 
+import java.io.File;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
@@ -111,7 +112,9 @@ public class CreateTXT {
         // create text file
         try {
             Log.d("CreateTXT","Beginning to create TXT file. Array size = " + arrayDataSession.size());
-            writer = new PrintWriter(fileDir + "/test.txt", "UTF-8");
+            String strFileName = DetermineFileName.determineFileName();
+            writer = new PrintWriter(strFileName, "UTF-8");
+            Log.d("CreateTXT","FileName = " + strFileName);
 
             // print first line of data (start of test)
             writer.println(Arrays.toString(arrayDataSession.get(sessionCounter)));
