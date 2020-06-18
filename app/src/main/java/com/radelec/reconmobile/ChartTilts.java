@@ -47,10 +47,12 @@ public class ChartTilts extends Fragment {
         BarDataSet barDataSet = new BarDataSet(chartdataTilts,"Tilts");
 
         barDataSet.setColor(R.color.colorPrimary);
-        barDataSet.setDrawValues(false);
+        barDataSet.setDrawValues(true);
         barDataSet.setValueFormatter(new DefaultValueFormatter(0));
         barDataSet.setGradientColor(Color.argb(100,171,157,242),Color.argb(200,52,139,195));
         barData = new BarData(barDataSet);
+        barData.setBarWidth(20f);
+        barData.setValueTextSize(10f);
 
         //Draw the actual graph with barData
         bcTilts.setData(barData);
@@ -70,7 +72,7 @@ public class ChartTilts extends Fragment {
         //Y-Axis formatting
         yAxis = bcTilts.getAxisLeft();
         yAxis.setPosition(YAxis.YAxisLabelPosition.INSIDE_CHART);
-        yAxis.setLabelCount(4,true);
+        yAxis.setLabelCount(10,true);
         yAxis.setDrawGridLines(false);
         yAxis.setValueFormatter(new DefaultValueFormatter(0));
         yAxis.setAxisMinimum(0);
