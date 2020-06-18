@@ -40,7 +40,6 @@ public class ChartPressure extends Fragment {
         LineData lineData;
         XAxis xAxis;
         final YAxis yAxis;
-        float yMin = 0;
 
         //Assign layout element to the linechart lcPressure
         lcPressure = view.findViewById(R.id.chartPressure);
@@ -81,7 +80,7 @@ public class ChartPressure extends Fragment {
         yAxis.setLabelCount(4,true);
         yAxis.setDrawGridLines(false);
         yAxis.setValueFormatter(new DefaultValueFormatter(1));
-        yAxis.setAxisMinimum(yMin);
+        yAxis.setAxisMinimum(yAxis.getAxisMinimum() * (float)0.65);
         yAxis.setAxisMaximum(yAxis.getAxisMaximum() * (float)1.25);
 
         //X-Axis formatting
