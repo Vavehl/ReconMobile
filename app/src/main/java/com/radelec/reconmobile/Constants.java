@@ -3,8 +3,8 @@ package com.radelec.reconmobile;
 class Constants {
 
     //Version information
-    public static String version_build = "v0.4.0";
-    public static String version_date = "20 Jan 2020";
+    public static String version_build = "v0.5.0";
+    public static String version_date = "18 Jun 2020";
 
     //Recon commands
     public static final String cmdReconConfirm = ":RV";
