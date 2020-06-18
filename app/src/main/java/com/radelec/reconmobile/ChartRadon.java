@@ -1,10 +1,8 @@
 package com.radelec.reconmobile;
 
-import android.graphics.Color;
 import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.Shader;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,7 +11,6 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.github.mikephil.charting.charts.LineChart;
@@ -61,17 +58,15 @@ public class ChartRadon extends Fragment {
         lineDataSet.setValueFormatter(new DefaultValueFormatter(1));
         lineData = new LineData(lineDataSet);
 
-        Paint paint = lcRadon.getRenderer().getPaintRender();
-        int height = lcRadon.getHeight();
-
-        LinearGradient linGrad = new LinearGradient(0, 0, 0, height,
-                getResources().getColor(android.R.color.holo_blue_bright),
-                getResources().getColor(android.R.color.holo_blue_dark),
-                Shader.TileMode.REPEAT);
-        paint.setShader(linGrad);
-
         //Draw the actual graph with lineData
         lcRadon.setData(lineData);
+
+        // Gradient Stuff Begin (...which isn't even working!)
+        Paint paint = lcRadon.getRenderer().getPaintRender();
+        int height = lcRadon.getHeight();
+        LinearGradient linGrad = new LinearGradient(0, 0, 0, height, getResources().getColor(android.R.color.holo_blue_bright), getResources().getColor(android.R.color.holo_blue_dark), Shader.TileMode.REPEAT);
+        paint.setShader(linGrad);
+        // Gradient Stuff End
 
         //General graph settings (applied after setData)
         lcRadon.fitScreen();
