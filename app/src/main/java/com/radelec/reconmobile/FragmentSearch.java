@@ -4,7 +4,9 @@ import android.content.Context;
 import android.os.Bundle;
 
 import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -42,6 +44,21 @@ public class FragmentSearch extends DialogFragment {
             public void onClick(View v) {
                 Log.d("FragmentSearch","Close button pressed!");
                 Log.d("FragmentSearch", "Recon Connected? [" + connected + "]");
+
+                //BEGIN: Refresh FragmentConnect
+                Fragment frg = null;
+                if (getFragmentManager() != null) {
+                    frg = getFragmentManager().findFragmentByTag("fragConnect");
+                    FragmentTransaction ft = null;
+                    ft = getFragmentManager().beginTransaction();
+                    if (frg != null) {
+                        ft.detach(frg);
+                        ft.attach(frg);
+                        ft.commit();
+                    }
+                }
+                //END: Refresh FragmentConnect
+
                 dismiss();
             }
         });
