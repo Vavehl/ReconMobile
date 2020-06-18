@@ -186,6 +186,10 @@ class ReconFunctions {
                         if(!parsedResponse[3].trim().isEmpty()) {
                             globalDataSessions = parsedResponse[3].trim();
                             boolUnexpectedResponse = false;
+                            if(consoleCallback != null) {
+                                Log.d("ReconFunctions","MADE IT TO UPDATE SYSTEM CONSOLE!");
+                                consoleCallback.updateSystemConsole("Data Sessions: " + globalDataSessions);
+                            }
                             Log.d("ReconFunctions","getDataSessions() Data Sessions on Recon = " + globalDataSessions);
                         }
                     }

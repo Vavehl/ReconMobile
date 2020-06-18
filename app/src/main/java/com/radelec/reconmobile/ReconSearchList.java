@@ -332,6 +332,7 @@ public class ReconSearchList extends ListFragment implements ServiceConnection, 
         } catch (Exception e) {
             onSerialConnectError(e);
             Log.d("ReconSearchList","connect(): Exception!");
+            connected = ReconConnected.False;
         }
     }
 

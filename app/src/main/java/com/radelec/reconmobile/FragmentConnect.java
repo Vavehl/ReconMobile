@@ -143,6 +143,7 @@ public class FragmentConnect extends Fragment implements ConsoleCallback, Servic
             loadedRetrievedBy = "";
             loadedAnalyzedBy = "";
             loadedCalibrationDate = "";
+            updateSystemConsole("System Console"); //Restore the default system console text
             checkConnectionStatus();
         });
 
