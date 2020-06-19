@@ -73,45 +73,15 @@ public class DetermineFileName {
                     }
                 }
             }
-            // Otherwise, use the contents of the name text box
+            // Otherwise, use the default file naming method.
             else {
-
-                //check for invalid characters in file naming text box
-                patternMatcher = acceptableFilenameChars.matcher(testSite);
-                if (!patternMatcher.matches()) {
-                    boolInvalidFileName = true;
-
-                    // use the default this time
-                    if (loopCounter > 0) {
-                        TXT_name = fileDir + File.separator + defaultFilename + "-" + fileIteration + ".txt";
-                    }
-                    else {
-                        TXT_name = fileDir + File.separator + defaultFilename + ".txt";
-                    }
+                if (loopCounter > 0) {
+                    TXT_name = fileDir + File.separator + defaultFilename + "-" + fileIteration + ".txt";
                 }
                 else {
-                    // First, make sure the user hasn't clobbered the default text.
-                    if (testSite.length() > 0) {
-                        if (loopCounter > 0) {
-                            TXT_name = fileDir + File.separator + testSite + "-" + fileIteration + ".txt";
-                            boolInvalidFileName = false;
-                        }
-                        else {
-                            TXT_name = fileDir + File.separator + testSite + ".txt";
-                            boolInvalidFileName = false;
-                        }
-                    } // If the box has inadvertently been cleared, use the default from the variable
-                    else {
-                        if (loopCounter > 0) {
-                            TXT_name = fileDir + File.separator + defaultFilename + "-" + fileIteration + ".txt";
-                            boolInvalidFileName = false;
-                        }
-                        else {
-                            TXT_name = fileDir + File.separator + defaultFilename + ".txt";
-                            boolInvalidFileName = false;
-                        }
-                    }
+                    TXT_name = fileDir + File.separator + defaultFilename + ".txt";
                 }
+                boolInvalidFileName = false;
             }
 
             // Determine if the files exist with the names we want to use.
