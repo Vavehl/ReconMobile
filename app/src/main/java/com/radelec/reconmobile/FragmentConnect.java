@@ -8,7 +8,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
-import android.database.Cursor;
 import android.hardware.usb.UsbDevice;
 import android.hardware.usb.UsbDeviceConnection;
 import android.hardware.usb.UsbManager;
@@ -30,6 +29,8 @@ import androidx.fragment.app.Fragment;
 import com.hoho.android.usbserial.driver.UsbSerialDriver;
 import com.hoho.android.usbserial.driver.UsbSerialPort;
 import com.hoho.android.usbserial.driver.UsbSerialProber;
+
+import java.util.Objects;
 
 import static com.radelec.reconmobile.Constants.INTENT_ACTION_GRANT_USB;
 import static com.radelec.reconmobile.Constants.baudRate;
@@ -55,7 +56,7 @@ public class FragmentConnect extends Fragment implements ConsoleCallback, Servic
             @Override
             public void onReceive(Context context, Intent intent) {
                 Log.d("FragmentConnect","broadcastReceiver.onReceive() called!");
-                if(intent.getAction().equals(INTENT_ACTION_GRANT_USB)) {
+                if(Objects.requireNonNull(intent.getAction()).equals(INTENT_ACTION_GRANT_USB)) {
                     Log.d("FragmentConnect","Permission Granted! Attempting to call connect()...");
                     Boolean granted = intent.getBooleanExtra(UsbManager.EXTRA_PERMISSION_GRANTED, false);
                     connect(granted);
@@ -153,7 +154,7 @@ public class FragmentConnect extends Fragment implements ConsoleCallback, Servic
                 if(service != null)
                     service.attach(this);
                 else
-                    getActivity().startService(new Intent(getActivity(), SerialService.class)); // prevents service destroy on unbind from recreated activity caused by orientation change
+                    Objects.requireNonNull(getActivity()).startService(new Intent(getActivity(), SerialService.class)); // prevents service destroy on unbind from recreated activity caused by orientation change
 
                 // pull Defaults for TXT file
                 globalDBDefaults = new DatabaseOperations(getContext());
@@ -192,27 +193,27 @@ public class FragmentConnect extends Fragment implements ConsoleCallback, Servic
         if(service != null)
             service.attach(this);
         else
-            getActivity().startService(new Intent(getActivity(), SerialService.class)); // prevents service destroy on unbind from recreated activity caused by orientation change
+            Objects.requireNonNull(getActivity()).startService(new Intent(getActivity(), SerialService.class)); // prevents service destroy on unbind from recreated activity caused by orientation change
     }
 
     @Override
     public void onStop() {
         Log.d("FragmentConnect","onStop() called!");
-        if(service != null && !getActivity().isChangingConfigurations())
+        if(service != null && !Objects.requireNonNull(getActivity()).isChangingConfigurations())
             service.detach();
         super.onStop();
     }
 
     public void onPause() {
         Log.d("FragmentConnect", "onPause() called!");
-        getActivity().unregisterReceiver(broadcastReceiver);
+        Objects.requireNonNull(getActivity()).unregisterReceiver(broadcastReceiver);
         super.onPause();
     }
 
     public void onResume() {
         Log.d("FragmentConnect", "onResume() called!");
         super.onResume();
-        getActivity().registerReceiver(broadcastReceiver, new IntentFilter(INTENT_ACTION_GRANT_USB));
+        Objects.requireNonNull(getActivity()).registerReceiver(broadcastReceiver, new IntentFilter(INTENT_ACTION_GRANT_USB));
         Log.d("FragmentConnect", "onResume():: initialStart = " + initialStart);
         if(initialStart && service !=null) {
             Log.d("FragmentConnect", "onResume() :: initialStart = true && service != null");
@@ -224,23 +225,23 @@ public class FragmentConnect extends Fragment implements ConsoleCallback, Servic
 
     @SuppressWarnings("deprecation") // onAttach(context) was added with API 23. onAttach(activity) works for all API versions
     @Override
-    public void onAttach(Activity activity) {
+    public void onAttach(@NonNull Activity activity) {
         Log.d("FragmentConnect","onAttach() called!");
         super.onAttach(activity);
-        getActivity().bindService(new Intent(getActivity(), SerialService.class), this, Context.BIND_AUTO_CREATE);
+        Objects.requireNonNull(getActivity()).bindService(new Intent(getActivity(), SerialService.class), this, Context.BIND_AUTO_CREATE);
     }
 
     @Override
     public void onDetach() {
         Log.d("FragmentConnect","onDetach() called!");
-        try { getActivity().unbindService(this); } catch(Exception ignored) {}
+        try { Objects.requireNonNull(getActivity()).unbindService(this); } catch(Exception ignored) {}
         super.onDetach();
     }
 
     @Override
     public void onDestroy() {
         Log.d("FragmentConnect","onDestroy() called!");
-        getActivity().stopService(new Intent(getActivity(), SerialService.class));
+        Objects.requireNonNull(getActivity()).stopService(new Intent(getActivity(), SerialService.class));
         super.onDestroy();
     }
 
@@ -301,7 +302,7 @@ public class FragmentConnect extends Fragment implements ConsoleCallback, Servic
         service = ((SerialService.SerialBinder) binder).getService();
         if(initialStart && isResumed()) {
             initialStart = false;
-            getActivity().runOnUiThread(this::connect);
+            Objects.requireNonNull(getActivity()).runOnUiThread(this::connect);
         }
     }
 
