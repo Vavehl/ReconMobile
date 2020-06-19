@@ -21,7 +21,6 @@ public class FragmentOpen extends DialogFragment implements FileSearchListAdapte
 
     //RecyclerView stuff
     private ArrayList<ListDataFiles> alDataFiles;
-    private RecyclerView mRecyclerView;
 
     private int intLastPositionHighlighted = -1;
 
@@ -37,23 +36,20 @@ public class FragmentOpen extends DialogFragment implements FileSearchListAdapte
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
         // Inflate the layout for this fragment
         Log.d("FragmentOpen","FragmentOpen.onCreateView() called!");
         View view = inflater.inflate(R.layout.fragment_open, container, false);
         ImageView imgCloseSearch = view.findViewById(R.id.imgClose_openFile);
         alDataFiles = ListDataFiles.CreateDataFileList(Objects.requireNonNull(getContext()));
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.rvReconDataFiles);
+        RecyclerView mRecyclerView = view.findViewById(R.id.rvReconDataFiles);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecyclerView.setAdapter(new FileSearchListAdapter(ListDataFiles.CreateDataFileList(Objects.requireNonNull(getContext())),this));
 
-        imgCloseSearch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d("FragmentOpen","Close button pressed!");
-                dismiss();
-            }
+        imgCloseSearch.setOnClickListener(v -> {
+            Log.d("FragmentOpen","Close button pressed!");
+            dismiss();
         });
 
         //The dialog box looks too small if we don't set a minimum height (regardless of whether we discover a Recon or not)
@@ -75,14 +71,17 @@ public class FragmentOpen extends DialogFragment implements FileSearchListAdapte
             msgSave.show();
 
             //BEGIN: Refresh FragmentConnect
-            Fragment frg = null;
+            Fragment frg;
             if (getFragmentManager() != null) {
                 frg = getFragmentManager().findFragmentByTag("fragConnect");
+                FragmentTransaction ft;
+                ft = getFragmentManager().beginTransaction();
+                if (frg != null) {
+                    ft.detach(frg);
+                    ft.attach(frg);
+                    ft.commit();
+                }
             }
-            FragmentTransaction ft = getFragmentManager().beginTransaction();
-            ft.detach(frg);
-            ft.attach(frg);
-            ft.commit();
             //END: Refresh FragmentConnect
 
             dismiss();
