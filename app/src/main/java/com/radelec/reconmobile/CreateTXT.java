@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.os.Build;
 import android.util.Log;
 
+import java.io.File;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
@@ -100,10 +101,11 @@ public class CreateTXT {
 
         Log.d("CreateTXT","All variables initialized!");
         Log.d("CreateTXT","CF1 = " + CF1 + " / CF2 = " + CF2);
+
+        String strFileName = DetermineFileName.determineFileName();
         // create text file
         try {
             Log.d("CreateTXT","Beginning to create TXT file. Array size = " + arrayDataSession.size());
-            String strFileName = DetermineFileName.determineFileName();
             writer = new PrintWriter(strFileName, "UTF-8");
             Log.d("CreateTXT","FileName = " + strFileName);
 
@@ -384,6 +386,7 @@ public class CreateTXT {
             e.printStackTrace();
         } finally {
             writer.close();
+            if(boolAutoLoadFile) LoadSavedFile.main(strFileName,strFileName.substring(strFileName.lastIndexOf(File.separator) + 1));
         }
     }
 }

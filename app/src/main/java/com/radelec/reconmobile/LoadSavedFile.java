@@ -36,8 +36,10 @@ public class LoadSavedFile {
         public static String strRoomDeployed = "Unknown";
 
         public static void main(String ReconTXTFile, String strFileName) {
-            //Variable declarations
+            Log.d("LoadSavedFile","LoadSavedFile() called!");
+            Log.d("LoadSavedFile","Full Path = " + ReconTXTFile + " // FileName = " + strFileName);
 
+            //Variable declarations
             ArrayList<String> arrLine = new ArrayList<>();
             ArrayList<String> arrLine_temp = new ArrayList<>();
             String[] strLine_parsed;
