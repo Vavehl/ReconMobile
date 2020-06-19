@@ -34,6 +34,7 @@ import java.util.Objects;
 
 import static com.radelec.reconmobile.Constants.INTENT_ACTION_GRANT_USB;
 import static com.radelec.reconmobile.Constants.baudRate;
+import static com.radelec.reconmobile.Constants.cmdReadProtocol;
 import static com.radelec.reconmobile.Globals.*;
 import static com.radelec.reconmobile.SerialSocket.WRITE_WAIT_MILLIS;
 
@@ -104,8 +105,9 @@ public class FragmentConnect extends Fragment implements ConsoleCallback, Servic
                 else
                     Objects.requireNonNull(getActivity()).startService(new Intent(getActivity(), SerialService.class)); // prevents service destroy on unbind from recreated activity caused by orientation change
 
-                ReconFunctions rfRecon = new ReconFunctions(null);
+                ReconFunctions rfRecon = new ReconFunctions(this);
                 rfRecon.clearCurrentSession();
+                rfRecon.send(cmdReadProtocol); //Let's get the number of data sessions by issuing :RP
             } else {
                 Log.d("FragmentConnect", "Clear Session button pressed, but not connected!?");
             }

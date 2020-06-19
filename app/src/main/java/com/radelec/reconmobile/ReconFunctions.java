@@ -37,7 +37,7 @@ class ReconFunctions {
         Log.d("ReconFunctions","clearCurrentSession() called!");
         String strSystemConsole;
         send(cmdClearSession);
-        strSystemConsole = "Data Sessions: ";
+        strSystemConsole = "Clearing current session...";
         if(consoleCallback != null) {
             consoleCallback.updateSystemConsole(strSystemConsole);
         }
@@ -195,7 +195,7 @@ class ReconFunctions {
                             globalDataSessions = parsedResponse[3].trim();
                             boolUnexpectedResponse = false;
                             if(consoleCallback != null) {
-                                consoleCallback.updateSystemConsole("Data Sessions: " + globalDataSessions);
+                                consoleCallback.updateSystemConsole("# of Data Sessions: " + globalDataSessions);
                             }
                             Log.d("ReconFunctions","getDataSessions() Data Sessions on Recon = " + globalDataSessions);
                         }
