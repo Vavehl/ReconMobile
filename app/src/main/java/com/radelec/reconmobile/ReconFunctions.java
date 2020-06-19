@@ -12,9 +12,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Objects;
 
-import static com.radelec.reconmobile.Constants.cmdCheckNewRecord;
-import static com.radelec.reconmobile.Constants.cmdReadNextRecord;
-import static com.radelec.reconmobile.Constants.newline;
+import static com.radelec.reconmobile.Constants.*;
 import static com.radelec.reconmobile.Globals.*;
 
 class ReconFunctions {
@@ -33,6 +31,16 @@ class ReconFunctions {
         arrayDataSession.clear();
         Log.d("ReconFunctions","boolRecordHeaderFound=" + boolRecordHeaderFound + " / boolRecordTrailerFound=" + boolRecordTrailerFound);
         send(cmdCheckNewRecord);
+    }
+
+    void clearCurrentSession() {
+        Log.d("ReconFunctions","clearCurrentSession() called!");
+        String strSystemConsole;
+        send(cmdClearSession);
+        strSystemConsole = "Data Sessions: ";
+        if(consoleCallback != null) {
+            consoleCallback.updateSystemConsole(strSystemConsole);
+        }
     }
 
     void downloadDataSession(String response) {
@@ -107,7 +115,7 @@ class ReconFunctions {
                     CreateTXT.main();
                     break;
                 } else {
-                    Log.d("ReconFunctions","WARNING! RECORD TRAILER FOUND, BUT NO RECCORD HEADER FOUND.");
+                    Log.d("ReconFunctions","WARNING! RECORD TRAILER FOUND, BUT NO RECORD HEADER FOUND.");
                 }
             default:
                 break;
@@ -187,7 +195,6 @@ class ReconFunctions {
                             globalDataSessions = parsedResponse[3].trim();
                             boolUnexpectedResponse = false;
                             if(consoleCallback != null) {
-                                Log.d("ReconFunctions","MADE IT TO UPDATE SYSTEM CONSOLE!");
                                 consoleCallback.updateSystemConsole("Data Sessions: " + globalDataSessions);
                             }
                             Log.d("ReconFunctions","getDataSessions() Data Sessions on Recon = " + globalDataSessions);

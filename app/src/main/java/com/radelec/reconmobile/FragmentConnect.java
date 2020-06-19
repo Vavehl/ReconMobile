@@ -96,6 +96,21 @@ public class FragmentConnect extends Fragment implements ConsoleCallback, Servic
         }
         checkConnectionStatus();
 
+        btnClear.setOnClickListener(v -> {
+            if (connected == ReconConnected.True) {
+                Log.d("FragmentConnect", "Clear Session button pressed!");
+                if(service != null)
+                    service.attach(this);
+                else
+                    Objects.requireNonNull(getActivity()).startService(new Intent(getActivity(), SerialService.class)); // prevents service destroy on unbind from recreated activity caused by orientation change
+
+                ReconFunctions rfRecon = new ReconFunctions(null);
+                rfRecon.clearCurrentSession();
+            } else {
+                Log.d("FragmentConnect", "Clear Session button pressed, but not connected!?");
+            }
+        });
+
         btnConnect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -417,11 +432,15 @@ public class FragmentConnect extends Fragment implements ConsoleCallback, Servic
             case "=DT":
                 rfRecon.SyncDateTime(response);
                 break;
+            case "=OK":
+                //Response for :CD clear current session
+                Log.d("FragmentConnect","onSerialRead():: =OK Response from Recon... presumably from :CD command?");
+                break;
             case "=RL":
                 rfRecon.getCalibrationFactors(response);
                 break;
             case "=BD":
-                Log.d("ReconFunctions","onSerialRead():: =BD Response from Recon... invalid request?");
+                Log.d("FragmentConnect","onSerialRead():: =BD Response from Recon... invalid request OR zero sessions remaining after :CD?");
                 break;
         }
     }
