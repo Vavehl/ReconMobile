@@ -29,9 +29,9 @@ public class FileSearchListAdapter extends RecyclerView.Adapter<FileSearchListAd
 
         public ReconFileViewHolder(@NonNull View itemView, OnFileSearchListAdapterListener onFileSearchListAdapterListener) {
             super(itemView);
-            tvFileName = (TextView) itemView.findViewById(R.id.tvFileName);
-            tvDateModified = (TextView) itemView.findViewById(R.id.tvDateModified);
-            ibTrashDelete = (ImageView) itemView.findViewById(R.id.ibTrashDelete);
+            tvFileName = itemView.findViewById(R.id.tvFileName);
+            tvDateModified = itemView.findViewById(R.id.tvDateModified);
+            ibTrashDelete = itemView.findViewById(R.id.ibTrashDelete);
             this.onFileSearchListAdapterListener = onFileSearchListAdapterListener;
             itemView.setOnClickListener(this);
         }
@@ -65,8 +65,7 @@ public class FileSearchListAdapter extends RecyclerView.Adapter<FileSearchListAd
 
         View vw = inflater.inflate(R.layout.file_list_item, parent, false);
 
-        ReconFileViewHolder vh = new ReconFileViewHolder(vw, mOnFileSearchListAdapterListener);
-        return vh;
+        return new ReconFileViewHolder(vw, mOnFileSearchListAdapterListener);
     }
 
     @Override
