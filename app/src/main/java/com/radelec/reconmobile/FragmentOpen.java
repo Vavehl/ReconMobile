@@ -23,6 +23,8 @@ public class FragmentOpen extends DialogFragment implements FileSearchListAdapte
     private ArrayList<ListDataFiles> alDataFiles;
     private RecyclerView mRecyclerView;
 
+    private int intLastPositionHighlighted = -1;
+
     public FragmentOpen() {
         // Required empty public constructor
     }
@@ -63,7 +65,7 @@ public class FragmentOpen extends DialogFragment implements FileSearchListAdapte
     @Override
     public void onFileSearchListAdapterClick(int position) {
         Log.d("FragmentOpen","onFileSearchListAdapterClick called for position[" + position + "]");
-        if(Globals.boolClickToLoad) {
+        if(Globals.boolClickToLoad && intLastPositionHighlighted == position) {
             String strFileName = alDataFiles.get(position).getFileName();
             String strFilePath = alDataFiles.get(position).getFilePath();
             Globals.globalLoadedFileName = "";
@@ -86,6 +88,7 @@ public class FragmentOpen extends DialogFragment implements FileSearchListAdapte
             dismiss();
         } else {
             Globals.boolClickToLoad = true;
+            intLastPositionHighlighted = position;
         }
     }
 }
