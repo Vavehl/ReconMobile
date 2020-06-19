@@ -3,20 +3,16 @@
 
 package com.radelec.reconmobile;
 
-import android.content.Context;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.util.Log;
 
-import java.io.File;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.text.DecimalFormat;
 import java.time.format.DateTimeFormatter;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.Arrays;
@@ -55,11 +51,10 @@ public class CreateTXT {
         Date deprecatedStartDate = null;
         Date deprecatedEndDate = null;
         DecimalFormat RoundAvg = new DecimalFormat("####0.00");
-        long totalSeconds = 0;
-        long testHours = 0;
-        long testMinutes = 0;
-        long testSeconds = 0;
-        long i = 0;
+        long totalSeconds;
+        long testHours;
+        long testMinutes;
+        long testSeconds;
 
         // variables needed for tallying hourly counts and calculating radon
         int tenMinuteCounter = 0; //3 // used to determine when to stow away hourly count values
@@ -85,10 +80,6 @@ public class CreateTXT {
         // decimal formats for radon concentration
         DecimalFormat df = new DecimalFormat("0.0");
         DecimalFormat si = new DecimalFormat("0");
-
-        // date format
-        SimpleDateFormat formatDate = new SimpleDateFormat("dd-MMM-yyyy");
-        Calendar calendar = Calendar.getInstance();
 
         LinkedList<CountContainer> AllHourlyCounts = new LinkedList(); // list which will hold groups of hourly counts
 
@@ -161,7 +152,7 @@ public class CreateTXT {
                 if (arrayDataSession.get(sessionCounter)[2].equals("Z")) {
                     Log.d("CreateTXT","Found Z flag! Let's get out of here...");
                 }
-                if (BeginAveraging == true && !arrayDataSession.get(sessionCounter)[2].equals("Z")) {
+                if (BeginAveraging && !arrayDataSession.get(sessionCounter)[2].equals("Z")) {
                     ActiveRecordCounts++;
                     TotalMovements = TotalMovements + Long.parseLong(arrayDataSession.get(sessionCounter)[9]);
                     TotalChamber1Counts = TotalChamber1Counts + Long.parseLong(arrayDataSession.get(sessionCounter)[10]);
@@ -179,7 +170,7 @@ public class CreateTXT {
                     if(ch1Counter==0) {
                         consecutiveZeroTally_Ch1++;
                         if(consecutiveZeroTally_Ch1>=ConsecutiveZeroLimit) {
-                            Log.d("CreateTXT","WARNING: " + Double.toString(ConsecutiveZeroLimit) + " consecutive zero counts read on Chamber 1!");
+                            Log.d("CreateTXT","WARNING: " + ConsecutiveZeroLimit + " consecutive zero counts read on Chamber 1!");
                             photodiodeFailure_Ch1 = true;
                         }
                     } else {
@@ -188,7 +179,7 @@ public class CreateTXT {
                     if(ch2Counter==0) {
                         consecutiveZeroTally_Ch2++;
                         if(consecutiveZeroTally_Ch2>=ConsecutiveZeroLimit) {
-                            Log.d("CreateTXT","WARNING: " + Double.toString(ConsecutiveZeroLimit) + " consecutive zero counts read on Chamber 2!");
+                            Log.d("CreateTXT","WARNING: " + ConsecutiveZeroLimit + " consecutive zero counts read on Chamber 2!");
                             photodiodeFailure_Ch2 = true;
                         }
                     } else {
@@ -223,7 +214,7 @@ public class CreateTXT {
 
             Log.d("CreateTXT","BeginAveraging= " + BeginAveraging);
             // do this if we're in diagnostic mode
-            if (BeginAveraging == true && boolDiagnosticMode) {
+            if (BeginAveraging && boolDiagnosticMode) {
                 Log.d("CreateTXT","Creating TXT details in diagnostic mode.");
                 // write customer info to file
                 writer.println(newline);
@@ -236,11 +227,11 @@ public class CreateTXT {
                 writer.println(cursorReportDefaults.getString(3));
                 writer.println(newline);
 
-                if (photodiodeFailure_Ch1 == true || photodiodeFailure_Ch2 == true) {
-                    if (photodiodeFailure_Ch1 == true) {
+                if (photodiodeFailure_Ch1 || photodiodeFailure_Ch2) {
+                    if (photodiodeFailure_Ch1) {
                         writer.println("POSSIBLE DETECTOR FAILURE IN CHAMBER 1!");
                     }
-                    if (photodiodeFailure_Ch2 == true) {
+                    if (photodiodeFailure_Ch2) {
                         writer.println("POSSIBLE DETECTOR FAILURE IN CHAMBER 2!");
                     }
                     writer.println(newline);
@@ -285,7 +276,7 @@ public class CreateTXT {
                 writer.println("Deployed By: " + cursorReportDefaults.getString(4));
                 writer.println("Retrieved By: " + cursorReportDefaults.getString(5));
                 writer.println(newline);
-            } else if (BeginAveraging == true) { // or this if we're in regular user mode
+            } else if (BeginAveraging) { // or this if we're in regular user mode
                 Log.d("CreateTXT","Creating TXT details...");
                 // write customer info to file
                 writer.println(newline);
@@ -347,10 +338,10 @@ public class CreateTXT {
             // write hourly radon values
             for (int loopCount1 = 0; loopCount1 < AllHourlyCounts.size(); loopCount1++) {
                 if (globalUnitType.equals("US")) {
-                    writer.println("Hour: " + (Integer.toString(loopCount1)));
+                    writer.println("Hour: " + (loopCount1));
                     writer.println("Ch1: " + df.format((double) AllHourlyCounts.get(loopCount1).getCh1HourlyCount() / CF1) + "\tCh2: " + df.format((double) AllHourlyCounts.get(loopCount1).getCh2HourlyCount() / CF2));
                 } else { // assuming SI
-                    writer.println("Hour: " + (Integer.toString(loopCount1)));
+                    writer.println("Hour: " + (loopCount1));
                     writer.println("Ch1: " + si.format((double) AllHourlyCounts.get(loopCount1).getCh1HourlyCount() / CF1 * 37) + "\tCh2: " + si.format((double) AllHourlyCounts.get(loopCount1).getCh2HourlyCount() / CF2 * 37));
                 }
             }
@@ -377,14 +368,14 @@ public class CreateTXT {
 
             writer.println(newline);
 
-            if (globalUnitType == "US") {
-                writer.println("Chamber 1 Avg pCi/L = " + df.format((double) avgResult1));
-                writer.println("Chamber 2 Avg pCi/L = " + df.format((double) avgResult2));
-                writer.println("Average pCi/L = " + df.format((double) (avgResult1 + avgResult2) / 2));
+            if (globalUnitType.equals("US")) {
+                writer.println("Chamber 1 Avg pCi/L = " + df.format(avgResult1));
+                writer.println("Chamber 2 Avg pCi/L = " + df.format(avgResult2));
+                writer.println("Average pCi/L = " + df.format((avgResult1 + avgResult2) / 2));
             } else {
-                writer.println("Chamber 1 Avg Bq/m3 = " + si.format((double) (avgResult1 * 37)));
-                writer.println("Chamber 2 Avg Bq/m3 = " + si.format((double) (avgResult2 * 37)));
-                writer.println("Average Bq/m3 = " + si.format((double) (avgResult1 + avgResult2) / 2 * 37));
+                writer.println("Chamber 1 Avg Bq/m3 = " + si.format(avgResult1 * 37));
+                writer.println("Chamber 2 Avg Bq/m3 = " + si.format(avgResult2 * 37));
+                writer.println("Average Bq/m3 = " + si.format((avgResult1 + avgResult2) / 2 * 37));
             }
         } catch (UnsupportedEncodingException e) {
             Log.d("CreateTXT","Unhandled UnsupportedEncodingException!");
