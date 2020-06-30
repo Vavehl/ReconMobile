@@ -58,9 +58,9 @@ public class FragmentConnect extends Fragment implements ConsoleCallback, Servic
             public void onReceive(Context context, Intent intent) {
                 Log.d("FragmentConnect","broadcastReceiver.onReceive() called!");
                 if(Objects.requireNonNull(intent.getAction()).equals(INTENT_ACTION_GRANT_USB)) {
-                    Log.d("FragmentConnect","Permission Granted! Attempting to call connect()...");
                     Boolean granted = intent.getBooleanExtra(UsbManager.EXTRA_PERMISSION_GRANTED, false);
-                    connect(granted);
+                    Log.d("ReconSearchList","Permission Granted? [" + granted + "]");
+                    if(granted) connect(granted);
                 }
             }
         };

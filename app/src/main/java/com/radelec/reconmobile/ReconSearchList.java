@@ -37,6 +37,7 @@ import static com.radelec.reconmobile.SerialSocket.WRITE_WAIT_MILLIS;
 public class ReconSearchList extends ListFragment implements ServiceConnection, SerialListener {
 
     private BroadcastReceiver broadcastReceiver;
+    private int intCurrentPositionRecon;
 
     class ListItem {
         UsbDevice device;
@@ -61,8 +62,8 @@ public class ReconSearchList extends ListFragment implements ServiceConnection, 
             public void onReceive(Context context, Intent intent) {
                 Log.d("ReconSearchList","broadcastReceiver.onReceive() called!");
                 if(intent.getAction().equals(INTENT_ACTION_GRANT_USB)) {
-                    Log.d("ReconSearchList","Permission Granted! Attempting to call connect()...");
                     Boolean granted = intent.getBooleanExtra(UsbManager.EXTRA_PERMISSION_GRANTED, false);
+                    Log.d("ReconSearchList","Permission Granted? [" + granted + "]");
                     connect(granted);
                 }
             }
@@ -226,6 +227,7 @@ public class ReconSearchList extends ListFragment implements ServiceConnection, 
         Log.d("ReconSearchList","onListItemClick() called!");
         Toast.makeText(getActivity(), "Connecting...", Toast.LENGTH_SHORT).show();
         ListItem item = listItems.get(position);
+        intCurrentPositionRecon = position;
         if(item.driver == null) { //...this should never happen.
             Toast.makeText(getActivity(), "No Recon Driver!", Toast.LENGTH_SHORT).show();
         } else {
@@ -241,24 +243,39 @@ public class ReconSearchList extends ListFragment implements ServiceConnection, 
 
             //This will check permissions...
             UsbManager usbManager = (UsbManager) getActivity().getSystemService(Context.USB_SERVICE);
-            PendingIntent pi = PendingIntent.getBroadcast(getContext(),0,new Intent(INTENT_ACTION_GRANT_USB),0);
-            if(!usbManager.hasPermission(item.device)) {
-                Log.d("ReconSearchList","Requesting permission to access USB device...");
+            /*PendingIntent pi = PendingIntent.getBroadcast(getContext(),0,new Intent(INTENT_ACTION_GRANT_USB),0);
+            if (usbManager != null && !usbManager.hasPermission(item.device)) {
+                Log.d("ReconSearchList", "Requesting permission to access USB device...");
                 usbManager.requestPermission(item.device, pi);
-            }
+            }*/
 
             //If permissions are true, let's pull the serial number and firmware revision.
-            if(usbManager.hasPermission(item.device) && connected != ReconConnected.True) {
+            if(usbManager != null) {
                 Log.d("ReconSearchList","Attempting to Connect... [Current Connected State = " + connected + ")");
-                connect(true);
-                ReconFunctions rfRecon = new ReconFunctions(null);
-                rfRecon.send(cmdReconConfirm);
-                rfRecon.send(cmdReadProtocol);
-                rfRecon.send(cmdReadTime);
-                rfRecon.send(cmdReadCalibrationFactors);
-
-            } else if(usbManager.hasPermission(item.device) && connected == ReconConnected.True) {
-                Log.d("ReconSearchList","Already connected to this device... [Current Connected State = " + connected + ")");
+                if(connected == ReconConnected.True) Log.d("ReconSearchList","WARNING: Recon connected was previously set to True! Attempting to connect again...");
+                connect(usbManager.hasPermission(item.device));
+                if(usbManager.hasPermission(item.device)) {
+                    ReconFunctions rfRecon = new ReconFunctions(null);
+                    rfRecon.send(cmdReconConfirm);
+                    rfRecon.send(cmdReadProtocol);
+                    rfRecon.send(cmdReadTime);
+                    rfRecon.send(cmdReadCalibrationFactors);
+                }
+            } else if(usbManager != null && usbManager.hasPermission(item.device) && connected == ReconConnected.True) {
+                Log.d("ReconSearchList", "Already connected to this device... [Current Connected State = " + connected + ")");
+            } else {
+                Log.d("ReconSearchList","Unknown problem connecting to Recon!");
+                if (usbManager != null) {
+                    Log.d("ReconSearchList","usbManager = " + usbManager.toString());
+                } else {
+                    Log.d("ReconSearchList","usbManager = NULL!");
+                }
+                if (usbManager != null) {
+                    Log.d("ReconSearchList","usbManager Permission? " + usbManager.hasPermission(item.device));
+                } else {
+                    Log.d("ReconSearchList","usbManager Per5mission? NULL!");
+                }
+                Log.d("ReconSearchList","ReconConnected = " + connected);
             }
         }
     }
@@ -274,6 +291,7 @@ public class ReconSearchList extends ListFragment implements ServiceConnection, 
 
     private void connect(Boolean permissionGranted) {
         Log.d("ReconSearchList","connect(" + permissionGranted + ") called!");
+        checkAndRequestPermission();
         UsbDevice device = null;
         UsbManager usbManager = (UsbManager) getActivity().getSystemService(Context.USB_SERVICE);
         for(UsbDevice v : usbManager.getDeviceList().values())
@@ -404,4 +422,16 @@ public class ReconSearchList extends ListFragment implements ServiceConnection, 
         rfRecon.disconnect();
     }
 
+    public void checkAndRequestPermission() {
+        Log.d("ReconSearchList","checkAndRequestPermission() called!");
+        ListItem item = listItems.get(intCurrentPositionRecon);
+        UsbManager usbManager = (UsbManager) getActivity().getSystemService(Context.USB_SERVICE);
+        PendingIntent pi = PendingIntent.getBroadcast(getContext(),0,new Intent(INTENT_ACTION_GRANT_USB),0);
+        if (usbManager != null && !usbManager.hasPermission(item.device)) {
+            Log.d("ReconSearchList", "Requesting permission to access USB device...");
+            usbManager.requestPermission(item.device, pi);
+        } else {
+            Log.d("ReconSearchList","User already granted permission or usbManager is null?");
+        }
+    }
 }

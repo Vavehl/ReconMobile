@@ -232,7 +232,7 @@ class ReconFunctions {
         if(boolReconConnected) {
             globalReconSerial = parsedResponse[3];
             globalReconFirmwareRevision = Double.parseDouble(parsedResponse[2]);
-            ReconSerial.setText("Rad Elec Recon #" + globalReconSerial);
+            ReconSerial.setText("Rad Elec Recon #" + (globalReconSerial != null ? globalReconSerial : "??"));
             ReconFirmware.setText("Firmware v" + globalReconFirmwareRevision);
         } else {
             globalReconSerial = "";
