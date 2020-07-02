@@ -188,9 +188,14 @@ public class FragmentConnect extends Fragment implements ConsoleCallback, Servic
 
     @Override
     public void updateSystemConsole(String strConsole) {
-        Log.d("FragmentConnect","updateSystemConsole() called!");
-        txtSystemConsole.setText(strConsole);
-        Log.d("FragmentConnect","System Console updated to: " + strConsole);
+        try {
+            Log.d("FragmentConnect", "updateSystemConsole() called!");
+            globalLastSystemConsole = strConsole;
+            txtSystemConsole.setText(strConsole);
+            Log.d("FragmentConnect", "System Console updated to: " + strConsole);
+        } catch (NullPointerException ex) {
+            Log.d("FragmentConnect","Unable to update system console -- it isn't instantiated!");
+        }
     }
 
     //Show Device Search popup
@@ -281,6 +286,7 @@ public class FragmentConnect extends Fragment implements ConsoleCallback, Servic
                 if(txtReconSerial != null) txtReconSerial.setText(String.format("Recon #%s", globalReconSerial));
                 if(txtReconSerial != null) txtReconSerial.setVisibility(View.VISIBLE);
                 if(txtSystemConsole != null) txtSystemConsole.setVisibility(View.VISIBLE);
+                if(txtSystemConsole != null) txtSystemConsole.setText(Globals.globalLastSystemConsole);
                 break;
             case False:
                 Log.d("FragmentConnect","Setting button to Connect [connected = " + connected + "]");

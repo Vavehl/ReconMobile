@@ -40,6 +40,9 @@ class ReconFunctions {
         strSystemConsole = "Clearing current session...";
         if(consoleCallback != null) {
             consoleCallback.updateSystemConsole(strSystemConsole);
+        } else {
+            Log.d("ReconFunctions","consoleCallback() is null.");
+            globalLastSystemConsole = strSystemConsole;
         }
     }
 
@@ -122,6 +125,9 @@ class ReconFunctions {
         }
         if(consoleCallback != null) {
             consoleCallback.updateSystemConsole(strSystemConsole);
+        } else {
+            Log.d("ReconFunctions","consoleCallback is null, so system console won't be updated.");
+            globalLastSystemConsole = strSystemConsole;
         }
     }
 
@@ -195,9 +201,10 @@ class ReconFunctions {
                             globalDataSessions = parsedResponse[3].trim();
                             boolUnexpectedResponse = false;
                             if(consoleCallback != null) {
-                                consoleCallback.updateSystemConsole("# of Data Sessions: " + globalDataSessions);
+                                consoleCallback.updateSystemConsole("# of Data Sets: " + globalDataSessions);
                             } else {
                                 Log.d("ReconFunctions","consoleCallback is null; not able to update the system console with data sessions.");
+                                globalLastSystemConsole = "# of Data Sets: " + globalDataSessions;
                             }
                             Log.d("ReconFunctions","getDataSessions() Data Sessions on Recon = " + globalDataSessions);
                         }

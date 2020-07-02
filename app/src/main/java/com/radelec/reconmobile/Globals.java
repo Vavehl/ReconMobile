@@ -9,7 +9,7 @@ import java.util.LinkedList;
 
 class Globals {
 
-    //Recon Globals
+    //Connection Globals
     public enum ReconConnected { False, Pending, True, Loaded }
     public static ReconConnected connected = ReconConnected.False;
     public static int deviceId;
@@ -28,6 +28,7 @@ class Globals {
 
     public static String globalLastWrite = "";
     public static String globalLastResponse = "";
+    public static String globalLastSystemConsole = "";
 
     //Data Session Variables
     public static LinkedList<String[]> arrayDataSession = new LinkedList<>();
