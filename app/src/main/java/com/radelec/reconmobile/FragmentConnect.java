@@ -179,7 +179,7 @@ public class FragmentConnect extends Fragment implements ConsoleCallback, Servic
                 ReconFunctions rfRecon = new ReconFunctions(null);
                 rfRecon.checkNewRecord();
             } else {
-                Log.d("FragmentConnect", "Download button pressed, but not connected!?");
+                Log.d("FragmentConnect", "Download button pressed, but not currently connected.");
             }
         });
 
@@ -188,7 +188,9 @@ public class FragmentConnect extends Fragment implements ConsoleCallback, Servic
 
     @Override
     public void updateSystemConsole(String strConsole) {
+        Log.d("FragmentConnect","updateSystemConsole() called!");
         txtSystemConsole.setText(strConsole);
+        Log.d("FragmentConnect","System Console updated to: " + strConsole);
     }
 
     //Show Device Search popup
@@ -232,7 +234,10 @@ public class FragmentConnect extends Fragment implements ConsoleCallback, Servic
         super.onResume();
         Objects.requireNonNull(getActivity()).registerReceiver(broadcastReceiver, new IntentFilter(INTENT_ACTION_GRANT_USB));
         Log.d("FragmentConnect", "onResume():: initialStart = " + initialStart);
-        if(initialStart && service !=null) {
+        if(connected == ReconConnected.True) {
+            Log.d("FragmentConnect","onResume() :: Recon is already connected. Setting initialStart to false...");
+            initialStart = false;
+        } else if(initialStart && service !=null) {
             Log.d("FragmentConnect", "onResume() :: initialStart = true && service != null");
             initialStart = false;
             getActivity().runOnUiThread(this::connect);

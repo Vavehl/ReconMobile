@@ -196,6 +196,8 @@ class ReconFunctions {
                             boolUnexpectedResponse = false;
                             if(consoleCallback != null) {
                                 consoleCallback.updateSystemConsole("# of Data Sessions: " + globalDataSessions);
+                            } else {
+                                Log.d("ReconFunctions","consoleCallback is null; not able to update the system console with data sessions.");
                             }
                             Log.d("ReconFunctions","getDataSessions() Data Sessions on Recon = " + globalDataSessions);
                         }

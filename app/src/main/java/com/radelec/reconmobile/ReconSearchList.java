@@ -424,14 +424,18 @@ public class ReconSearchList extends ListFragment implements ServiceConnection, 
 
     public void checkAndRequestPermission() {
         Log.d("ReconSearchList","checkAndRequestPermission() called!");
-        ListItem item = listItems.get(intCurrentPositionRecon);
-        UsbManager usbManager = (UsbManager) getActivity().getSystemService(Context.USB_SERVICE);
-        PendingIntent pi = PendingIntent.getBroadcast(getContext(),0,new Intent(INTENT_ACTION_GRANT_USB),0);
-        if (usbManager != null && !usbManager.hasPermission(item.device)) {
-            Log.d("ReconSearchList", "Requesting permission to access USB device...");
-            usbManager.requestPermission(item.device, pi);
-        } else {
-            Log.d("ReconSearchList","User already granted permission or usbManager is null?");
+        try {
+            ListItem item = listItems.get(intCurrentPositionRecon);
+            UsbManager usbManager = (UsbManager) getActivity().getSystemService(Context.USB_SERVICE);
+            PendingIntent pi = PendingIntent.getBroadcast(getContext(), 0, new Intent(INTENT_ACTION_GRANT_USB), 0);
+            if (usbManager != null && !usbManager.hasPermission(item.device)) {
+                Log.d("ReconSearchList", "Requesting permission to access USB device...");
+                usbManager.requestPermission(item.device, pi);
+            } else {
+                Log.d("ReconSearchList", "User already granted permission or usbManager is null?");
+            }
+        } catch(IndexOutOfBoundsException ex) {
+            Log.d("ReconSearchList","checkAndRequestPermission() index out of bounds!");
         }
     }
 }

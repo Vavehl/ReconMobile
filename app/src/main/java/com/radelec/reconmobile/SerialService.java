@@ -48,7 +48,7 @@ public class SerialService extends Service implements SerialListener {
     private final Queue<QueueItem> queue1, queue2;
 
     private SerialListener listener;
-    private boolean connected;
+    private boolean boolConnected;
     private String notificationMsg;
 
     /**
@@ -80,14 +80,14 @@ public class SerialService extends Service implements SerialListener {
     public void connect(SerialListener listener, String notificationMsg) {
         Log.d("SerialService","connect() called!");
         this.listener = listener;
-        connected = true;
+        boolConnected = true;
         this.notificationMsg = notificationMsg;
         Log.d("SerialService","listener = " + listener.toString());
     }
 
     public void disconnect() {
         listener = null;
-        connected = false;
+        boolConnected = false;
         notificationMsg = null;
         cancelNotification();
     }
@@ -98,7 +98,7 @@ public class SerialService extends Service implements SerialListener {
         cancelNotification();
         // use synchronized() to prevent new items in queue2
         // new items will not be added to queue1 because mainLooper.post and attach() run in main thread
-        if(connected) {
+        if(boolConnected) {
             synchronized (this) {
                 this.listener = listener;
             }
@@ -125,7 +125,7 @@ public class SerialService extends Service implements SerialListener {
 
     public void detach() {
         Log.d("SerialService","detach() called!");
-        if(connected)
+        if(boolConnected)
             createNotification();
         // items already in event queue (posted before detach() to mainLooper) will end up in queue1
         // items occurring later, will be moved directly to queue2
@@ -173,7 +173,7 @@ public class SerialService extends Service implements SerialListener {
      * SerialListener
      */
     public void onSerialConnect() {
-        if(connected) {
+        if(boolConnected) {
             synchronized (this) {
                 if (listener != null) {
                     mainLooper.post(() -> {
@@ -191,7 +191,7 @@ public class SerialService extends Service implements SerialListener {
     }
 
     public void onSerialConnectError(Exception e) {
-        if(connected) {
+        if(boolConnected) {
             synchronized (this) {
                 if (listener != null) {
                     mainLooper.post(() -> {
@@ -211,7 +211,7 @@ public class SerialService extends Service implements SerialListener {
     }
 
     public void onSerialRead(byte[] data) {
-        if(connected) {
+        if(boolConnected) {
             synchronized (this) {
                 if (listener != null) {
                     mainLooper.post(() -> {
@@ -233,7 +233,7 @@ public class SerialService extends Service implements SerialListener {
     }
 
     public void onSerialIoError(Exception e) {
-        if(connected) {
+        if(boolConnected) {
             synchronized (this) {
                 if (listener != null) {
                     mainLooper.post(() -> {
