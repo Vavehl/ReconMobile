@@ -7,6 +7,7 @@ android {
         applicationId 'com.radelec.reconmobile'
         minSdkVersion 19
         targetSdkVersion 29
+        multiDexEnabled true
         versionCode 1
         versionName "0.5.0"
         vectorDrawables.useSupportLibrary = true
@@ -36,6 +37,7 @@ dependencies {
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
     implementation 'org.apache.commons:commons-text:1.7'
     implementation 'com.tom_roush:pdfbox-android:1.8.10.1'
+    implementation 'com.android.support:multidex:1.0.3'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'

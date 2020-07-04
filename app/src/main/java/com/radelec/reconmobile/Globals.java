@@ -49,6 +49,7 @@ class Globals {
     //File Loading
     public static boolean boolClickToLoad = false;
     public static String globalLoadedFileName = "";
+    public static ArrayList<ArrayList<String>> HourlyReconData = new ArrayList<>();
     public static ArrayList<ArrayList<String>> LoadedReconTXTFile = new ArrayList<>(); //This ArrayList will be used to build the chart, and is populated when loading the file.
     public static double LoadedReconCF1 = 6;
     public static double LoadedReconCF2 = 6;

@@ -24,13 +24,13 @@ import static com.radelec.reconmobile.Globals.*;
 
 public class CreateGraphArrays {
 
+    public static double OverallAvgRnC = 0;
+    public static boolean photodiodeFailure_Ch1 = false; //If CreateGraph.consecutiveZeroTally_Ch1 >= MainMenuUI.ConsecutiveZeroLimit (default=5), this becomes true.
+    public static boolean photodiodeFailure_Ch2 = false; //If CreateGraph.consecutiveZeroTally_Ch2 >= MainMenuUI.ConsecutiveZeroLimit (default=5), this becomes true.
+
     public static void main() {
 
-        double OverallAvgRnC = 0;
-        boolean photodiodeFailure_Ch1 = false; //If CreateGraph.consecutiveZeroTally_Ch1 >= MainMenuUI.ConsecutiveZeroLimit (default=5), this becomes true.
-        boolean photodiodeFailure_Ch2 = false; //If CreateGraph.consecutiveZeroTally_Ch2 >= MainMenuUI.ConsecutiveZeroLimit (default=5), this becomes true.
-
-        ArrayList<ArrayList<String>> HourlyReconData = new ArrayList<>();
+        //ArrayList<ArrayList<String>> HourlyReconData = new ArrayList<>();
         ArrayList alEntries = new ArrayList<>();
         //DateTimeFormatter DateTimeDisplay = DateTimeFormatter.ofLocalizedDateTime("dd-mmm-yyyy");
         SimpleDateFormat DateTimeDisplay = new SimpleDateFormat("dd-mmm-yyyy hh:mm");
@@ -363,5 +363,15 @@ public class CreateGraphArrays {
                 }
             }
         }
+
+        //Assign Overall Average Radon Concentration
+        if(Constants.boolPhotodiodeFailureRecovery==true && photodiodeFailure_Ch1==true && photodiodeFailure_Ch2==false) {
+            OverallAvgRnC = (rawCountsExist ? TotalAvgRnC_Ch2_Raw : TotalAvgRnC_Ch2) / (TotalHourCounter-(Globals.boolExcludeFirst4Hours ? 4 : 0));
+        } else if(Constants.boolPhotodiodeFailureRecovery==true && photodiodeFailure_Ch2==true && photodiodeFailure_Ch1==false) {
+            OverallAvgRnC = (rawCountsExist ? TotalAvgRnC_Ch1_Raw : TotalAvgRnC_Ch1) / (TotalHourCounter-(Globals.boolExcludeFirst4Hours ? 4 : 0));
+        } else {
+            OverallAvgRnC = TotalAvgRnC / (TotalHourCounter-(Globals.boolExcludeFirst4Hours ? 4 : 0)); //You know what's funny? If the dividend is zero, we'll show infinity pCi/L on the PDF... :)
+        }
+
     }
 }
