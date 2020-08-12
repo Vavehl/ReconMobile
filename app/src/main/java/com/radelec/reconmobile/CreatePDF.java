@@ -2,6 +2,7 @@ package com.radelec.reconmobile;
 
 import android.content.res.AssetManager;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.Point;
@@ -123,9 +124,9 @@ public class CreatePDF {
             doc.addPage(page);
 
             //Declare the fonts
-            AssetManager assetManager;
-            StaticContext scContext = new StaticContext();
-            assetManager = scContext.getApplicationContext().getResources().getAssets();
+            //AssetManager assetManager;
+            //StaticContext scContext = new StaticContext();
+            //assetManager = scContext.getApplicationContext().getResources().getAssets();
             PDFont fontDefault = PDType0Font.load(doc,assetManager.open("calibri.ttf"));
             PDFont fontBold = PDType0Font.load(doc,assetManager.open("calibri_bold.ttf"));
 
@@ -168,7 +169,7 @@ public class CreatePDF {
             if(isValidDate(globalReconCalibrationDate)) {
                 try {
                     Calendar dateInstance = Calendar.getInstance();
-                    dateInstance.setTime((Date)dateFormatCalibration.parse(globalReconCalibrationDate));
+                    dateInstance.setTime(dateFormatCalibration.parse(globalReconCalibrationDate));
                     dateInstance.add(Calendar.YEAR,1);
                     strDateCalibrationDue = dateFormatCalibration.format(dateInstance.getTime());
                 } catch (ParseException ex) {
@@ -340,12 +341,11 @@ public class CreatePDF {
             contents.showText(textLine);
             contents.endText();
 
-            DatabaseOperations db_settings = new DatabaseOperations(new StaticContext().getApplicationContext());
-            Cursor cursorSettingsDefaults;
-            cursorSettingsDefaults = db_settings.getSettingsData();
-            cursorSettingsDefaults.moveToFirst(); //Critical to moveToFirst() here, or else we're sitting at an invalid index.
+            Cursor cursorReportDefaultData;
+            cursorReportDefaultData = db.getReportDefaultData();
+            cursorReportDefaultData.moveToFirst(); //Critical to moveToFirst() here, or else we're sitting at an invalid index.
 
-            strCustomReportText = cursorSettingsDefaults.getString(12);
+            strCustomReportText = cursorReportDefaultData.getString(12);
             textLine = strCustomReportText;
             fontSize = 12;
             contents.setFont(fontDefault, fontSize);
@@ -353,11 +353,15 @@ public class CreatePDF {
 
             WrapMultiLineText (contents,page,marginSide,PDF_Y,textLine,fontDefault,fontSize,marginSide);
 
-            Log.d("CreatePDF","CreatePDF:: Signature Option = " + String.valueOf(cursorSettingsDefaults.getString(3)));
-            int displaySig = Integer.parseInt(cursorSettingsDefaults.getString(3));
-            if(displaySig==1) { //Draw Signature Line
+            Cursor cursorSettingsData;
+            cursorSettingsData = db.getSettingsData();
+            cursorSettingsData.moveToFirst(); //Critical to moveToFirst() here, or else we're sitting at an invalid index!
+
+            Log.d("CreatePDF","CreatePDF:: Signature Option = " + cursorSettingsData.getString(3));
+            String displaySig = cursorSettingsData.getString(3);
+            if(displaySig.equals("Display Line Only")) { //Draw Signature Line
                 drawSignatureLine(contents, page, fontDefault); //Draw Signature Line; for now, only if DisplaySig = 1 or 2 in options.
-            } else if(displaySig==2) { //Display Digital Signature
+            } else if(displaySig.equals("Digitally Signed")) { //Display Digital Signature
                 drawSignatureLine(contents, page, fontDefault); //Draw Signature Line; for now, only if DisplaySig = 1 or 2 in options.
                 drawDigitalSignature(doc, contents, page, fontDefault);
             }
@@ -387,10 +391,10 @@ public class CreatePDF {
             DrawAverageRadonBanner(contents, page_chart, fontBold, true);
 
             //This draws the graph image (graph.png), which was externalized to the file in the CreateGraph class.
-            PDImageXObject graphPNG = PDImageXObject.createFromFile("graph.png", doc);
+            //PDImageXObject graphPNG = PDImageXObject.createFromFile("graph.png", doc);
 
             PDF_Y -= 400;
-            contents.drawImage(graphPNG, marginSide*2, PDF_Y);
+            //contents.drawImage(graphPNG, marginSide*2, PDF_Y);
             contents.close();
             //END SECOND PAGE (CHART)
 
@@ -503,9 +507,9 @@ public class CreatePDF {
 
                     //Shade the first four hours of the report (if this option is enabled)
                     if(Globals.boolExcludeFirst4Hours && arrayCounter < 4) {
-                        contents.setNonStrokingColor(Color.LTGRAY);
+                        contents.setNonStrokingColor(3);
                     } else {
-                        contents.setNonStrokingColor(Color.BLACK);
+                        contents.setNonStrokingColor(1);
                     }
 
                     //Record #
@@ -569,12 +573,14 @@ public class CreatePDF {
 
             Log.d("CreatePDF","End PDF generation stage. Writing to file...");
 
-            doc.save(PDF_Name);
-
+            //doc.save(Environment.DIRECTORY_DOWNLOADS + File.separator + PDF_Name);
+            File dir = new File("//sdcard//Download//");
+            doc.save(fileDir + File.separator + PDF_Name);
+            Log.d("CreatePDF","PDF saved to: " + fileDir + File.separator + PDF_Name);
             //Draw the footer info (page #, version, etc.)
             //It's a bit shoddy, but because we're appending, we need to have already saved it
             //and then re-open the file.
-            File ReconPDF = new File(PDF_Name);
+            File ReconPDF = new File(fileDir + File.separator + PDF_Name);
             drawFooterInfo(ReconPDF, PDF_Name);
 
             if (ReconPDF.exists()) {
@@ -644,9 +650,8 @@ public class CreatePDF {
     public static void GetCompanyInfo() {
         Log.d("CreatePDF","Called CreatePDF::GetCompanyInfo() for PDF generation...");
         try {
-            DatabaseOperations db_company = new DatabaseOperations(new StaticContext().getApplicationContext());
             Cursor cursorCompanyDefaults;
-            cursorCompanyDefaults = db_company.getCompanyData();
+            cursorCompanyDefaults = db.getCompanyData();
             cursorCompanyDefaults.moveToFirst(); //Critical to moveToFirst() here, or else we're sitting at an invalid index.
             strCompany_Name = cursorCompanyDefaults.getString(1);
             strCompany_Details = cursorCompanyDefaults.getString(2);
@@ -665,11 +670,9 @@ public class CreatePDF {
         try {
 
             //Pull the Company Defaults in the database with a Cursor class...
-            DatabaseOperations db_company = new DatabaseOperations(new StaticContext().getApplicationContext());
             Cursor cursorCompanyDefaults;
-            cursorCompanyDefaults = db_company.getCompanyData();
+            cursorCompanyDefaults = db.getCompanyData();
             cursorCompanyDefaults.moveToFirst(); //Critical to moveToFirst() here, or else we're sitting at an invalid index.
-
             contents.beginText(); //define beginning of text.
             contents.setFont(fontDefault, fontSize); //sets our font using the TTF loaded above.
             contents.setLeading(14.5f);
@@ -749,9 +752,8 @@ public class CreatePDF {
             contents.stroke(); //draw the line, starting at moveTo and ending at lineTo
 
             //Pull DB Info
-            DatabaseOperations db_report = new DatabaseOperations(new StaticContext().getApplicationContext());
             Cursor cursorReportDefaults;
-            cursorReportDefaults = db_report.getReportDefaultData();
+            cursorReportDefaults = db.getReportDefaultData();
             cursorReportDefaults.moveToFirst(); //Critical to moveToFirst() here, or else we're sitting at an invalid index.
 
             //Customer Info Block
@@ -769,6 +771,8 @@ public class CreatePDF {
             String[] CustomerInfo_parsed = cursorReportDefaults.getString(2).split(Constants.newline);
             for(int i = 0; i < CustomerInfo_parsed.length; i++) {
                 textLine = CustomerInfo_parsed[i].trim();
+                textLine = textLine.replaceAll("\n","<br>");
+                textLine = textLine.replaceAll("\r","<br>");
                 if ((fontDefault.getStringWidth(textLine) / 1000 * fontSize) > textWidth) {
                     textWidth = fontDefault.getStringWidth(textLine) / 1000 * fontSize;
                 }
@@ -1170,9 +1174,9 @@ public class CreatePDF {
     private void drawFooterInfo(File ReconPDF, String FileName) {
         try {
             PDDocument doc = PDDocument.load(ReconPDF);
-            AssetManager assetManager;
-            StaticContext scContext = new StaticContext();
-            assetManager = scContext.getApplicationContext().getResources().getAssets();
+            //AssetManager assetManager;
+            //StaticContext scContext = new StaticContext();
+            //assetManager = scContext.getApplicationContext().getResources().getAssets();
             PDFont fontDefault = PDType0Font.load(doc,assetManager.open("calibri.ttf"));
             if(doc.getNumberOfPages() >= 1) {
                 fontSize = 8;
@@ -1197,6 +1201,7 @@ public class CreatePDF {
 
     public static boolean isValidDate(String date) {
         try {
+            if (date == null) return false;
             DateFormat df = new SimpleDateFormat(validDate);
             df.setLenient(false);
             df.parse(date);
@@ -1208,6 +1213,7 @@ public class CreatePDF {
 
     public static boolean isValidDateTimeForPDF(String datetime) {
         try {
+            if (datetime == null) return false;
             DateFormat df = new SimpleDateFormat(validDateTimeForPDF);
             df.setLenient(false);
             df.parse(datetime);

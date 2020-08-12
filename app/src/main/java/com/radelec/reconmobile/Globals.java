@@ -1,5 +1,7 @@
 package com.radelec.reconmobile;
 
+import android.content.res.AssetManager;
+
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
 
@@ -29,6 +31,9 @@ class Globals {
     public static String globalLastWrite = "";
     public static String globalLastResponse = "";
     public static String globalLastSystemConsole = "";
+
+    //Database
+    public static DatabaseOperations db;
 
     //Data Session Variables
     public static LinkedList<String[]> arrayDataSession = new LinkedList<>();
@@ -79,4 +84,6 @@ class Globals {
     //Use new filenaming method?
     public static boolean boolUseTestSiteFileName = true;
     public static boolean boolInvalidFileName = true;
+
+    public static AssetManager assetManager;
 }

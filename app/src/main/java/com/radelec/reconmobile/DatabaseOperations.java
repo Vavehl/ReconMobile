@@ -12,7 +12,7 @@ public class DatabaseOperations extends SQLiteOpenHelper {
     public DatabaseOperations(Context context) {
         super(context, "ReconMobile.db", null, 1);
         Log.d("DatabaseOperations", "Looking for ReconMobile.db...");
-        SQLiteDatabase db = this.getWritableDatabase();
+        //SQLiteDatabase db = this.getWritableDatabase();
     }
 
     @Override

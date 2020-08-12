@@ -77,7 +77,7 @@ public class DetermineFileName {
             else {
                 if (loopCounter > 0) {
                     TXT_name = fileDir + File.separator + defaultFilename + "-" + fileIteration + ".txt";
-                }
+            }
                 else {
                     TXT_name = fileDir + File.separator + defaultFilename + ".txt";
                 }

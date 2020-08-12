@@ -31,8 +31,6 @@ public class MainActivity extends AppCompatActivity
         implements  FragmentManager.OnBackStackChangedListener,
                     FragmentSearch.OnFragmentInteractionListener {
 
-    DatabaseOperations db;
-
     //Create various dialog windows. Hopefully there won't be too many of them, or this is gonna become a mess...
     public Dialog dialogAbout;
 
@@ -63,6 +61,11 @@ public class MainActivity extends AppCompatActivity
         ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         ft.commit();
         //End initial implementation of fragmentConnect
+
+        //Initialize Asset Manager
+        assetManager = this.getAssets();
+
+        Permissions.verifyStoragePermissions(this);
 
         FloatingActionButton fab = findViewById(R.id.fabEmail);
         fab.setOnClickListener(new View.OnClickListener() {
