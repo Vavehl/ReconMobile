@@ -310,9 +310,9 @@ public class MainActivity extends AppCompatActivity
         intent.putExtra(Intent.EXTRA_BCC, self_email);
         if (filePDF!=null) {
             if (filePDF.exists()) {
-                Log.d("MainActivity", "emailPDF(): Attempting to attach PDF to emali!");
-                filePDF.setReadable(true, false);
-                intent.putExtra(Intent.EXTRA_STREAM, filePDF);
+                Log.d("MainActivity", "emailPDF(): Attempting to attach PDF to email!");
+                //filePDF.setReadable(true, false);
+                intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(filePDF));
                 intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             } else {
                 Log.d("MainActivity", "emailPDF(): No PDF found for attachment!");
