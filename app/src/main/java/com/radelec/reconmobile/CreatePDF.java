@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.Point;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.util.Log;
 
 import com.tom_roush.pdfbox.pdmodel.PDDocument;
@@ -574,24 +575,23 @@ public class CreatePDF {
             Log.d("CreatePDF","End PDF generation stage. Writing to file...");
 
             //doc.save(Environment.DIRECTORY_DOWNLOADS + File.separator + PDF_Name);
-            File dir = new File("//sdcard//Download//");
-            doc.save(fileDir + File.separator + PDF_Name);
-            Log.d("CreatePDF","PDF saved to: " + fileDir + File.separator + PDF_Name);
+            //File dir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS));
+            doc.save(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS + File.separator + PDF_Name));
+            Log.d("CreatePDF","PDF saved to: " + Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS + File.separator + PDF_Name));
             //Draw the footer info (page #, version, etc.)
             //It's a bit shoddy, but because we're appending, we need to have already saved it
             //and then re-open the file.
-            filePDF = new File(fileDir + File.separator + PDF_Name);
+            filePDF = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + File.separator + PDF_Name);
             drawFooterInfo(filePDF, PDF_Name);
-
-            if (filePDF.exists()) {
-                Log.d("CreatePDF",PDF_Name + " has been created.");
-                globalLastSystemConsole = "PDF has been created.";
+            if (filePDF != null) {
+                if (filePDF.exists()) {
+                    Log.d("CreatePDF", PDF_Name + " has been created.");
+                    globalLastSystemConsole = "PDF has been created.";
+                } else {
+                    Log.d("CreatePDF", "Problem creating PDF.");
+                    globalLastSystemConsole = "Problem creating PDF.";
+                }
             }
-            else {
-                Log.d("CreatePDF","Problem creating PDF.");
-                globalLastSystemConsole = "Problem creating PDF.";
-            }
-
         }
         catch (IOException ex) {
             StringWriter swEx = new StringWriter();
