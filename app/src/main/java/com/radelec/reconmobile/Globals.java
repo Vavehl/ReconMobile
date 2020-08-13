@@ -51,6 +51,9 @@ class Globals {
     //File Directory
     public static File fileDir = null;
 
+    //PDF File
+    public static File filePDF = null;
+
     //File Loading
     public static boolean boolClickToLoad = false;
     public static String globalLoadedFileName = "";

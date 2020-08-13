@@ -12,6 +12,7 @@ import com.google.android.material.tabs.TabLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -71,8 +72,15 @@ public class MainActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "TODO: Email PDF Report", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                //Snackbar.make(view, "TODO: Email PDF Report", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                if(connected == ReconConnected.Loaded) {
+                    emailPDF();
+                } else {
+                    //If no file is loaded, let's try to prompt the user to load one...
+                    Toast no_file_loaded = Toast.makeText(getApplicationContext(),"You must load a file before emailing it!",Toast.LENGTH_SHORT);
+                    no_file_loaded.show();
+                    openFile();
+                }
             }
         });
 
@@ -285,6 +293,35 @@ public class MainActivity extends AppCompatActivity
 
         if(fragmentOpen.isDetached()) {
             Log.d("MainActivity","FRAGMENT_OPEN DETACHED!");
+        }
+    }
+
+    protected void emailPDF() {
+        Log.d("MainActivity","emailPDF() called!");
+        String[] recipient_email = {"info@radelec.com"};
+        String[] self_email = {"info@radelec.com"};
+        String subject = "Radon Test Report";
+        String body = "Please find attached your radon test results!";
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        Uri data = Uri.parse("mailto:");
+        intent.putExtra(Intent.EXTRA_EMAIL, recipient_email);
+        intent.putExtra(Intent.EXTRA_SUBJECT, subject);
+        intent.putExtra(Intent.EXTRA_TEXT, body);
+        intent.putExtra(Intent.EXTRA_BCC, self_email);
+        if (filePDF.exists()) {
+            Log.d("MainActivity","emailPDF(): Attempting to attach PDF to emali!");
+            filePDF.setReadable(true, false);
+            intent.putExtra(Intent.EXTRA_STREAM,filePDF);
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        } else {
+            Log.d("MainActivity","emailPDF(): No PDF found to attach!");
+        }
+        intent.setData(data);
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(Intent.createChooser(intent, "Creating email..."),12);
+        } else {
+            Toast msgEmail = Toast.makeText(getApplicationContext(),"Unable to launch email client...",Toast.LENGTH_SHORT);
+            msgEmail.show();
         }
     }
 

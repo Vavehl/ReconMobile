@@ -580,10 +580,10 @@ public class CreatePDF {
             //Draw the footer info (page #, version, etc.)
             //It's a bit shoddy, but because we're appending, we need to have already saved it
             //and then re-open the file.
-            File ReconPDF = new File(fileDir + File.separator + PDF_Name);
-            drawFooterInfo(ReconPDF, PDF_Name);
+            filePDF = new File(fileDir + File.separator + PDF_Name);
+            drawFooterInfo(filePDF, PDF_Name);
 
-            if (ReconPDF.exists()) {
+            if (filePDF.exists()) {
                 Log.d("CreatePDF",PDF_Name + " has been created.");
                 globalLastSystemConsole = "PDF has been created.";
             }
