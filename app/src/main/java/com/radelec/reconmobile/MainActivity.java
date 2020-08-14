@@ -297,33 +297,37 @@ public class MainActivity extends AppCompatActivity
     }
 
     protected void emailPDF() {
-        Log.d("MainActivity","emailPDF() called!");
-        String[] recipient_email = {"info@radelec.com"};
-        String[] self_email = {"info@radelec.com"};
-        String subject = "Radon Test Report";
-        String body = "Please find attached your radon test results!";
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        Uri data = Uri.parse("mailto:");
-        intent.putExtra(Intent.EXTRA_EMAIL, recipient_email);
-        intent.putExtra(Intent.EXTRA_SUBJECT, subject);
-        intent.putExtra(Intent.EXTRA_TEXT, body);
-        intent.putExtra(Intent.EXTRA_BCC, self_email);
-        if (filePDF!=null) {
-            if (filePDF.exists()) {
-                Log.d("MainActivity", "emailPDF(): Attempting to attach PDF to email!");
-                //filePDF.setReadable(true, false);
-                intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(filePDF));
-                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            } else {
-                Log.d("MainActivity", "emailPDF(): No PDF found for attachment!");
+        try {
+            Log.d("MainActivity", "emailPDF() called!");
+            String[] recipient_email = {"info@radelec.com"};
+            String[] self_email = {"info@radelec.com"};
+            String subject = "Radon Test Report";
+            String body = "Please find attached your radon test results!";
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            Uri data = Uri.parse("mailto:");
+            intent.putExtra(Intent.EXTRA_EMAIL, recipient_email);
+            intent.putExtra(Intent.EXTRA_SUBJECT, subject);
+            intent.putExtra(Intent.EXTRA_TEXT, body);
+            intent.putExtra(Intent.EXTRA_BCC, self_email);
+            if (filePDF != null) {
+                if (filePDF.exists()) {
+                    Log.d("MainActivity", "emailPDF(): Attempting to attach PDF to email!");
+                    //filePDF.setReadable(true, false);
+                    intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(filePDF));
+                    intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                } else {
+                    Log.d("MainActivity", "emailPDF(): No PDF found for attachment!");
+                }
             }
-        }
-        intent.setData(data);
-        if (intent.resolveActivity(getPackageManager()) != null) {
-            startActivityForResult(Intent.createChooser(intent, "Creating email..."),12);
-        } else {
-            Toast msgEmail = Toast.makeText(getApplicationContext(),"Unable to launch email client...",Toast.LENGTH_SHORT);
-            msgEmail.show();
+            intent.setData(data);
+            if (intent.resolveActivity(getPackageManager()) != null) {
+                startActivityForResult(Intent.createChooser(intent, "Creating email..."), 12);
+            } else {
+                Toast msgEmail = Toast.makeText(getApplicationContext(), "Unable to launch email client...", Toast.LENGTH_SHORT);
+                msgEmail.show();
+            }
+        } catch (ActivityNotFoundException ex) {
+            Log.d("MainActivity","emailPDF(): Email client not found?");
         }
     }
 
