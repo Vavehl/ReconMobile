@@ -3,10 +3,8 @@ package com.radelec.reconmobile;
 import android.os.Build;
 import android.util.Log;
 
-import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 
 import java.io.IOException;
 import java.text.DecimalFormat;
