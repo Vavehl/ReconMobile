@@ -576,13 +576,14 @@ public class CreatePDF {
 
             //doc.save(Environment.DIRECTORY_DOWNLOADS + File.separator + PDF_Name);
             //File dir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS));
+            drawFooterInfo(doc);
             doc.save(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS + File.separator + PDF_Name));
+            //doc.close(); //We still need to close it here!
             Log.d("CreatePDF","PDF saved to: " + Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS + File.separator + PDF_Name));
             //Draw the footer info (page #, version, etc.)
             //It's a bit shoddy, but because we're appending, we need to have already saved it
             //and then re-open the file.
             filePDF = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + File.separator + PDF_Name);
-            drawFooterInfo(filePDF, PDF_Name);
             if (filePDF != null) {
                 if (filePDF.exists()) {
                     Log.d("CreatePDF", PDF_Name + " has been created.");
@@ -600,6 +601,7 @@ public class CreatePDF {
             Log.d("CreatePDF",strEx);
         }
         finally {
+            Log.d("CreatePDF","Closing document and terminating unused resources.");
             doc.close();
         }
     }
@@ -1171,14 +1173,16 @@ public class CreatePDF {
     }
 
     //Write page numbers and version numbers in lower right margin
-    private void drawFooterInfo(File ReconPDF, String FileName) {
+    private void drawFooterInfo(PDDocument doc) {
         try {
-            PDDocument doc = PDDocument.load(ReconPDF);
+            Log.d("CreatePDF","drawFooterInfo() called!");
+            //PDDocument doc = PDDocument.load(ReconPDF);
             //AssetManager assetManager;
             //StaticContext scContext = new StaticContext();
             //assetManager = scContext.getApplicationContext().getResources().getAssets();
             PDFont fontDefault = PDType0Font.load(doc,assetManager.open("calibri.ttf"));
             if(doc.getNumberOfPages() >= 1) {
+                Log.d("CreatePDF","drawFooterInfo():: Number of PDF pages = " + doc.getNumberOfPages());
                 fontSize = 8;
                 for (int numPages = 0; numPages < doc.getNumberOfPages(); numPages++) {
                     PDPage page = doc.getPage(numPages);
@@ -1192,10 +1196,12 @@ public class CreatePDF {
                     contents.endText();
                     contents.close();
                 }
-                doc.save(FileName); //Only save if we've actually made changes
+                //doc.save(FileName); //Only save if we've actually made changes
             }
+            //doc.close();
         } catch (IOException ex) {
-            Log.d("CreatePDF","Could not write page footer lines!");
+            Log.d("CreatePDF","drawFooterInfo():: Could not write page footer lines!");
+            Log.d("CreatePDF","drawFooterInfo():: Exception! " + ex);
         }
     }
 
