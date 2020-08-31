@@ -103,8 +103,9 @@ public class CreatePDF {
             Log.d("CreatePDF","Analyst signature found as JPEG!");
         }
 
-        if (boolFoundSignatureBMP == false || boolFoundSignaturePNG == false || boolFoundSignatureJPG == false || boolFoundSignatureJPEG == false) {
+        if (boolFoundSignatureBMP == true || boolFoundSignaturePNG == true || boolFoundSignatureJPG == true || boolFoundSignatureJPEG == true) {
             boolFoundSignature = true;
+        } else {
             Log.d("CreatePDF","No digital signature (as BMP/PNG/JPG/JPEG) found for PDF... ignoring.");
         }
 
