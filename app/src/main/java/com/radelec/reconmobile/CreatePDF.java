@@ -378,7 +378,7 @@ public class CreatePDF {
             DrawCustomerTestSiteBlock(contents, page_chart, fontBold, fontDefault);
 
             //Test Summary Block
-            drawTestSummaryBlock(contents, page, fontDefault, fontBold);
+            drawTestSummaryBlock(contents, page_chart, fontDefault, fontBold);
 
             //Draw Average Radon Concentration Banner
             DrawAverageRadonBanner(contents, page_chart, fontBold, true);
@@ -407,7 +407,7 @@ public class CreatePDF {
             DrawCustomerTestSiteBlock(contents, page_detailed, fontBold, fontDefault);
 
             //Test Summary Block
-            drawTestSummaryBlock(contents, page, fontDefault, fontBold);
+            drawTestSummaryBlock(contents, page_detailed, fontDefault, fontBold);
 
             //Draw Average Radon Concentration Banner
             DrawAverageRadonBanner(contents, page_detailed, fontBold, true);
@@ -484,8 +484,8 @@ public class CreatePDF {
                         DrawCompanyHeader(contents, page_detailed, fontDefault, marginTop);
                         DrawTitleHeader(contents, page_detailed, "Hourly Radon Report", fontBold, fontDefault);
                         DrawCustomerTestSiteBlock(contents, page_detailed, fontBold, fontDefault);
-                        drawTestSummaryBlock(contents, page, fontDefault, fontBold);
-                        DrawAverageRadonBanner(contents, page_chart, fontBold, true);
+                        drawTestSummaryBlock(contents, page_detailed, fontDefault, fontBold);
+                        DrawAverageRadonBanner(contents, page_detailed, fontBold, true);
                         PDF_Y -= 15;
                         DrawDetailedColumnHeaders(contents, fontBold);
                     }
@@ -551,8 +551,8 @@ public class CreatePDF {
                         DrawCompanyHeader(contents, page_detailed, fontDefault, marginTop);
                         DrawTitleHeader(contents, page_detailed, "Radon Detailed Report", fontBold, fontDefault);
                         DrawCustomerTestSiteBlock(contents, page_detailed, fontBold, fontDefault);
-                        drawTestSummaryBlock(contents, page, fontDefault, fontBold);
-                        DrawAverageRadonBanner(contents, page_chart, fontBold, true);
+                        drawTestSummaryBlock(contents, page_detailed, fontDefault, fontBold);
+                        DrawAverageRadonBanner(contents, page_detailed, fontBold, true);
                         PDF_Y -= 15;
                         DrawDetailedColumnHeaders(contents, fontBold);
                     }
