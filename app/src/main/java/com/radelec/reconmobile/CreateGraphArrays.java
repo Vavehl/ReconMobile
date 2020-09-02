@@ -30,9 +30,7 @@ public class CreateGraphArrays {
 
     public static void main() {
 
-        //ArrayList<ArrayList<String>> HourlyReconData = new ArrayList<>();
-        ArrayList alEntries = new ArrayList<>();
-        //DateTimeFormatter DateTimeDisplay = DateTimeFormatter.ofLocalizedDateTime("dd-mmm-yyyy");
+        Log.d("CreateGraphArrays","CreateGraphArrays.main() called!");
         SimpleDateFormat DateTimeDisplay = new SimpleDateFormat("dd-mmm-yyyy hh:mm");
         LocalDateTime ReconDate = null;
         LocalDateTime HourCounter = null;
@@ -253,13 +251,6 @@ public class CreateGraphArrays {
 
                         //Add values to series that are dependent upon unitType
                         if (globalUnitType.equals("SI")) {
-                            //Ch1_Series.add(hourCounter, tempCounts_Ch1 / LoadedReconCF1 * 37);
-                            //Ch2_Series.add(hourCounter, tempCounts_Ch2 / LoadedReconCF2 * 37);
-                            //AvgRnC_Series.add(hourCounter, ((tempCounts_Ch1 / LoadedReconCF1 + tempCounts_Ch2 / LoadedReconCF2) / 2) * 37); //This will calculate hourly average of both chambers (in Bq/m3)
-                            //AvgTemp_Series.add(hourCounter, (hourlyAvgTemp / avgCounter)); //This will calculate hourly average temperature (in Celsius)
-                            //AvgPress_Series.add(hourCounter, (hourlyAvgPress / avgCounter)); //This will calculate hourly average temperature (in mbar)
-                            //Ch1_Raw.add(hourCounter, rawTempCounts_Ch1 / LoadedReconCF1 * 37);
-                            //Ch2_Raw.add(hourCounter, rawTempCounts_Ch2 / LoadedReconCF2 * 37);
 
                             //If we are excluding first four hours, let's not add them to TotalAvgRnC
                             if (((TotalHourCounter > 3) && boolExcludeFirst4Hours) || (!boolExcludeFirst4Hours)) {
@@ -293,13 +284,6 @@ public class CreateGraphArrays {
                             System.out.println(arrLine);
 
                         } else {
-                            //Ch1_Series.add(hourCounter, tempCounts_Ch1 / LoadedReconCF1);
-                            //Ch2_Series.add(hourCounter, tempCounts_Ch2 / LoadedReconCF2);
-                            //AvgRnC_Series.add(hourCounter, ((tempCounts_Ch1 / LoadedReconCF1 + tempCounts_Ch2 / LoadedReconCF2) / 2)); //This will calculate hourly average of both chambers
-                            //AvgTemp_Series.add(hourCounter, (hourlyAvgTemp / avgCounter) * 9 / 5 + 32); //This will calculate hourly average temperature (in Fahrenheit)
-                            //AvgPress_Series.add(hourCounter, (hourlyAvgPress / avgCounter) * 0.02952998751); //This will calculate hourly average temperature (in inHg)
-                            //Ch1_Raw.add(hourCounter, rawTempCounts_Ch1 / LoadedReconCF1);
-                            //Ch2_Raw.add(hourCounter, rawTempCounts_Ch2 / LoadedReconCF2);
 
                             //If we are excluding first four hours, let's not add them to TotalAvgRnC and TotalHourCounter
                             if (((TotalHourCounter > 3) && boolExcludeFirst4Hours) || (!boolExcludeFirst4Hours)) {
