@@ -82,6 +82,7 @@ public class LoadSavedFile {
                             strLine_parsed = StringUtils.split(strLine, " "); //Need to parse again to segregate spaces, not commas.
                             try {
                                 strInstrumentSerial = strLine_parsed[2];
+                                Globals.globalReconSerial = strInstrumentSerial;
                                 Log.d("LoadSavedFile","Serial# found and parsed: " + strInstrumentSerial);
                             } catch(ArrayIndexOutOfBoundsException ex) {
                                 strInstrumentSerial = "Unknown";
@@ -92,9 +93,11 @@ public class LoadSavedFile {
                             strLine_parsed = StringUtils.split(strLine, " "); //Need to parse again to segregate spaces, not commas.
                             try {
                                 LoadedReconCF1 = Double.parseDouble(strLine_parsed[3]);
+                                Globals.globalReconCF1 = LoadedReconCF1;
                                 Log.d("LoadSavedFile", "CF1 found and parsed: " + LoadedReconCF1);
                             } catch(ArrayIndexOutOfBoundsException ex) {
                                 LoadedReconCF1 = 6;
+                                Globals.globalReconCF1 = LoadedReconCF1;
                                 Log.d("LoadSavedFile","WARNING Out of Bounds: CF1 not parsed. Defaulting to 6...");
                             }
                         }
@@ -102,9 +105,11 @@ public class LoadSavedFile {
                             strLine_parsed = StringUtils.split(strLine, " "); //Need to parse again to segregate spaces, not commas.
                             try {
                                 LoadedReconCF2 = Double.parseDouble(strLine_parsed[3]);
+                                Globals.globalReconCF2 = LoadedReconCF2;
                                 Log.d("LoadSavedFile", "CF2 found and parsed: " + LoadedReconCF2);
                             } catch(ArrayIndexOutOfBoundsException ex) {
                                 LoadedReconCF2 = 6;
+                                Globals.globalReconCF2 = LoadedReconCF2;
                                 Log.d("LoadSavedFile","WARNING Out of Bounds: CF2 not parsed. Defaulting to 6...");
                             }
                         }
@@ -145,6 +150,7 @@ public class LoadSavedFile {
                             strLine_parsed = StringUtils.split(strLine, "=");
                             strCalDate = strLine_parsed[1].trim();
                             loadedCalibrationDate = strCalDate;
+                            Globals.globalReconCalibrationDate = loadedCalibrationDate;
                             Log.d("LoadSavedFile","Calibration Date found and parsed: " + loadedCalibrationDate);
                         }
                         if(strLine.length() > 8 && strLine.substring(0,9).contains("Protocol:")) {
