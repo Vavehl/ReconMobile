@@ -72,4 +72,12 @@
         app:fabSize="auto"
         app:srcCompat="@drawable/ic_email_ivory_24dp" />
 
+    <com.github.mikephil.charting.charts.LineChart
+        android:id="@+id/chartRadon"
+        android:layout_width="800dp"
+        android:layout_height="240dp"
+        android:layout_weight="1"
+        android:visibility="invisible"
+        tools:visibility="invisible" />
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

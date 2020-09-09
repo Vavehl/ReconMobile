@@ -1,7 +1,9 @@
 package com.radelec.reconmobile;
 
+import android.graphics.Bitmap;
 import android.os.Build;
 import android.util.Log;
+import android.view.View;
 
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
@@ -355,14 +357,6 @@ public class CreateGraphArrays {
             OverallAvgRnC = (rawCountsExist ? TotalAvgRnC_Ch1_Raw : TotalAvgRnC_Ch1) / (TotalHourCounter-(Globals.boolExcludeFirst4Hours ? 4 : 0));
         } else {
             OverallAvgRnC = TotalAvgRnC / (TotalHourCounter-(Globals.boolExcludeFirst4Hours ? 4 : 0)); //You know what's funny? If the dividend is zero, we'll show infinity pCi/L on the PDF... :)
-        }
-
-        //For right now, auto-generate the PDF.
-        CreatePDF generate_pdf = new CreatePDF();
-        try {
-            generate_pdf.main();
-        } catch (IOException | ParseException e) {
-            e.printStackTrace();
         }
 
     }

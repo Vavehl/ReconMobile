@@ -3,9 +3,19 @@ package com.radelec.reconmobile;
 import android.app.Dialog;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.LinearGradient;
+import android.graphics.Paint;
+import android.graphics.Shader;
 import android.net.Uri;
 import android.os.Bundle;
 
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.DefaultValueFormatter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 
@@ -23,6 +33,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.text.ParseException;
+
 import static com.radelec.reconmobile.Constants.*;
 import static com.radelec.reconmobile.Globals.*;
 
@@ -32,6 +48,9 @@ public class MainActivity extends AppCompatActivity
 
     //Create various dialog windows. Hopefully there won't be too many of them, or this is gonna become a mess...
     public Dialog dialogAbout;
+
+    LineChart lcRadon;
+    LineData lineData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +91,7 @@ public class MainActivity extends AppCompatActivity
             public void onClick(View view) {
                 //Snackbar.make(view, "TODO: Email PDF Report", Snackbar.LENGTH_LONG).setAction("Action", null).show();
                 if(connected == ReconConnected.Loaded) {
+                    populateRadonChart();
                     emailPDF();
                 } else {
                     //If no file is loaded, let's try to prompt the user to load one...
@@ -297,6 +317,17 @@ public class MainActivity extends AppCompatActivity
     protected void emailPDF() {
         try {
             Log.d("MainActivity", "emailPDF() called!");
+
+            //Generate PDF when the email button is pressed.
+
+            CreatePDF generate_pdf = new CreatePDF();
+            try {
+                createBMPFromChart();
+                generate_pdf.main();
+            } catch (IOException | ParseException e) {
+                e.printStackTrace();
+            }
+
             String[] recipient_email = {"info@radelec.com"};
             String[] self_email = {"info@radelec.com"};
             String subject = "Radon Test Report";
@@ -326,6 +357,99 @@ public class MainActivity extends AppCompatActivity
             }
         } catch (ActivityNotFoundException ex) {
             Log.d("MainActivity","emailPDF(): Email client not found?");
+        }
+    }
+
+    public void populateRadonChart() {
+        Log.d("MainActivity","populateRadonChart() called!");
+
+        XAxis xAxis;
+        final YAxis yAxis;
+        float yMin = 0;
+
+        //Assign layout element to the linechart lcRadon
+        lcRadon = findViewById(R.id.chartRadon);
+
+        LineDataSet lineDataSet = new LineDataSet(chartdataRadon,"pCi/L");
+
+        lineDataSet.setFillAlpha(110);
+        lineDataSet.setDrawCircles(false);
+        lineDataSet.setLineWidth(5f);
+        lineDataSet.setDrawFilled(true);
+        lineDataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+        lineDataSet.setValueTextSize(10f);
+        lineDataSet.setValueFormatter(new DefaultValueFormatter(1));
+        lineData = new LineData(lineDataSet);
+
+        //Draw the actual graph with lineData
+        lcRadon.setData(lineData);
+
+        // Gradient Stuff Begin (...which isn't even working!)
+        //It's not working because the height is zero!
+        Paint paint = lcRadon.getRenderer().getPaintRender();
+        int height = lcRadon.getHeight();
+        LinearGradient linGrad = new LinearGradient(0, 0, 0, height, getResources().getColor(android.R.color.holo_blue_bright), getResources().getColor(android.R.color.holo_blue_dark), Shader.TileMode.REPEAT);
+        paint.setShader(linGrad);
+        // Gradient Stuff End
+
+        //General graph settings (applied after setData)
+        lcRadon.fitScreen();
+        lcRadon.setDrawBorders(false);
+        lcRadon.setDrawGridBackground(false);
+        lcRadon.setTouchEnabled(true);
+        lcRadon.setPinchZoom(true);
+        lcRadon.setScaleEnabled(true);
+        lcRadon.setDragEnabled(true);
+        lcRadon.setAutoScaleMinMaxEnabled(true);
+        lcRadon.getAxisRight().setEnabled(false);
+        lcRadon.getDescription().setEnabled(false);
+
+        //Y-Axis formatting
+        yAxis = lcRadon.getAxisLeft();
+        yAxis.setPosition(YAxis.YAxisLabelPosition.INSIDE_CHART);
+        yAxis.setLabelCount(4,true);
+        yAxis.setDrawGridLines(false);
+        yAxis.setValueFormatter(new DefaultValueFormatter(1));
+        yAxis.setAxisMaximum(yAxis.getAxisMaximum() * (float)1.25);
+        yAxis.setAxisMinimum(yMin);
+
+        //X-Axis formatting
+        xAxis = lcRadon.getXAxis();
+        xAxis.setLabelRotationAngle(90);
+        xAxis.setCenterAxisLabels(true);
+        xAxis.setDrawGridLines(false);
+        xAxis.setValueFormatter(new GraphAxisFormatter());
+        xAxis.setAvoidFirstLastClipping(true);
+
+        //Modifiers if SI units are selected.
+        if(Globals.globalUnitType=="SI") {
+            lineDataSet.setLabel("Bq/m³");
+            yAxis.setValueFormatter(new DefaultValueFormatter(0));
+            lcRadon.invalidate(); //Is this needed?
+        }
+
+        Log.d("MainActivity","Chart Height = " + lcRadon.getHeight() + " // Chart Width = " + lcRadon.getWidth());
+    }
+
+    public void createBMPFromChart() {
+        Log.d("MainActivity","createBMPFromChart() called!");
+        if(lcRadon.getHeight() > 0 && lcRadon.getWidth() > 0) {
+            Log.d("MainActivity","Attempting to create PNG from Radon Chart!");
+            Bitmap bmpRadon;
+            String strPNGRadonFilename = fileDir + File.separator + "chartRadon.png";
+            bmpRadon = lcRadon.getChartBitmap();
+            File output = new File(fileDir,"chartRadon.png");
+            try {
+                OutputStream outputStream = new FileOutputStream(output);
+                bmpRadon.compress(Bitmap.CompressFormat.PNG,100,outputStream);
+                outputStream.flush();
+                outputStream.close();
+            } catch (Exception ex){
+                Log.d("MainActivity","createBMPFromChart():: Exception!");
+                ex.printStackTrace();
+            }
+        } else {
+            Log.d("MainActivity","createBMPFromChart():: Height and/or Width is zero!");
         }
     }
 

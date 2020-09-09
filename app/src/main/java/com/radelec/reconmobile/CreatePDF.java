@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.graphics.Point;
 import android.os.Environment;
 import android.util.Log;
+import android.view.ViewGroup;
 
 import com.tom_roush.pdfbox.pdmodel.PDDocument;
 import com.tom_roush.pdfbox.pdmodel.PDPage;
@@ -1195,6 +1196,16 @@ public class CreatePDF {
         } catch (IOException ex) {
             Log.d("CreatePDF","drawFooterInfo():: Could not write page footer lines!");
             Log.d("CreatePDF","drawFooterInfo():: Exception! " + ex);
+        }
+    }
+
+    private void drawCharts() {
+        try {
+            //final ViewGroup viewGroup = (ViewGroup) ((ViewGroup) this.findViewById(android.R.id.content)).getChildAt(0);
+
+        } catch (Exception ex) {
+            Log.d("CreatePDF","General Exception unhandled in drawCharts()!");
+            Log.d("CreatePDF","drawCharts():: Exception! " + ex);
         }
     }
 
