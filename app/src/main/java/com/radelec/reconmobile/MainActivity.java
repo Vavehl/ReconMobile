@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity
     public Dialog dialogAbout;
 
     LineChart lcRadon;
-    LineData lineData;
+    LineData lineDataRadon;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -379,10 +379,10 @@ public class MainActivity extends AppCompatActivity
         lineDataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
         lineDataSet.setValueTextSize(10f);
         lineDataSet.setValueFormatter(new DefaultValueFormatter(1));
-        lineData = new LineData(lineDataSet);
+        lineDataRadon = new LineData(lineDataSet);
 
         //Draw the actual graph with lineData
-        lcRadon.setData(lineData);
+        lcRadon.setData(lineDataRadon);
 
         // Gradient Stuff Begin (...which isn't even working!)
         //It's not working because the height is zero!
