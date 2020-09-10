@@ -322,7 +322,7 @@ public class MainActivity extends AppCompatActivity
 
             CreatePDF generate_pdf = new CreatePDF();
             try {
-                createBMPFromChart();
+                createImagesFromChart();
                 generate_pdf.main();
             } catch (IOException | ParseException e) {
                 e.printStackTrace();
@@ -431,8 +431,8 @@ public class MainActivity extends AppCompatActivity
         Log.d("MainActivity","Chart Height = " + lcRadon.getHeight() + " // Chart Width = " + lcRadon.getWidth());
     }
 
-    public void createBMPFromChart() {
-        Log.d("MainActivity","createBMPFromChart() called!");
+    public void createImagesFromChart() {
+        Log.d("MainActivity","createImagesFromChart() called!");
         if(lcRadon.getHeight() > 0 && lcRadon.getWidth() > 0) {
             Log.d("MainActivity","Attempting to create PNG from Radon Chart!");
             Bitmap bmpRadon;
@@ -445,11 +445,11 @@ public class MainActivity extends AppCompatActivity
                 outputStream.flush();
                 outputStream.close();
             } catch (Exception ex){
-                Log.d("MainActivity","createBMPFromChart():: Exception!");
+                Log.d("MainActivity","createImagesFromChart():: Exception!");
                 ex.printStackTrace();
             }
         } else {
-            Log.d("MainActivity","createBMPFromChart():: Height and/or Width is zero!");
+            Log.d("MainActivity","createImagesFromChart():: Height and/or Width is zero!");
         }
     }
 
