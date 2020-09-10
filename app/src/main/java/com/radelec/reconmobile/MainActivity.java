@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.Shader;
@@ -50,7 +51,7 @@ public class MainActivity extends AppCompatActivity
     public Dialog dialogAbout;
 
     LineChart lcRadon;
-    LineData lineDataRadon;
+    LineChart lcHumidity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,6 +93,7 @@ public class MainActivity extends AppCompatActivity
                 //Snackbar.make(view, "TODO: Email PDF Report", Snackbar.LENGTH_LONG).setAction("Action", null).show();
                 if(connected == ReconConnected.Loaded) {
                     populateRadonChart();
+                    populateHumidityChart();
                     emailPDF();
                 } else {
                     //If no file is loaded, let's try to prompt the user to load one...
@@ -363,13 +365,13 @@ public class MainActivity extends AppCompatActivity
     public void populateRadonChart() {
         Log.d("MainActivity","populateRadonChart() called!");
 
+        LineData lineDataRadon;
         XAxis xAxis;
         final YAxis yAxis;
         float yMin = 0;
 
         //Assign layout element to the linechart lcRadon
         lcRadon = findViewById(R.id.chartRadon);
-
         LineDataSet lineDataSet = new LineDataSet(chartdataRadon,"pCi/L");
 
         lineDataSet.setFillAlpha(110);
@@ -431,12 +433,75 @@ public class MainActivity extends AppCompatActivity
         Log.d("MainActivity","Chart Height = " + lcRadon.getHeight() + " // Chart Width = " + lcRadon.getWidth());
     }
 
+    public void populateHumidityChart() {
+        Log.d("MainActivity","populateHumidityChart() called!");
+
+        LineData lineDataHumidity;
+        XAxis xAxis;
+        final YAxis yAxis;
+        float yMin = 0;
+
+        //Assign layout element to the linechart lcHumidity
+        lcHumidity = findViewById(R.id.chartHumidity);
+
+        LineDataSet lineDataSet = new LineDataSet(chartdataHumidity,"%");
+
+        lineDataSet.setFillAlpha(110);
+        lineDataSet.setDrawCircles(false);
+        lineDataSet.setCircleColor(R.color.colorPrimary);
+        lineDataSet.setColor(R.color.colorPrimary);
+        lineDataSet.setLineWidth(5f);
+        lineDataSet.setDrawFilled(true);
+        lineDataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+        lineDataSet.setDrawCircleHole(false);
+        lineDataSet.setDrawValues(false);
+        lineDataSet.setValueFormatter(new DefaultValueFormatter(2));
+        lineDataSet.setFillColor(Color.argb(200,52,155,235));
+        lineDataHumidity = new LineData(lineDataSet);
+
+        //Draw the actual graph with lineData
+        lcHumidity.setData(lineDataHumidity);
+
+        //General graph settings (applied after setData)
+        lcHumidity.fitScreen();
+        lcHumidity.setDrawBorders(false);
+        lcHumidity.setDrawGridBackground(false);
+        lcHumidity.setTouchEnabled(true);
+        lcHumidity.setPinchZoom(true);
+        lcHumidity.setScaleEnabled(true);
+        lcHumidity.setDragEnabled(true);
+        lcHumidity.setAutoScaleMinMaxEnabled(false);
+        lcHumidity.getAxisRight().setEnabled(false);
+        lcHumidity.getDescription().setEnabled(false);
+
+        //Y-Axis formatting
+        yAxis = lcHumidity.getAxisLeft();
+        yAxis.setPosition(YAxis.YAxisLabelPosition.INSIDE_CHART);
+        yAxis.setLabelCount(4,true);
+        yAxis.setDrawGridLines(false);
+        yAxis.setValueFormatter(new DefaultValueFormatter(0));
+        yAxis.setAxisMinimum(yMin);
+        yAxis.setAxisMaximum(100);
+
+        //X-Axis formatting
+        xAxis = lcHumidity.getXAxis();
+        xAxis.setLabelRotationAngle(90);
+        xAxis.setCenterAxisLabels(true);
+        xAxis.setDrawGridLines(false);
+        xAxis.setValueFormatter(new GraphAxisFormatter());
+        xAxis.setAvoidFirstLastClipping(true);
+
+    }
+
     public void createImagesFromChart() {
         Log.d("MainActivity","createImagesFromChart() called!");
         if(lcRadon.getHeight() > 0 && lcRadon.getWidth() > 0) {
             Log.d("MainActivity","Attempting to create PNG from Radon Chart!");
             Bitmap bmpRadon;
-            String strPNGRadonFilename = fileDir + File.separator + "chartRadon.png";
+            Bitmap bmpHumidity;
+            Bitmap bmpPressure;
+            Bitmap bmpTilts;
+
             bmpRadon = lcRadon.getChartBitmap();
             File output = new File(fileDir,"chartRadon.png");
             try {
@@ -445,9 +510,22 @@ public class MainActivity extends AppCompatActivity
                 outputStream.flush();
                 outputStream.close();
             } catch (Exception ex){
-                Log.d("MainActivity","createImagesFromChart():: Exception!");
+                Log.d("MainActivity","createImagesFromChart():: Exception while creating Radon PNG!");
                 ex.printStackTrace();
             }
+
+            bmpHumidity = lcHumidity.getChartBitmap();
+            output = new File(fileDir,"chartHumidity.png");
+            try {
+                OutputStream outputStream = new FileOutputStream(output);
+                bmpHumidity.compress(Bitmap.CompressFormat.PNG,100,outputStream);
+                outputStream.flush();
+                outputStream.close();
+            } catch (Exception ex){
+                Log.d("MainActivity","createImagesFromChart():: Exception while creating Radon PNG!");
+                ex.printStackTrace();
+            }
+
         } else {
             Log.d("MainActivity","createImagesFromChart():: Height and/or Width is zero!");
         }

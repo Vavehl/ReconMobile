@@ -80,4 +80,28 @@
         android:visibility="invisible"
         tools:visibility="invisible" />
 
+    <com.github.mikephil.charting.charts.LineChart
+        android:id="@+id/chartHumidity"
+        android:layout_width="800dp"
+        android:layout_height="240dp"
+        android:layout_weight="1"
+        android:visibility="invisible"
+        tools:visibility="invisible" />
+
+    <com.github.mikephil.charting.charts.LineChart
+        android:id="@+id/chartPressure"
+        android:layout_width="800dp"
+        android:layout_height="240dp"
+        android:layout_weight="1"
+        android:visibility="invisible"
+        tools:visibility="invisible" />
+
+    <com.github.mikephil.charting.charts.LineChart
+        android:id="@+id/chartTilts"
+        android:layout_width="800dp"
+        android:layout_height="240dp"
+        android:layout_weight="1"
+        android:visibility="invisible"
+        tools:visibility="invisible" />
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
