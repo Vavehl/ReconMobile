@@ -11,9 +11,12 @@ import android.graphics.Shader;
 import android.net.Uri;
 import android.os.Bundle;
 
+import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.DefaultValueFormatter;
@@ -52,6 +55,8 @@ public class MainActivity extends AppCompatActivity
 
     LineChart lcRadon;
     LineChart lcHumidity;
+    LineChart lcPressure;
+    BarChart bcTilts;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,6 +99,8 @@ public class MainActivity extends AppCompatActivity
                 if(connected == ReconConnected.Loaded) {
                     populateRadonChart();
                     populateHumidityChart();
+                    populatePressureChart();
+                    populateTiltsChart();
                     emailPDF();
                 } else {
                     //If no file is loaded, let's try to prompt the user to load one...
@@ -493,6 +500,125 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+    public void populatePressureChart() {
+        Log.d("MainActivity","populatePressureChart() called!");
+
+        LineData lineDataPressure;
+        XAxis xAxis;
+        final YAxis yAxis;
+
+        //Assign layout element to the linechart lcPressure
+        lcPressure = findViewById(R.id.chartPressure);
+
+        LineDataSet lineDataSet = new LineDataSet(chartdataPressure,"inHg");
+
+        lineDataSet.setFillAlpha(110);
+        lineDataSet.setDrawCircles(false);
+        lineDataSet.setCircleColor(R.color.colorPrimary);
+        lineDataSet.setColor(R.color.colorPrimary);
+        lineDataSet.setLineWidth(5f);
+        lineDataSet.setDrawFilled(true);
+        lineDataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+        lineDataSet.setDrawCircleHole(false);
+        lineDataSet.setDrawValues(false);
+        lineDataSet.setValueFormatter(new DefaultValueFormatter(2));
+        lineDataSet.setFillColor(Color.argb(200,192,192,192));
+        lineDataPressure = new LineData(lineDataSet);
+
+        //Draw the actual graph with lineData
+        lcPressure.setData(lineDataPressure);
+
+        //General graph settings (applied after setData)
+        lcPressure.fitScreen();
+        lcPressure.setDrawBorders(false);
+        lcPressure.setDrawGridBackground(false);
+        lcPressure.setTouchEnabled(true);
+        lcPressure.setPinchZoom(true);
+        lcPressure.setScaleEnabled(true);
+        lcPressure.setDragEnabled(true);
+        lcPressure.setAutoScaleMinMaxEnabled(false);
+        lcPressure.getAxisRight().setEnabled(false);
+        lcPressure.getDescription().setEnabled(false);
+
+        //Y-Axis formatting
+        yAxis = lcPressure.getAxisLeft();
+        yAxis.setPosition(YAxis.YAxisLabelPosition.INSIDE_CHART);
+        yAxis.setLabelCount(4,true);
+        yAxis.setDrawGridLines(false);
+        yAxis.setValueFormatter(new DefaultValueFormatter(1));
+        yAxis.setAxisMinimum(yAxis.getAxisMinimum() * (float)0.65);
+        yAxis.setAxisMaximum(yAxis.getAxisMaximum() * (float)1.25);
+
+        //X-Axis formatting
+        xAxis = lcPressure.getXAxis();
+        xAxis.setLabelRotationAngle(90);
+        xAxis.setCenterAxisLabels(true);
+        xAxis.setDrawGridLines(false);
+        xAxis.setValueFormatter(new GraphAxisFormatter());
+        xAxis.setAvoidFirstLastClipping(true);
+
+        //Modifiers if SI units are selected.
+        if(Globals.globalUnitType=="SI") {
+            lineDataSet.setLabel("mbar");
+            lcPressure.invalidate(); //Is this needed?
+        }
+    }
+
+    public void populateTiltsChart() {
+        Log.d("MainActivity","populateTiltsChart() called!");
+
+        BarData barDataTilts;
+        XAxis xAxis;
+        final YAxis yAxis;
+
+        //Assign layout element to the barchart bcTilts
+        bcTilts = findViewById(R.id.chartTilts);
+
+        BarDataSet barDataSet = new BarDataSet(chartdataTilts,"Tilts");
+
+        barDataSet.setColor(R.color.colorPrimary);
+        barDataSet.setDrawValues(true);
+        barDataSet.setValueFormatter(new DefaultValueFormatter(0));
+        barDataSet.setGradientColor(Color.argb(100,171,157,242),Color.argb(200,52,139,195));
+        barDataTilts = new BarData(barDataSet);
+        barDataTilts.setBarWidth(20f);
+        barDataTilts.setValueTextSize(10f);
+
+        //Draw the actual graph with barData
+        bcTilts.setData(barDataTilts);
+
+        //General graph settings (applied after setData)
+        bcTilts.fitScreen();
+        bcTilts.setDrawBorders(false);
+        bcTilts.setDrawGridBackground(false);
+        bcTilts.setTouchEnabled(true);
+        bcTilts.setPinchZoom(true);
+        bcTilts.setScaleEnabled(true);
+        bcTilts.setDragEnabled(true);
+        bcTilts.setAutoScaleMinMaxEnabled(false);
+        bcTilts.getAxisRight().setEnabled(false);
+        bcTilts.getDescription().setEnabled(false);
+
+        //Y-Axis formatting
+        yAxis = bcTilts.getAxisLeft();
+        yAxis.setPosition(YAxis.YAxisLabelPosition.INSIDE_CHART);
+        yAxis.setLabelCount(10,true);
+        yAxis.setDrawGridLines(false);
+        yAxis.setValueFormatter(new DefaultValueFormatter(0));
+        yAxis.setAxisMinimum(0);
+        yAxis.setAxisMaximum(yAxis.getAxisMaximum() * (float)1.25);
+        if(yAxis.getAxisMaximum()<10) yAxis.setAxisMaximum(10); //If the maximum y-axis isn't at least 10, let's set it to 10.
+
+        //X-Axis formatting
+        xAxis = bcTilts.getXAxis();
+        xAxis.setLabelRotationAngle(90);
+        xAxis.setCenterAxisLabels(true);
+        xAxis.setDrawGridLines(false);
+        xAxis.setValueFormatter(new GraphAxisFormatter());
+        xAxis.setAvoidFirstLastClipping(true);
+    }
+
+
     public void createImagesFromChart() {
         Log.d("MainActivity","createImagesFromChart() called!");
         if(lcRadon.getHeight() > 0 && lcRadon.getWidth() > 0) {
@@ -522,7 +648,31 @@ public class MainActivity extends AppCompatActivity
                 outputStream.flush();
                 outputStream.close();
             } catch (Exception ex){
-                Log.d("MainActivity","createImagesFromChart():: Exception while creating Radon PNG!");
+                Log.d("MainActivity","createImagesFromChart():: Exception while creating Humidity PNG!");
+                ex.printStackTrace();
+            }
+
+            bmpPressure = lcPressure.getChartBitmap();
+            output = new File(fileDir,"chartPressure.png");
+            try {
+                OutputStream outputStream = new FileOutputStream(output);
+                bmpPressure.compress(Bitmap.CompressFormat.PNG,100,outputStream);
+                outputStream.flush();
+                outputStream.close();
+            } catch (Exception ex){
+                Log.d("MainActivity","createImagesFromChart():: Exception while creating Pressure PNG!");
+                ex.printStackTrace();
+            }
+
+            bmpTilts = bcTilts.getChartBitmap();
+            output = new File(fileDir,"chartTilts.png");
+            try {
+                OutputStream outputStream = new FileOutputStream(output);
+                bmpTilts.compress(Bitmap.CompressFormat.PNG,100,outputStream);
+                outputStream.flush();
+                outputStream.close();
+            } catch (Exception ex){
+                Log.d("MainActivity","createImagesFromChart():: Exception while creating Tilts PNG!");
                 ex.printStackTrace();
             }
 

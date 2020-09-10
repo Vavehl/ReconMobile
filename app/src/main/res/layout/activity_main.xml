@@ -96,7 +96,7 @@
         android:visibility="invisible"
         tools:visibility="invisible" />
 
-    <com.github.mikephil.charting.charts.LineChart
+    <com.github.mikephil.charting.charts.BarChart
         android:id="@+id/chartTilts"
         android:layout_width="800dp"
         android:layout_height="240dp"
