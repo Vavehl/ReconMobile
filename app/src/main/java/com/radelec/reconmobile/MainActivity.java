@@ -2,6 +2,7 @@ package com.radelec.reconmobile;
 
 import android.app.Dialog;
 import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -77,6 +78,8 @@ public class MainActivity extends AppCompatActivity
 
         //Get file directory
         fileDir = getApplicationContext().getFilesDir();
+        imageDir = getApplicationContext().getDir("images",MODE_PRIVATE);
+        pdfDir = getApplicationContext().getDir("pdf",MODE_PRIVATE);
 
         //Programmatically initialize fragmentConnect tab -- there has to be a better way to implement this??
         FragmentManager fm = getSupportFragmentManager();
@@ -629,7 +632,7 @@ public class MainActivity extends AppCompatActivity
             Bitmap bmpTilts;
 
             bmpRadon = lcRadon.getChartBitmap();
-            File output = new File(fileDir,"chartRadon.png");
+            File output = new File(imageDir,"chartRadon.png");
             try {
                 OutputStream outputStream = new FileOutputStream(output);
                 bmpRadon.compress(Bitmap.CompressFormat.PNG,100,outputStream);
@@ -641,7 +644,7 @@ public class MainActivity extends AppCompatActivity
             }
 
             bmpHumidity = lcHumidity.getChartBitmap();
-            output = new File(fileDir,"chartHumidity.png");
+            output = new File(imageDir,"chartHumidity.png");
             try {
                 OutputStream outputStream = new FileOutputStream(output);
                 bmpHumidity.compress(Bitmap.CompressFormat.PNG,100,outputStream);
@@ -653,7 +656,7 @@ public class MainActivity extends AppCompatActivity
             }
 
             bmpPressure = lcPressure.getChartBitmap();
-            output = new File(fileDir,"chartPressure.png");
+            output = new File(imageDir,"chartPressure.png");
             try {
                 OutputStream outputStream = new FileOutputStream(output);
                 bmpPressure.compress(Bitmap.CompressFormat.PNG,100,outputStream);
@@ -665,7 +668,7 @@ public class MainActivity extends AppCompatActivity
             }
 
             bmpTilts = bcTilts.getChartBitmap();
-            output = new File(fileDir,"chartTilts.png");
+            output = new File(imageDir,"chartTilts.png");
             try {
                 OutputStream outputStream = new FileOutputStream(output);
                 bmpTilts.compress(Bitmap.CompressFormat.PNG,100,outputStream);

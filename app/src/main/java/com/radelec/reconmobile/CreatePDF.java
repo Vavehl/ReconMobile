@@ -70,10 +70,10 @@ public class CreatePDF {
     static int fontSize = 14;
     static String PDF_Name = "Customer_Letter.pdf";
 
-    public void main() throws IOException, ParseException {
+            public void main() throws IOException, ParseException {
 
-        //strips .txt from the filename and replaces it with .pdf
-        if (globalLoadedFileName != null && globalLoadedFileName.length()>5) {
+                //strips .txt from the filename and replaces it with .pdf
+                if (globalLoadedFileName != null && globalLoadedFileName.length()>5) {
             PDF_Name = StringUtils.left(globalLoadedFileName, globalLoadedFileName.length() - 4) + ".pdf";
         } else {
             PDF_Name = "RadonTestReport.pdf";
