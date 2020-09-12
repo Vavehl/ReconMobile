@@ -5,7 +5,6 @@ import android.graphics.Color;
 import android.graphics.Point;
 import android.os.Environment;
 import android.util.Log;
-import android.view.ViewGroup;
 
 import com.tom_roush.pdfbox.pdmodel.PDDocument;
 import com.tom_roush.pdfbox.pdmodel.PDPage;
@@ -70,10 +69,10 @@ public class CreatePDF {
     static int fontSize = 14;
     static String PDF_Name = "Customer_Letter.pdf";
 
-            public void main() throws IOException, ParseException {
+    public void main() throws IOException, ParseException {
 
-                //strips .txt from the filename and replaces it with .pdf
-                if (globalLoadedFileName != null && globalLoadedFileName.length()>5) {
+        //strips .txt from the filename and replaces it with .pdf
+        if (globalLoadedFileName != null && globalLoadedFileName.length()>5) {
             PDF_Name = StringUtils.left(globalLoadedFileName, globalLoadedFileName.length() - 4) + ".pdf";
         } else {
             PDF_Name = "RadonTestReport.pdf";
@@ -119,9 +118,6 @@ public class CreatePDF {
             doc.addPage(page);
 
             //Declare the fonts
-            //AssetManager assetManager;
-            //StaticContext scContext = new StaticContext();
-            //assetManager = scContext.getApplicationContext().getResources().getAssets();
             PDFont fontDefault = PDType0Font.load(doc,assetManager.open("calibri.ttf"));
             PDFont fontBold = PDType0Font.load(doc,assetManager.open("calibri_bold.ttf"));
 
@@ -568,11 +564,8 @@ public class CreatePDF {
 
             Log.d("CreatePDF","End PDF generation stage. Writing to file...");
 
-            //doc.save(Environment.DIRECTORY_DOWNLOADS + File.separator + PDF_Name);
-            //File dir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS));
             drawFooterInfo(doc);
             doc.save(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS + File.separator + PDF_Name));
-            //doc.close(); //We still need to close it here!
             Log.d("CreatePDF","PDF saved to: " + Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS + File.separator + PDF_Name));
             //Draw the footer info (page #, version, etc.)
             //It's a bit shoddy, but because we're appending, we need to have already saved it
@@ -580,7 +573,7 @@ public class CreatePDF {
             filePDF = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + File.separator + PDF_Name);
             if (filePDF != null) {
                 if (filePDF.exists()) {
-                    Log.d("CreatePDF", PDF_Name + " has been created.");
+                    Log.d("CreatePDF", PDF_Name + " has been created. [" + filePDF.getAbsolutePath() + "]");
                     globalLastSystemConsole = "PDF has been created.";
                 } else {
                     Log.d("CreatePDF", "Problem creating PDF.");
@@ -679,14 +672,6 @@ public class CreatePDF {
             PDF_Y -= 1.0f*fontSize;
             contents.newLineAtOffset(0, -1.0f*fontSize);
             contents.showText(textLine);
-            /*textLine = strCompany_Address2;
-            PDF_Y -= 1.0f*fontSize;
-            contents.newLineAtOffset(0, -1.0f*fontSize);
-            contents.showText(textLine);
-            textLine = strCompany_Address3;
-            PDF_Y -= 1.0f*fontSize;
-            contents.newLineAtOffset(0, -1.0f*fontSize);
-            contents.showText(textLine);*/
             contents.endText();
             Log.d("CreatePDF","Successful CreatePDF::DrawCompanyHeader()!");
         } catch (IOException ex) {
@@ -1170,10 +1155,6 @@ public class CreatePDF {
     private void drawFooterInfo(PDDocument doc) {
         try {
             Log.d("CreatePDF","drawFooterInfo() called!");
-            //PDDocument doc = PDDocument.load(ReconPDF);
-            //AssetManager assetManager;
-            //StaticContext scContext = new StaticContext();
-            //assetManager = scContext.getApplicationContext().getResources().getAssets();
             PDFont fontDefault = PDType0Font.load(doc,assetManager.open("calibri.ttf"));
             if(doc.getNumberOfPages() >= 1) {
                 Log.d("CreatePDF","drawFooterInfo():: Number of PDF pages = " + doc.getNumberOfPages());

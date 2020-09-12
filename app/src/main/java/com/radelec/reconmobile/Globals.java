@@ -51,7 +51,6 @@ class Globals {
     //File Directory
     public static File fileDir = null;
     public static File imageDir = null;
-    public static File pdfDir = null;
 
     //PDF File
     public static File filePDF = null;
