@@ -79,7 +79,6 @@ public class MainActivity extends AppCompatActivity
         //Get file directory
         fileDir = getApplicationContext().getFilesDir();
         imageDir = getApplicationContext().getDir("images",MODE_PRIVATE);
-        pdfDir = getApplicationContext().getDir("pdf",MODE_PRIVATE);
 
         //Programmatically initialize fragmentConnect tab -- there has to be a better way to implement this??
         FragmentManager fm = getSupportFragmentManager();
