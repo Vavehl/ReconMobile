@@ -376,16 +376,31 @@ public class CreatePDF {
             DrawCustomerTestSiteBlock(contents, page_chart, fontBold, fontDefault);
 
             //Test Summary Block
-            drawTestSummaryBlock(contents, page_chart, fontDefault, fontBold);
+            //drawTestSummaryBlock(contents, page_chart, fontDefault, fontBold);
 
             //Draw Average Radon Concentration Banner
-            DrawAverageRadonBanner(contents, page_chart, fontBold, true);
+            //DrawAverageRadonBanner(contents, page_chart, fontBold, true);
 
-            //This draws the graph image (graph.png), which was externalized to the file in the CreateGraph class.
-            //PDImageXObject graphPNG = PDImageXObject.createFromFile("graph.png", doc);
+            //This draws the graph images, which are externalized in MainActivity.createImagesFromChart().
+            PDImageXObject imageRadon = PDImageXObject.createFromFile(imageDir + File.separator + "chartRadon.png", doc);
+            PDImageXObject imageHumidity = PDImageXObject.createFromFile(imageDir + File.separator + "chartHumidity.png", doc);
+            PDImageXObject imagePressure = PDImageXObject.createFromFile(imageDir + File.separator + "chartPressure.png", doc);
+            PDImageXObject imageTilts = PDImageXObject.createFromFile(imageDir + File.separator + "chartTilts.png", doc);
 
-            PDF_Y -= 400;
-            //contents.drawImage(graphPNG, marginSide*2, PDF_Y);
+            Point scaledImageRadon = getScaledDimension(new Point(imageRadon.getWidth(), imageRadon.getHeight()), new Point((int) 480,144));
+            Point scaledImageHumidity = getScaledDimension(new Point(imageHumidity.getWidth(), imageHumidity.getHeight()), new Point((int) 480,144));
+            Point scaledImagePressure = getScaledDimension(new Point(imagePressure.getWidth(), imagePressure.getHeight()), new Point((int) 480,144));
+            Point scaledImageTilts = getScaledDimension(new Point(imageTilts.getWidth(), imageTilts.getHeight()), new Point((int) 480,144));
+
+            PDF_Y -= 180;
+            contents.drawImage(imageRadon, marginSide*2, PDF_Y, scaledImageRadon.x,scaledImageRadon.y);
+            PDF_Y-= 155;
+            contents.drawImage(imageHumidity, marginSide*2, PDF_Y, scaledImageHumidity.x, scaledImageHumidity.y);
+            PDF_Y-= 155;
+            contents.drawImage(imagePressure, marginSide*2, PDF_Y, scaledImagePressure.x, scaledImagePressure.y);
+            PDF_Y-= 155;
+            contents.drawImage(imageTilts, marginSide*2, PDF_Y, scaledImageTilts.x, scaledImageTilts.y);
+            PDF_Y-= 155;
             contents.close();
             //END SECOND PAGE (CHART)
 
