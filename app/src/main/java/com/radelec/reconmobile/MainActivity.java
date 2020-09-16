@@ -494,10 +494,8 @@ public class MainActivity extends AppCompatActivity
 
         //X-Axis formatting
         xAxis = lcHumidity.getXAxis();
-        xAxis.setLabelRotationAngle(90);
-        xAxis.setCenterAxisLabels(true);
+        xAxis.setDrawLabels(false);
         xAxis.setDrawGridLines(false);
-        xAxis.setValueFormatter(new GraphAxisFormatter());
         xAxis.setAvoidFirstLastClipping(true);
 
     }
@@ -553,10 +551,8 @@ public class MainActivity extends AppCompatActivity
 
         //X-Axis formatting
         xAxis = lcPressure.getXAxis();
-        xAxis.setLabelRotationAngle(90);
-        xAxis.setCenterAxisLabels(true);
+        xAxis.setDrawLabels(false);
         xAxis.setDrawGridLines(false);
-        xAxis.setValueFormatter(new GraphAxisFormatter());
         xAxis.setAvoidFirstLastClipping(true);
 
         //Modifiers if SI units are selected.
@@ -613,10 +609,8 @@ public class MainActivity extends AppCompatActivity
 
         //X-Axis formatting
         xAxis = bcTilts.getXAxis();
-        xAxis.setLabelRotationAngle(90);
-        xAxis.setCenterAxisLabels(true);
+        xAxis.setDrawLabels(false);
         xAxis.setDrawGridLines(false);
-        xAxis.setValueFormatter(new GraphAxisFormatter());
         xAxis.setAvoidFirstLastClipping(true);
     }
 
