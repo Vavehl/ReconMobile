@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:baselineAligned="false"
     android:orientation="horizontal"
     android:paddingStart="5dp"
     android:paddingTop="10dp"
@@ -11,7 +12,7 @@
     android:paddingBottom="10dp">
 
     <LinearLayout
-        android:layout_width="396dp"
+        android:layout_width="317dp"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
@@ -41,13 +42,13 @@
         android:layout_height="match_parent"
         android:gravity="end"
         android:orientation="vertical"
-        android:paddingStart="20dp"
-        android:paddingEnd="20dp">
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp">
 
         <ImageView
             android:id="@+id/ibTrashDelete"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
             android:clickable="true"
             android:contentDescription="@string/delete_data_file"
             android:focusable="true"
