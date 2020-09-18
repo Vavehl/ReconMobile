@@ -380,7 +380,7 @@ public class MainActivity extends AppCompatActivity
         float yMin = 0;
 
         //Assign layout element to the linechart lcRadon
-        lcRadon = findViewById(R.id.chartRadon);
+        lcRadon = findViewById(R.id.chartRadonPDF);
         LineDataSet lineDataSet = new LineDataSet(chartdataRadon,"pCi/L");
 
         lineDataSet.setFillAlpha(110);
@@ -451,7 +451,7 @@ public class MainActivity extends AppCompatActivity
         float yMin = 0;
 
         //Assign layout element to the linechart lcHumidity
-        lcHumidity = findViewById(R.id.chartHumidity);
+        lcHumidity = findViewById(R.id.chartHumidityPDF);
 
         LineDataSet lineDataSet = new LineDataSet(chartdataHumidity,"%");
 
@@ -508,7 +508,7 @@ public class MainActivity extends AppCompatActivity
         final YAxis yAxis;
 
         //Assign layout element to the linechart lcPressure
-        lcPressure = findViewById(R.id.chartPressure);
+        lcPressure = findViewById(R.id.chartPressurePDF);
 
         LineDataSet lineDataSet = new LineDataSet(chartdataPressure,"inHg");
 
@@ -570,7 +570,7 @@ public class MainActivity extends AppCompatActivity
         final YAxis yAxis;
 
         //Assign layout element to the barchart bcTilts
-        bcTilts = findViewById(R.id.chartTilts);
+        bcTilts = findViewById(R.id.chartTiltsPDF);
 
         BarDataSet barDataSet = new BarDataSet(chartdataTilts,"Tilts");
 

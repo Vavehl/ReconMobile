@@ -73,7 +73,7 @@
         app:srcCompat="@drawable/ic_email_ivory_24dp" />
 
     <com.github.mikephil.charting.charts.LineChart
-        android:id="@+id/chartRadon"
+        android:id="@+id/chartRadonPDF"
         android:layout_width="800dp"
         android:layout_height="240dp"
         android:layout_weight="1"
@@ -81,7 +81,7 @@
         tools:visibility="invisible" />
 
     <com.github.mikephil.charting.charts.LineChart
-        android:id="@+id/chartHumidity"
+        android:id="@+id/chartHumidityPDF"
         android:layout_width="800dp"
         android:layout_height="240dp"
         android:layout_weight="1"
@@ -89,7 +89,7 @@
         tools:visibility="invisible" />
 
     <com.github.mikephil.charting.charts.LineChart
-        android:id="@+id/chartPressure"
+        android:id="@+id/chartPressurePDF"
         android:layout_width="800dp"
         android:layout_height="240dp"
         android:layout_weight="1"
@@ -97,7 +97,7 @@
         tools:visibility="invisible" />
 
     <com.github.mikephil.charting.charts.BarChart
-        android:id="@+id/chartTilts"
+        android:id="@+id/chartTiltsPDF"
         android:layout_width="800dp"
         android:layout_height="240dp"
         android:layout_weight="1"
