@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.io.File;
 import java.util.ArrayList;
 
 public class FileSearchListAdapter extends RecyclerView.Adapter<FileSearchListAdapter.ReconFileViewHolder> {
@@ -84,6 +85,16 @@ public class FileSearchListAdapter extends RecyclerView.Adapter<FileSearchListAd
             holder.ibTrashDelete.setFocusable(true);
             holder.ibTrashDelete.setOnClickListener(v -> {
                 Log.d("FileSearchListAdapter","Delete icon pressed for selectedPos=" + selectedPos + "!");
+                String strFileName = alDataFiles.get(position).getFileName();
+                String strFilePath = alDataFiles.get(position).getFilePath();
+                Log.d("FileSearchListAdapter", "DELETING RECON FILE (" + strFileName + ") LOCATED AT " + strFilePath + "...");
+                File fileReconDeleted = new File(strFilePath);
+                if (fileReconDeleted.delete()) {
+                    Log.d("FileSearchListAdapter", "File successfully deleted per user request!");
+                    this.notifyItemRemoved(position);
+                } else {
+                    Log.d("FileSearchListAdapter","File not deleted...");
+                }
             });
         } else {
             holder.itemView.setBackgroundColor(holder.itemView.getResources().getColor(R.color.colorPrimaryDark));
