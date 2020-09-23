@@ -766,7 +766,8 @@ public class CreatePDF {
             contents.setFont(fontDefault, fontSize);
             String[] CustomerInfo_parsed = cursorReportDefaults.getString(2).split(Constants.newline);
             for(int i = 0; i < CustomerInfo_parsed.length; i++) {
-                textLine = CustomerInfo_parsed[i].replaceAll("\\t"," ").trim();;
+                textLine = CustomerInfo_parsed[i].replaceAll("\\t"," ").trim();
+                textLine = textLine.replaceAll("\r\n","<br>");
                 textLine = textLine.replaceAll("\n","<br>");
                 textLine = textLine.replaceAll("\r","<br>");
                 if ((fontDefault.getStringWidth(textLine) / 1000 * fontSize) > textWidth) {
@@ -790,6 +791,9 @@ public class CreatePDF {
             String[] TestSiteInfo_parsed = cursorReportDefaults.getString(3).split(Constants.newline);
             for(int i = 0; i < TestSiteInfo_parsed.length; i++) {
                 textLine = TestSiteInfo_parsed[i].replaceAll("\\t"," ").trim();
+                textLine = textLine.replaceAll("\r\n","<br>");
+                textLine = textLine.replaceAll("\n","<br>");
+                textLine = textLine.replaceAll("\r","<br>");
                 if ((fontDefault.getStringWidth(textLine) / 1000 * fontSize) > textWidth) {
                     textWidth = fontDefault.getStringWidth(textLine) / 1000 * fontSize;
                 }
