@@ -22,7 +22,7 @@ class Constants {
     public static final String cmdReadOptionsFlag = ":RF";
 
     //New Line
-    public static final String newline = "\r\n"; //Should we change this?
+    public static final String newline = "\\n"; //Should we change this?
 
     // values have to be globally unique
     static final String INTENT_ACTION_DISCONNECT = BuildConfig.APPLICATION_ID + ".Disconnect";

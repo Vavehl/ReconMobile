@@ -737,6 +737,7 @@ public class CreatePDF {
 
     public void DrawCustomerTestSiteBlock(PDPageContentStream contents, PDPage page, PDFont fontBold, PDFont fontDefault) {
         try {
+            Log.d("CreatePDF","DrawCustomerTestSiteBlock() called!");
             //Test Site Banner Block
             PDF_Y -= 35;
             contents.moveTo(marginSide, PDF_Y); //getting ready to draw a line (starting coordinates)
@@ -767,9 +768,6 @@ public class CreatePDF {
             String[] CustomerInfo_parsed = cursorReportDefaults.getString(2).split(Constants.newline);
             for(int i = 0; i < CustomerInfo_parsed.length; i++) {
                 textLine = CustomerInfo_parsed[i].replaceAll("\\t"," ").trim();
-                textLine = textLine.replaceAll("\r\n","<br>");
-                textLine = textLine.replaceAll("\n","<br>");
-                textLine = textLine.replaceAll("\r","<br>");
                 if ((fontDefault.getStringWidth(textLine) / 1000 * fontSize) > textWidth) {
                     textWidth = fontDefault.getStringWidth(textLine) / 1000 * fontSize;
                 }
@@ -791,9 +789,6 @@ public class CreatePDF {
             String[] TestSiteInfo_parsed = cursorReportDefaults.getString(3).split(Constants.newline);
             for(int i = 0; i < TestSiteInfo_parsed.length; i++) {
                 textLine = TestSiteInfo_parsed[i].replaceAll("\\t"," ").trim();
-                textLine = textLine.replaceAll("\r\n","<br>");
-                textLine = textLine.replaceAll("\n","<br>");
-                textLine = textLine.replaceAll("\r","<br>");
                 if ((fontDefault.getStringWidth(textLine) / 1000 * fontSize) > textWidth) {
                     textWidth = fontDefault.getStringWidth(textLine) / 1000 * fontSize;
                 }
@@ -829,7 +824,7 @@ public class CreatePDF {
             contents.moveTo(marginSide, PDF_Y); //getting ready to draw a line (starting coordinates)
             contents.lineTo(page.getMediaBox().getWidth() - marginSide, PDF_Y); //getting ready to draw a line (ending coordinates)
             contents.stroke(); //draw the line, starting at moveTo and ending at lineTo
-
+            Log.d("CreatePDF","Successful DrawCustomerTestSiteBlock()!");
         } catch (IOException ex) {
             StringWriter swEx = new StringWriter();
             ex.printStackTrace(new PrintWriter(swEx));
