@@ -80,24 +80,23 @@ public class CreatePDF {
 
         PDDocument doc = new PDDocument();
 
-        String strPathSignature = Environment.getDataDirectory() + File.separator + "app_images" + File.separator;
-
-        File fileSignatureAnalystBMP = new File(strPathSignature + File.separator + "signature.bmp");
+        Log.d("CreatePDF","Searching for digital signature in " + imageDir);
+        File fileSignatureAnalystBMP = new File(imageDir + File.separator + "signature.bmp");
         if (fileSignatureAnalystBMP.exists()) {
             boolFoundSignatureBMP = true;
             Log.d("CreatePDF","Analyst signature found as BMP!");
         }
-        File fileSignatureAnalystPNG = new File(strPathSignature + File.separator + "signature.png");
+        File fileSignatureAnalystPNG = new File(imageDir + File.separator + "signature.png");
         if (fileSignatureAnalystPNG.exists()) {
             boolFoundSignaturePNG = true;
             Log.d("CreatePDF","Analyst signature found as PNG!");
         }
-        File fileSignatureAnalystJPG = new File(strPathSignature + File.separator + "signature.jpg");
+        File fileSignatureAnalystJPG = new File(imageDir + File.separator + "signature.jpg");
         if (fileSignatureAnalystJPG.exists()) {
             boolFoundSignatureJPG = true;
             Log.d("CreatePDF","Analyst signature found as JPG!");
         }
-        File fileSignatureAnalystJPEG = new File(strPathSignature + File.separator + "signature.jpeg");
+        File fileSignatureAnalystJPEG = new File(imageDir + File.separator + "signature.jpeg");
         if (fileSignatureAnalystJPEG.exists()) {
             boolFoundSignatureJPEG = true;
             Log.d("CreatePDF","Analyst signature found as JPEG!");
@@ -1124,16 +1123,14 @@ public class CreatePDF {
                 fontSize = 12;
                 float textWidth = (font.getStringWidth(textLine) / 1000 * fontSize);
 
-                String strPathSignature = Environment.getDataDirectory() + File.separator + "app_images" + File.separator;
-
                 //Prepare and scale the digital signature image, then draw it. Prioritize BMP > PNG > JPG/JPEG?
-                File fileSignatureAnalyst = new File(strPathSignature + File.separator + "signature.bmp");
+                File fileSignatureAnalyst = new File(imageDir + File.separator + "signature.bmp");
                 if (!fileSignatureAnalyst.exists()) {
-                    fileSignatureAnalyst = new File(strPathSignature + File.separator + "signature.png");
+                    fileSignatureAnalyst = new File(imageDir + File.separator + "signature.png");
                     if (!fileSignatureAnalyst.exists()) {
-                        fileSignatureAnalyst = new File(strPathSignature + File.separator + "signature.jpg");
+                        fileSignatureAnalyst = new File(imageDir + File.separator + "signature.jpg");
                         if (!fileSignatureAnalyst.exists()) {
-                            fileSignatureAnalyst = new File(strPathSignature + File.separator + "signature.jpeg");
+                            fileSignatureAnalyst = new File(imageDir + File.separator + "signature.jpeg");
                         } else {
                             Log.d("CreatePDF","CreatePDF::DrawDigitalSignature ERROR: Signature file not found!");
                         }
