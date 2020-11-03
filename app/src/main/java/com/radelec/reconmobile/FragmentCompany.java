@@ -73,7 +73,7 @@ public class FragmentCompany extends Fragment {
 
             String strAppPath = getContext().getApplicationInfo().dataDir;
             File pathCompanyLogo = new File(strAppPath + "/app_images/company_logo.png");
-            File pathAnalystSignature = new File(strAppPath + "app_images/signature.png");
+            File pathAnalystSignature = new File(strAppPath + "/app_images/signature.png");
 
             if(pathCompanyLogo.exists()) {
                 Log.i("FragmentCompany", "Found company logo image in app image directory!");
