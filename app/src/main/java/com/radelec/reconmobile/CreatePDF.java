@@ -103,7 +103,7 @@ public class CreatePDF {
             Log.d("CreatePDF","Analyst signature found as JPEG!");
         }
 
-        if (boolFoundSignatureBMP == true || boolFoundSignaturePNG == true || boolFoundSignatureJPG == true || boolFoundSignatureJPEG == true) {
+        if (boolFoundSignatureBMP || boolFoundSignaturePNG || boolFoundSignatureJPG || boolFoundSignatureJPEG) {
             boolFoundSignature = true;
         } else {
             Log.d("CreatePDF","No digital signature (as BMP/PNG/JPG/JPEG) found for PDF... ignoring.");
@@ -460,9 +460,9 @@ public class CreatePDF {
                     contents.showText(textLine);
                     //Radon
                     contents.moveTextPositionByAmount(115, 0);
-                    if(Constants.boolPhotodiodeFailureRecovery==true && CreateGraphArrays.photodiodeFailure_Ch1==true && CreateGraphArrays.photodiodeFailure_Ch2==false) {
+                    if(Constants.boolPhotodiodeFailureRecovery && CreateGraphArrays.photodiodeFailure_Ch1 && !CreateGraphArrays.photodiodeFailure_Ch2) {
                         textLine = HourlyReconData.get(arrayCounter).get(10);
-                    } else if (Constants.boolPhotodiodeFailureRecovery==true && CreateGraphArrays.photodiodeFailure_Ch2==true && CreateGraphArrays.photodiodeFailure_Ch1==false) {
+                    } else if (Constants.boolPhotodiodeFailureRecovery && CreateGraphArrays.photodiodeFailure_Ch2 && !CreateGraphArrays.photodiodeFailure_Ch1) {
                         textLine = HourlyReconData.get(arrayCounter).get(9);
                     } else {
                         textLine = HourlyReconData.get(arrayCounter).get(2);
@@ -1116,7 +1116,7 @@ public class CreatePDF {
 
     private void drawDigitalSignature(PDDocument doc, PDPageContentStream contents, PDPage page, PDFont font) {
         try {
-            if (boolFoundSignature == true) {
+            if (boolFoundSignature) {
                 Log.d("CreatePDF","CreatePDF::DrawDigitalSignature called.");
 
                 //This is only for determining the width offset of "Signature" to properly place the digital signatur image.
