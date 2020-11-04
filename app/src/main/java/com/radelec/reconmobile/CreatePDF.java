@@ -44,6 +44,7 @@ public class CreatePDF {
     public static String strInstrumentType = "Recon CRM";
     public static String strCustomReportText;
     private static PDImageXObject imageSignature = null;
+    private static PDImageXObject imageCompanyLogo = null;
 
     float PDF_Y = 0;
     SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy");
@@ -61,6 +62,9 @@ public class CreatePDF {
     public static boolean boolFoundSignaturePNG = false;
     public static boolean boolFoundSignatureJPG = false;
     public static boolean boolFoundSignatureJPEG = false;
+
+    //Company Logo
+    public static boolean boolFoundCompanyLogo = false;
 
     //Margin Stuff
     static int marginTop = 10;
@@ -108,6 +112,13 @@ public class CreatePDF {
             Log.d("CreatePDF","No digital signature (as BMP/PNG/JPG/JPEG) found for PDF... ignoring.");
         }
 
+        Log.d("CreatePDF","Searching for company logo in " + imageDir);
+        File fileCompanyLogoPNG = new File(imageDir + File.separator + "company_logo.png");
+        if (fileCompanyLogoPNG.exists()) {
+            boolFoundCompanyLogo = true;
+            Log.d("CreatePDF","Company Logo Found as PNG!");
+        }
+
         String textLine;
         float textWidth;
         float textHeight;
@@ -138,7 +149,11 @@ public class CreatePDF {
 
             //Company Info Block
             GetCompanyInfo(); //pull info from the company.txt file, so that we can toss that info onto the PDF.
-            DrawCompanyHeader(contents, page, fontDefault, fontSize);
+            if(boolFoundCompanyLogo) {
+                drawCompanyLogo(doc, contents, page);;
+            } else {
+                DrawCompanyHeader(contents, page, fontDefault, fontSize);
+            }
 
             //Title Block
             DrawTitleHeader(contents, page, "Radon Test Report", fontBold, fontDefault);
@@ -366,7 +381,11 @@ public class CreatePDF {
             PDF_Y = page_chart.getMediaBox().getHeight() - marginTop - textHeight; //Reset PDF_Y
 
             //Draw Company Header (we already called getCompanyInfo() above, so no need to call it again...
-            DrawCompanyHeader(contents, page_chart, fontDefault, marginTop);
+            if(boolFoundCompanyLogo) {
+                drawCompanyLogo(doc, contents, page_chart);
+            } else {
+                DrawCompanyHeader(contents, page_chart, fontDefault, marginTop);
+            }
 
             //Draw Title Block again on this second page
             DrawTitleHeader(contents, page_chart, "Graphical Radon Report", fontBold, fontDefault);
@@ -409,8 +428,12 @@ public class CreatePDF {
             contents = new PDPageContentStream(doc, page_detailed);
             PDF_Y = page_detailed.getMediaBox().getHeight() - marginTop - textHeight; //Reset PDF_Y
 
-            //Draw Company Header for the 3rd page (we already called getCompanyInfo() above, so no need to call it again...
-            DrawCompanyHeader(contents, page_detailed, fontDefault, marginTop);
+            if(boolFoundCompanyLogo) {
+                drawCompanyLogo(doc, contents, page_detailed);
+            } else {
+                //Draw Company Header for the 3rd page (we already called getCompanyInfo() above, so no need to call it again...
+                DrawCompanyHeader(contents, page_detailed, fontDefault, marginTop);
+            }
 
             //Draw Title Block again on this third page
             DrawTitleHeader(contents, page_detailed, "Hourly Radon Report", fontBold, fontDefault);
@@ -493,7 +516,11 @@ public class CreatePDF {
                         doc.addPage(page_detailed);
                         contents = new PDPageContentStream(doc, page_detailed);
                         PDF_Y = page_detailed.getMediaBox().getHeight() - marginTop - textHeight; //Reset PDF_Y
-                        DrawCompanyHeader(contents, page_detailed, fontDefault, marginTop);
+                        if(boolFoundCompanyLogo) {
+                            drawCompanyLogo(doc, contents, page_detailed);
+                        } else {
+                            DrawCompanyHeader(contents, page_detailed, fontDefault, marginTop);
+                        }
                         DrawTitleHeader(contents, page_detailed, "Hourly Radon Report", fontBold, fontDefault);
                         DrawCustomerTestSiteBlock(contents, page_detailed, fontBold, fontDefault);
                         drawTestSummaryBlock(contents, page_detailed, fontDefault, fontBold);
@@ -560,7 +587,11 @@ public class CreatePDF {
                         doc.addPage(page_detailed);
                         contents = new PDPageContentStream(doc, page_detailed);
                         PDF_Y = page_detailed.getMediaBox().getHeight() - marginTop - textHeight; //Reset PDF_Y
-                        DrawCompanyHeader(contents, page_detailed, fontDefault, marginTop);
+                        if(boolFoundCompanyLogo) {
+                            drawCompanyLogo(doc, contents, page_detailed);
+                        } else {
+                            DrawCompanyHeader(contents, page_detailed, fontDefault, marginTop);
+                        }
                         DrawTitleHeader(contents, page_detailed, "Radon Detailed Report", fontBold, fontDefault);
                         DrawCustomerTestSiteBlock(contents, page_detailed, fontBold, fontDefault);
                         drawTestSummaryBlock(contents, page_detailed, fontDefault, fontBold);
@@ -1115,8 +1146,8 @@ public class CreatePDF {
 
     private void drawDigitalSignature(PDDocument doc, PDPageContentStream contents, PDPage page, PDFont font) {
         try {
+            Log.d("CreatePDF","CreatePDF::DrawDigitalSignature called.");
             if (boolFoundSignature) {
-                Log.d("CreatePDF","CreatePDF::DrawDigitalSignature called.");
 
                 //This is only for determining the width offset of "Signature" to properly place the digital signatur image.
                 String textLine = "Signature: ";
@@ -1159,6 +1190,32 @@ public class CreatePDF {
         } catch (Exception ex) {
             Log.d("CreatePDF","CreatePDF::DrawDigitalSignature ERROR! Unable to draw digital signature!");
             Log.d("CreatePDF","CreatePDF::DrawDigitalSignature // " + ex);
+        }
+    }
+
+    private void drawCompanyLogo(PDDocument doc, PDPageContentStream contents, PDPage page) {
+        try {
+            Log.d("CreatePDF","CreatePDF::DrawCompanyLogo called.");
+            if (boolFoundCompanyLogo) {
+                //Prepare and scale the digital signature image, then draw it. Prioritize BMP > PNG > JPG/JPEG?
+                File fileCompanyLogo = new File(imageDir + File.separator + "company_logo.png");
+                if (!fileCompanyLogo.exists()) {
+                    Log.d("CreatePDF","CreatePDF::DrawCompanyLogo ERROR: Company Logo file not found!");
+                } else {
+                    Log.d("CreatePDF","Company Logo Path = " + fileCompanyLogo.getAbsolutePath());
+
+                    //Prepare and scale the logo, then draw it.
+                    int intScaledHeight = 70;
+                    imageCompanyLogo = PDImageXObject.createFromFile(fileCompanyLogo.getAbsolutePath(), doc);
+                    Point scaledLogo = getScaledDimension(new Point(imageCompanyLogo.getWidth(), imageCompanyLogo.getHeight()), new Point((int) page.getMediaBox().getWidth(),intScaledHeight));
+                    contents.drawImage(imageCompanyLogo, marginSide,page.getMediaBox().getHeight() - marginTop - intScaledHeight,scaledLogo.x,scaledLogo.y);
+
+                    Log.d("CreatePDF","Successful CreatePDF::DrawCompanyLogo()!");
+                }
+            }
+        } catch (Exception ex) {
+            Log.d("CreatePDF","CreatePDF::DrawCompanyLogo ERROR! Unable to draw company logo!");
+            Log.d("CreatePDF","CreatePDF::DrawCompanyLogo // " + ex);
         }
     }
 
