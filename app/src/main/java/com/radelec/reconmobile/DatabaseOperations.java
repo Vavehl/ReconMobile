@@ -62,7 +62,7 @@ public class DatabaseOperations extends SQLiteOpenHelper {
 
         //Assign default values to newly created database
         db.execSQL("INSERT INTO SETTINGS (AUTO_CLEAR_SESSIONS, UNIT_SYSTEM, SIGNATURE_OPTIONS, TILT_SENSITIVITY) VALUES ('Always', 'US', 'Digitally Signed', '5')");
-        db.execSQL("INSERT INTO COMPANY (COMPANY_NAME, COMPANY_DETAILS) VALUES ('','')");
+        db.execSQL("INSERT INTO COMPANY (COMPANY_NAME, COMPANY_DETAILS, COMPANY_EMAIL) VALUES ('','','')");
         db.execSQL("INSERT INTO REPORT_DEFAULTS (INSTRUMENT_LOCATION, PROTOCOL, TAMPERING, WEATHER, MITIGATION, COMMENT, REPORT_TEXT) VALUES ('Basement', " +
                 "'Closed Building Conditions Met', 'No Tampering Detected', 'No Abnormal Weather Conditions', 'No Mitigation System Installed', " +
                 "'Thanks for the business!', '" + txtReportText + "')");
@@ -85,9 +85,9 @@ public class DatabaseOperations extends SQLiteOpenHelper {
 
         long result = db.insert(table, null, contentValues);
         if(result == -1) {
-            Log.d("DatabaseOperations", "DatabaseOperations.addData: FAILED to add " + value + "to " + table + "." + column);
+            Log.d("DatabaseOperations", "DatabaseOperations.addData: FAILED to add " + value + " to " + table + "." + column);
         } else {
-            Log.d("DatabaseOperations", "DatabaseOperations.addData: Adding " + value + "to " + table + "." + column);
+            Log.d("DatabaseOperations", "DatabaseOperations.addData: Adding " + value + " to " + table + "." + column);
         }
 
     }
@@ -99,7 +99,7 @@ public class DatabaseOperations extends SQLiteOpenHelper {
 
         db.update(table, contentValues,primarycolumn+"='1'",null);
 
-        Log.d("DatabaseOperations", "DatabaseOperations.replaceData: Updating " + table + "." + column + " with" + value);
+        Log.d("DatabaseOperations", "DatabaseOperations.UpdateData: Updating " + table + "." + column + " with " + value);
     }
 
     Cursor getReportDefaultData() {
@@ -127,7 +127,7 @@ public class DatabaseOperations extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("DELETE FROM COMPANY");
         db.execSQL("DELETE FROM sqlite_sequence WHERE NAME='COMPANY'"); //This will reset the primary index.
-        db.execSQL("INSERT INTO COMPANY (COMPANY_NAME, COMPANY_DETAILS) VALUES ('','')");
+        db.execSQL("INSERT INTO COMPANY (COMPANY_NAME, COMPANY_DETAILS, COMPANY_EMAIL) VALUES ('','','')");
     }
 
     public boolean ReconTableExists(String strTableName, boolean boolOpenDB) {

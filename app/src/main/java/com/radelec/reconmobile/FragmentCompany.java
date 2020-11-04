@@ -55,10 +55,12 @@ public class FragmentCompany extends Fragment {
         //Get the widgets referenced in fragment_company.xml -- we'll need these to pull default values.
         final TextInputEditText etCompanyName;
         final TextInputEditText etCompanyDetails;
+        final TextInputEditText etCompanyEmail;
 
         //Find TextInputEditText IDs
         etCompanyName = view.findViewById(R.id.company_name);
         etCompanyDetails = view.findViewById(R.id.company_details);
+        etCompanyEmail = view.findViewById(R.id.company_email);
 
         //Find ImageView IDs
         imgCompanyLogo = view.findViewById(R.id.CompanyLogo);
@@ -126,6 +128,15 @@ public class FragmentCompany extends Fragment {
             } else {
                 Log.d("FragmentCompany","WARNING! Column COMPANY_DETAILS not found!");
             }
+            if(cursorCompanyDefaults.getColumnIndex("COMPANY_EMAIL")==3) {
+                if(!cursorCompanyDefaults.isNull(3)) {
+                    etCompanyEmail.setText(cursorCompanyDefaults.getString(3));
+                } else {
+                    Log.d("FragmentCompany","WARNING! Column COMPANY_EMAIL is null!");
+                }
+            } else {
+                Log.d("FragmentCompany","WARNING! Column COMPANY_EMAIL not found!");
+            }
         } else {
             Log.d("FragmentCompany","WARNING! Table COMPANY not found!");
         }
@@ -158,6 +169,22 @@ public class FragmentCompany extends Fragment {
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus) {
                     db_company.updateData("COMPANY","COMPANY_DETAILS",etCompanyDetails.getText().toString(),"CompanyID");
+                }
+            }
+        });
+
+        //Company Email Listener
+        etCompanyDetails.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                db_company.updateData("COMPANY","COMPANY_EMAIL",etCompanyEmail.getText().toString(),"CompanyID");
+            }
+        });
+        etCompanyDetails.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    db_company.updateData("COMPANY","COMPANY_EMAIL",etCompanyEmail.getText().toString(),"CompanyID");
                 }
             }
         });

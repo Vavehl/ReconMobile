@@ -38,6 +38,7 @@
     <string name="graph_temp">Temp</string>
     <string name="company_name">Company Name</string>
     <string name="company_details">Company Address / Details</string>
+    <string name="company_email">Company Email</string>
     <string name="company_logo">Company Logo</string>
     <string name="company_logo_hint">If importing a company logo, it will appear on your letterhead.</string>
     <string name="company_logo_image">Click here to import your company logo.</string>
