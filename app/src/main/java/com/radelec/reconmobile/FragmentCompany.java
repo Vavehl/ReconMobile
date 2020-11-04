@@ -174,13 +174,13 @@ public class FragmentCompany extends Fragment {
         });
 
         //Company Email Listener
-        etCompanyDetails.setOnClickListener(new View.OnClickListener() {
+        etCompanyEmail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 db_company.updateData("COMPANY","COMPANY_EMAIL",etCompanyEmail.getText().toString(),"CompanyID");
             }
         });
-        etCompanyDetails.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        etCompanyEmail.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus) {
