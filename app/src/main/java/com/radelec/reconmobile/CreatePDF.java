@@ -152,7 +152,7 @@ public class CreatePDF {
             if(boolFoundCompanyLogo) {
                 drawCompanyLogo(doc, contents, page);;
             } else {
-                DrawCompanyHeader(contents, page, fontDefault, fontSize);
+                DrawCompanyHeader(contents, fontDefault);
             }
 
             //Title Block
@@ -384,7 +384,7 @@ public class CreatePDF {
             if(boolFoundCompanyLogo) {
                 drawCompanyLogo(doc, contents, page_chart);
             } else {
-                DrawCompanyHeader(contents, page_chart, fontDefault, marginTop);
+                DrawCompanyHeader(contents, fontDefault);
             }
 
             //Draw Title Block again on this second page
@@ -432,7 +432,7 @@ public class CreatePDF {
                 drawCompanyLogo(doc, contents, page_detailed);
             } else {
                 //Draw Company Header for the 3rd page (we already called getCompanyInfo() above, so no need to call it again...
-                DrawCompanyHeader(contents, page_detailed, fontDefault, marginTop);
+                DrawCompanyHeader(contents, fontDefault);
             }
 
             //Draw Title Block again on this third page
@@ -519,7 +519,7 @@ public class CreatePDF {
                         if(boolFoundCompanyLogo) {
                             drawCompanyLogo(doc, contents, page_detailed);
                         } else {
-                            DrawCompanyHeader(contents, page_detailed, fontDefault, marginTop);
+                            DrawCompanyHeader(contents, fontDefault);
                         }
                         DrawTitleHeader(contents, page_detailed, "Hourly Radon Report", fontBold, fontDefault);
                         DrawCustomerTestSiteBlock(contents, page_detailed, fontBold, fontDefault);
@@ -590,7 +590,7 @@ public class CreatePDF {
                         if(boolFoundCompanyLogo) {
                             drawCompanyLogo(doc, contents, page_detailed);
                         } else {
-                            DrawCompanyHeader(contents, page_detailed, fontDefault, marginTop);
+                            DrawCompanyHeader(contents, fontDefault);
                         }
                         DrawTitleHeader(contents, page_detailed, "Radon Detailed Report", fontBold, fontDefault);
                         DrawCustomerTestSiteBlock(contents, page_detailed, fontBold, fontDefault);
@@ -695,12 +695,11 @@ public class CreatePDF {
         }
     }
 
-    public void DrawCompanyHeader(PDPageContentStream contents, PDPage page, PDFont fontDefault, int marginTop) {
+    public void DrawCompanyHeader(PDPageContentStream contents, PDFont fontDefault) {
         //Note: getCompanyInfo() needs to be called beforehand
         Log.d("CreatePDF","CreatePDF::DrawCompanyHeader has been called...");
         int fontSize = 14;
         float textHeight = fontDefault.getFontDescriptor().getFontBoundingBox().getHeight() / 1000 * fontSize;
-        //float PDF_Y = page.getMediaBox().getHeight() - marginTop - textHeight;
         try {
 
             //Pull the Company Defaults in the database with a Cursor class...
