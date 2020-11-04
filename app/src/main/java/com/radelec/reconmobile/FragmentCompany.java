@@ -72,8 +72,8 @@ public class FragmentCompany extends Fragment {
         try {
 
             String strAppPath = getContext().getApplicationInfo().dataDir;
-            File pathCompanyLogo = new File(strAppPath + "/app_images/company_logo.png");
-            File pathAnalystSignature = new File(strAppPath + "/app_images/signature.png");
+            File pathCompanyLogo = new File(strAppPath + File.separator + "app_images" + File.separator + "company_logo.png");
+            File pathAnalystSignature = new File(strAppPath + File.separator + "app_images" + File.separator + "signature.png");
 
             if(pathCompanyLogo.exists()) {
                 Log.i("FragmentCompany", "Found company logo image in app image directory!");
@@ -185,7 +185,7 @@ public class FragmentCompany extends Fragment {
             @Override
             public void onClick(View v) {
                 String strAppPath = getContext().getApplicationInfo().dataDir;
-                File pathCompanyLogo = new File(strAppPath + "/app_images/company_logo.png");
+                File pathCompanyLogo = new File(strAppPath + File.separator + "app_images" + File.separator + "company_logo.png");
                 if(pathCompanyLogo.exists()) {
                     Log.i("FragmentCompany", "Clear Logo button pressed ... deleting company logo!");
                     imgCompanyLogo.setImageDrawable(null);
@@ -202,7 +202,7 @@ public class FragmentCompany extends Fragment {
             @Override
             public void onClick(View v) {
                 String strAppPath = getContext().getApplicationInfo().dataDir;
-                File pathAnalystSignature = new File(strAppPath + "/app_images/signature.png");
+                File pathAnalystSignature = new File(strAppPath + File.separator + "app_images" + File.separator + "signature.png");
                 if(pathAnalystSignature.exists()) {
                     Log.i("FragmentCompany", "Clear Signature button pressed ... deleting signature!");
                     imgAnalystSignature.setImageDrawable(null);
