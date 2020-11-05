@@ -19,7 +19,7 @@ public class FragmentSettings extends Fragment {
     private View view;
 
     private DatabaseOperations db_settings;
-    Cursor cursorSettingsDefaults = null;
+    private Cursor cursorSettingsDefaults = null;
     private TextView tvTiltValue;
 
     public FragmentSettings() {

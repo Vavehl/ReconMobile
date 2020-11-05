@@ -32,6 +32,7 @@ import java.util.Arrays;
 
 public class FragmentCompany extends Fragment {
 
+    private Cursor cursorCompanyDefaults = null;
     private DatabaseOperations db_company;
     public final int SELECT_COMPANY_LOGO = 0;
     public final int SELECT_ANALYST_SIGNATURE = 1;
@@ -46,7 +47,6 @@ public class FragmentCompany extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_company, container, false);
 
-        //db_company = new DatabaseOperations(getContext());
         db_company = new DatabaseOperations(getContext());
 
         //Create the buttons
@@ -99,7 +99,6 @@ public class FragmentCompany extends Fragment {
         }
 
         //Pull the Company Defaults in the database with a Cursor class...
-        Cursor cursorCompanyDefaults = null;
         try {
             cursorCompanyDefaults = db_company.getCompanyData();
             cursorCompanyDefaults.moveToFirst(); //Critical to moveToFirst() here, or else we're sitting at an invalid index.
@@ -142,9 +141,8 @@ public class FragmentCompany extends Fragment {
             } else {
                 Log.d("FragmentCompany","WARNING! Table COMPANY not found!");
             }
-        } finally {
-            if(cursorCompanyDefaults != null)
-                cursorCompanyDefaults.close();
+        } catch (Exception ex) {
+
         }
 
         //Company Name Listener
@@ -252,7 +250,10 @@ public class FragmentCompany extends Fragment {
 
     public void onDestroy() {
         Log.d("FragmentCompany","onDestroy() called!");
-        db_company.close(); //This is needed to prevent a memory leak, I think?
+        if(cursorCompanyDefaults != null) {
+            cursorCompanyDefaults.close();
+            db_company.close(); //This is needed to prevent a memory leak, I think?
+        }
         super.onDestroy();
     }
 
