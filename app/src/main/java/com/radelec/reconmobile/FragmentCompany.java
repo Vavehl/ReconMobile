@@ -46,6 +46,7 @@ public class FragmentCompany extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_company, container, false);
 
+        //db_company = new DatabaseOperations(getContext());
         db_company = new DatabaseOperations(getContext());
 
         //Create the buttons
@@ -98,47 +99,52 @@ public class FragmentCompany extends Fragment {
         }
 
         //Pull the Company Defaults in the database with a Cursor class...
-        Cursor cursorCompanyDefaults;
-        cursorCompanyDefaults = db_company.getCompanyData();
-        cursorCompanyDefaults.moveToFirst(); //Critical to moveToFirst() here, or else we're sitting at an invalid index.
+        Cursor cursorCompanyDefaults = null;
+        try {
+            cursorCompanyDefaults = db_company.getCompanyData();
+            cursorCompanyDefaults.moveToFirst(); //Critical to moveToFirst() here, or else we're sitting at an invalid index.
 
-        //Set the Company Defaults to the TextInputEditText boxes
-        //How should we best handle the company logo and signature?
-        if(db_company.ReconTableExists("COMPANY",true)) {
-            Log.d("FragmentCompany","Column Names in table COMPANY = " + Arrays.toString(cursorCompanyDefaults.getColumnNames()));
-            if(cursorCompanyDefaults.getCount()==0) {
-                Log.d("FragmentCompany","No data found in table COMPANY!");
-                db_company.resetCompanyData();
-            }
-            if(cursorCompanyDefaults.getColumnIndex("COMPANY_NAME")==1) {
-                if(!cursorCompanyDefaults.isNull(1)) {
-                    etCompanyName.setText(cursorCompanyDefaults.getString(1));
+            //Set the Company Defaults to the TextInputEditText boxes
+            //How should we best handle the company logo and signature?
+            if(db_company.ReconTableExists("COMPANY",true)) {
+                Log.d("FragmentCompany","Column Names in table COMPANY = " + Arrays.toString(cursorCompanyDefaults.getColumnNames()));
+                if(cursorCompanyDefaults.getCount()==0) {
+                    Log.d("FragmentCompany","No data found in table COMPANY!");
+                    db_company.resetCompanyData();
+                }
+                if(cursorCompanyDefaults.getColumnIndex("COMPANY_NAME")==1) {
+                    if(!cursorCompanyDefaults.isNull(1)) {
+                        etCompanyName.setText(cursorCompanyDefaults.getString(1));
+                    } else {
+                        Log.d("FragmentCompany","WARNING! Column COMPANY_NAME is null!");
+                    }
                 } else {
-                    Log.d("FragmentCompany","WARNING! Column COMPANY_NAME is null!");
+                    Log.d("FragmentCompany","WARNING! Column COMPANY_NAME not found!");
+                }
+                if(cursorCompanyDefaults.getColumnIndex("COMPANY_DETAILS")==2) {
+                    if(!cursorCompanyDefaults.isNull(2)) {
+                        etCompanyDetails.setText(cursorCompanyDefaults.getString(2));
+                    } else {
+                        Log.d("FragmentCompany","WARNING! Column COMPANY_DETAILS is null!");
+                    }
+                } else {
+                    Log.d("FragmentCompany","WARNING! Column COMPANY_DETAILS not found!");
+                }
+                if(cursorCompanyDefaults.getColumnIndex("COMPANY_EMAIL")==3) {
+                    if(!cursorCompanyDefaults.isNull(3)) {
+                        etCompanyEmail.setText(cursorCompanyDefaults.getString(3));
+                    } else {
+                        Log.d("FragmentCompany","WARNING! Column COMPANY_EMAIL is null!");
+                    }
+                } else {
+                    Log.d("FragmentCompany","WARNING! Column COMPANY_EMAIL not found!");
                 }
             } else {
-                Log.d("FragmentCompany","WARNING! Column COMPANY_NAME not found!");
+                Log.d("FragmentCompany","WARNING! Table COMPANY not found!");
             }
-            if(cursorCompanyDefaults.getColumnIndex("COMPANY_DETAILS")==2) {
-                if(!cursorCompanyDefaults.isNull(2)) {
-                    etCompanyDetails.setText(cursorCompanyDefaults.getString(2));
-                } else {
-                    Log.d("FragmentCompany","WARNING! Column COMPANY_DETAILS is null!");
-                }
-            } else {
-                Log.d("FragmentCompany","WARNING! Column COMPANY_DETAILS not found!");
-            }
-            if(cursorCompanyDefaults.getColumnIndex("COMPANY_EMAIL")==3) {
-                if(!cursorCompanyDefaults.isNull(3)) {
-                    etCompanyEmail.setText(cursorCompanyDefaults.getString(3));
-                } else {
-                    Log.d("FragmentCompany","WARNING! Column COMPANY_EMAIL is null!");
-                }
-            } else {
-                Log.d("FragmentCompany","WARNING! Column COMPANY_EMAIL not found!");
-            }
-        } else {
-            Log.d("FragmentCompany","WARNING! Table COMPANY not found!");
+        } finally {
+            if(cursorCompanyDefaults != null)
+                cursorCompanyDefaults.close();
         }
 
         //Company Name Listener
@@ -242,6 +248,12 @@ public class FragmentCompany extends Fragment {
         });
 
         return view;
+    }
+
+    public void onDestroy() {
+        Log.d("FragmentCompany","onDestroy() called!");
+        db_company.close(); //This is needed to prevent a memory leak, I think?
+        super.onDestroy();
     }
 
     @Override

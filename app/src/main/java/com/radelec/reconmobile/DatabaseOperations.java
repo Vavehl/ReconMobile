@@ -9,10 +9,18 @@ import android.util.Log;
 
 public class DatabaseOperations extends SQLiteOpenHelper {
 
+    private static DatabaseOperations mInstance;
+
     public DatabaseOperations(Context context) {
         super(context, "ReconMobile.db", null, 1);
         Log.d("DatabaseOperations", "Looking for ReconMobile.db...");
-        //SQLiteDatabase db = this.getWritableDatabase();
+    }
+
+    public static synchronized DatabaseOperations getInstance(Context context) {
+        if (mInstance == null) {
+            mInstance = new DatabaseOperations(context.getApplicationContext());
+        }
+        return mInstance;
     }
 
     @Override
