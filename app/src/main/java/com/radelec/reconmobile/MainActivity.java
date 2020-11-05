@@ -339,7 +339,7 @@ public class MainActivity extends AppCompatActivity
             }
 
             String[] recipient_email = {"info@radelec.com"};
-            String[] self_email = {"info@radelec.com"};
+            String[] self_email = {db.getCompanyEmail()};
             String subject = "Radon Test Report";
             String body = "Please find attached your radon test results!";
             Intent intent = new Intent(Intent.ACTION_VIEW);

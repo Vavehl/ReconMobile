@@ -130,6 +130,24 @@ public class DatabaseOperations extends SQLiteOpenHelper {
         return db.rawQuery("SELECT * FROM SETTINGS", null);
     }
 
+    String getCompanyEmail() {
+        Log.d("DatabaseOperations","getCompanyEmail() called!");
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursorEmail = db.rawQuery("SELECT COMPANY_EMAIL FROM COMPANY",null);
+        cursorEmail.moveToFirst();
+        String company_email = "";
+        if(cursorEmail.getCount()==0) {
+            Log.d("DatabaseOperations","No COMPANY_EMAIL found.");
+        } else {
+            if(cursorEmail.getColumnIndex("COMPANY_EMAIL")==0) {
+                company_email = cursorEmail.getString(cursorEmail.getColumnIndex("COMPANY_EMAIL"));
+            }
+        }
+        cursorEmail.close();
+        db.close();
+        return company_email;
+    }
+
     public void resetCompanyData() {
         Log.d("DatabaseOperations","resetCompanyData() called!");
         SQLiteDatabase db = this.getWritableDatabase();
