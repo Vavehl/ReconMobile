@@ -47,7 +47,7 @@ public class FragmentCompany extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_company, container, false);
 
-        db_company = new DatabaseOperations(getContext());
+        db_company = DatabaseOperations.getInstance(getContext());
 
         //Create the buttons
         Button btnClearLogo;

@@ -30,7 +30,7 @@ public class FragmentSettings extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_settings,container,false);
 
-        db_settings = new DatabaseOperations(getContext());
+        db_settings = DatabaseOperations.getInstance(getContext());
 
         //Standard Settings should be initialized to the proper spinners
         final Spinner spnAutoClear = view.findViewById(R.id.spinner_autoclear);

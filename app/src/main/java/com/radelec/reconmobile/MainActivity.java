@@ -2,7 +2,6 @@ package com.radelec.reconmobile;
 
 import android.app.Dialog;
 import android.content.ActivityNotFoundException;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -74,7 +73,7 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         //Initialize database (in DatabaseOperations)
-        db = new DatabaseOperations(this);
+        db = DatabaseOperations.getInstance(this);
 
         //Get file directory
         fileDir = getApplicationContext().getFilesDir();
