@@ -2,6 +2,7 @@ package com.radelec.reconmobile;
 
 import android.database.Cursor;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,7 @@ public class FragmentSettings extends Fragment {
     private View view;
 
     private DatabaseOperations db_settings;
+    Cursor cursorSettingsDefaults = null;
     private TextView tvTiltValue;
 
     public FragmentSettings() {
@@ -42,7 +44,6 @@ public class FragmentSettings extends Fragment {
         Spinner spnDisplay_Pressure = view.findViewById(R.id.spinner_display_pressure);
 
         //Pull the Settings Defaults in the database with a Cursor class...
-        Cursor cursorSettingsDefaults;
         cursorSettingsDefaults = db_settings.getSettingsData();
         cursorSettingsDefaults.moveToFirst(); //Critical to moveToFirst() here, or else we're sitting at an invalid index.
 
@@ -77,6 +78,7 @@ public class FragmentSettings extends Fragment {
             public void onNothingSelected(AdapterView<?> parent) {
 
             }
+
         });
 
         //Pull Signature Options value from database, and assign it to spnSignatureOptions.
@@ -135,6 +137,16 @@ public class FragmentSettings extends Fragment {
             }
         }
         return 0;
+    }
+
+    public void onDestroy() {
+        Log.d("FragmentSettings","onDestroy() called!");
+        //Properly closing cursor and database should ensure that the database doesn't create a memory leak...
+        if(cursorSettingsDefaults != null) {
+            cursorSettingsDefaults.close();
+            db_settings.close();
+        }
+        super.onDestroy();
     }
 
 }
