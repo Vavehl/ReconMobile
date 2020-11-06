@@ -3,8 +3,8 @@ package com.radelec.reconmobile;
 class Constants {
 
     //Version information
-    public static String version_build = "v0.7.0";
-    public static String version_date = "13 Aug 2020";
+    public static String version_build = "v0.7.1";
+    public static String version_date = "6 Nov 2020";
 
     //Recon commands
     public static final String cmdReconConfirm = ":RV";
@@ -22,7 +22,7 @@ class Constants {
     public static final String cmdReadOptionsFlag = ":RF";
 
     //New Line
-    public static final String newline = "\\n"; //Should we change this?
+    public static final String newline = "\\n";
 
     // values have to be globally unique
     static final String INTENT_ACTION_DISCONNECT = BuildConfig.APPLICATION_ID + ".Disconnect";
