@@ -14,8 +14,12 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.tabs.TabLayout;
+
 import java.util.ArrayList;
 import java.util.Objects;
+
+import static com.radelec.reconmobile.Globals.connected;
 
 public class FragmentOpen extends DialogFragment implements FileSearchListAdapter.OnFileSearchListAdapterListener {
 
@@ -80,6 +84,14 @@ public class FragmentOpen extends DialogFragment implements FileSearchListAdapte
                     ft.detach(frg);
                     ft.attach(frg);
                     ft.commit();
+                    TabLayout tabLayout = frg.getView().getRootView().findViewById(R.id.tabLayout_Main);
+                    if (connected == Globals.ReconConnected.Loaded) {
+                        tabLayout.getTabAt(2).setText("Report");
+                        Log.d("FragmentOpen","Setting tab to Report...");
+                    } else {
+                        tabLayout.getTabAt(2).setText("Defaults");
+                        Log.d("FragmentOpen","Setting tab to Defaults...");
+                    }
                 }
             }
             //END: Refresh FragmentConnect

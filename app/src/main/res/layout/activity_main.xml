@@ -53,7 +53,7 @@
                 android:id="@+id/tabReport"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/tabReport" />
+                android:text="@string/tabDefaults" />
 
         </com.google.android.material.tabs.TabLayout>
 
@@ -70,7 +70,8 @@
         android:tint="@color/colorIvoryText"
         app:backgroundTint="@color/colorAccent"
         app:fabSize="auto"
-        app:srcCompat="@drawable/ic_email_ivory_24dp" />
+        app:srcCompat="@drawable/ic_email_ivory_24dp"
+        android:contentDescription="TODO" />
 
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/chartRadonPDF"

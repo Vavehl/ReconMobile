@@ -96,7 +96,6 @@ public class MainActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Snackbar.make(view, "TODO: Email PDF Report", Snackbar.LENGTH_LONG).setAction("Action", null).show();
                 if(connected == ReconConnected.Loaded) {
                     populateRadonChart();
                     populateHumidityChart();
@@ -208,7 +207,6 @@ public class MainActivity extends AppCompatActivity
             case R.id.menu_exit:
                 System.exit(0);
         }
-
         return super.onOptionsItemSelected(item);
     }
 

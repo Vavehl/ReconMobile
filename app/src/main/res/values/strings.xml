@@ -3,6 +3,7 @@
     <string name="action_settings">Settings</string>
     <string name="tabConnect">Connect</string>
     <string name="tabGraphs">Graphs</string>
+    <string name="tabDefaults">Defaults</string>
     <string name="tabReport">Report</string>
     <string name="tabCompany">Company</string>
     <string name="tabSettings">Settings</string>

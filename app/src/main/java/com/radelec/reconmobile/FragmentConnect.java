@@ -26,6 +26,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.material.tabs.TabLayout;
 import com.hoho.android.usbserial.driver.UsbSerialDriver;
 import com.hoho.android.usbserial.driver.UsbSerialPort;
 import com.hoho.android.usbserial.driver.UsbSerialProber;
@@ -163,6 +164,16 @@ public class FragmentConnect extends Fragment implements ConsoleCallback, Servic
             loadedCalibrationDate = "";
             updateSystemConsole("System Console"); //Restore the default system console text
             checkConnectionStatus();
+
+            TabLayout tabLayout = v.getRootView().findViewById(R.id.tabLayout_Main);
+            if (connected == ReconConnected.Loaded) {
+                tabLayout.getTabAt(2).setText("Report");
+                Log.d("MainActivity","Setting tab to Report...");
+            } else {
+                tabLayout.getTabAt(2).setText("Defaults");
+                Log.d("MainActivity","Setting tab to Defaults...");
+            }
+
         });
 
         btnDownload.setOnClickListener(v -> {
