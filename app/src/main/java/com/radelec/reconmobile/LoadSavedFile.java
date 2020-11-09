@@ -34,6 +34,7 @@ public class LoadSavedFile {
         public static String strReportMitigation = "Unknown";
         public static String strReportComment = "Unknown";
         public static String strRoomDeployed = "Unknown";
+        public static String strEmail = "";
 
         public static void main(String ReconTXTFile, String strFileName) {
             Log.d("LoadSavedFile","LoadSavedFile() called!");
@@ -178,6 +179,10 @@ public class LoadSavedFile {
                             if(strLine.substring(0,5).contains("Room:")) strRoomDeployed = strLine.substring(6).trim();
                             loadedLocationDeployed = strRoomDeployed;
                             Log.d("LoadSavedFile","Location found and parsed: " + loadedLocationDeployed);
+                        } else if(strLine.length() > 5 && strLine.substring(0,6).contains("Email:")) {
+                            strEmail = strLine.substring(5).trim();
+                            loadedEmail = strEmail;
+                            Log.d("LoadSavedFile","Email found and parsed: " + loadedEmail);
                         }
                         //BEGIN: Test Site Parsing Block
                         if(testSiteFlag) {

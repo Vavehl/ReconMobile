@@ -123,6 +123,11 @@ public class SaveFile {
                         workingFile.remove(i);
                         workingFile.add(i, "Retrieved By: " + Globals.loadedRetrievedBy);
                     }
+
+                    if(workingFile.get(i).contains("Email:")) {
+                        workingFile.remove(i);
+                        workingFile.add(i,"Email: ");
+                    }
                 }
             }
 

@@ -74,6 +74,7 @@ class Globals {
     public static String loadedRetrievedBy = "";
     public static String loadedAnalyzedBy = "";
     public static String loadedCalibrationDate = "";
+    public static String loadedEmail = "";
 
     //Database
     public static DatabaseOperations globalDBDefaults;

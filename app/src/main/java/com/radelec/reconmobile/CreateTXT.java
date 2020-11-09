@@ -273,6 +273,7 @@ public class CreateTXT {
                 writer.println("Mitigation: " + cursorReportDefaults.getString(10));
                 writer.println("Comment: " + cursorReportDefaults.getString(11));
                 writer.println("Location: " + cursorReportDefaults.getString(1));
+                writer.println("Email: " + db.getCompanyEmail());
                 writer.println(newline);
                 writer.println("Analyzed By: " + cursorReportDefaults.getString(6));
                 writer.println("Deployed By: " + cursorReportDefaults.getString(4));
@@ -322,6 +323,7 @@ public class CreateTXT {
                 writer.println("Mitigation: " + cursorReportDefaults.getString(10));
                 writer.println("Comment: " + cursorReportDefaults.getString(11));
                 writer.println("Location: " + cursorReportDefaults.getString(1));
+                writer.println("Email: " + db.getCompanyEmail());
                 writer.println(newline);
                 writer.println("Analyzed By: " + cursorReportDefaults.getString(6));
                 writer.println("Deployed By: " + cursorReportDefaults.getString(4));
