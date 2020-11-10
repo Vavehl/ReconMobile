@@ -21,8 +21,10 @@ class Constants {
     public static final String cmdWriteOptionsFlag = "WF";
     public static final String cmdReadOptionsFlag = ":RF";
 
-    //New Line
-    public static final String newline = "\\n";
+    //Recon New Line
+    public static final String newline = "\r\n";
+    //System New Line (Android-specific)
+    public static final String newlinePDF = "\\n";
 
     // values have to be globally unique
     static final String INTENT_ACTION_DISCONNECT = BuildConfig.APPLICATION_ID + ".Disconnect";
