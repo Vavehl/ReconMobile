@@ -297,8 +297,22 @@ public class MainActivity extends AppCompatActivity
     //We should offload this to its own class...
     protected void saveFile() {
         Log.d("MainActivity","saveFile() called!");
-        Toast msgSave = Toast.makeText(getApplicationContext(),"Saving file...",Toast.LENGTH_SHORT);
-        msgSave.show();
+        if(globalLoadedFileName.length()>0) {
+            Log.d("MainActivity","Currently Loaded File = " + globalLoadedFileName);
+            Toast msgSave;
+            File loadedFile = new File(fileDir + File.separator + globalLoadedFileName);
+            try {
+                msgSave = Toast.makeText(getApplicationContext(), SaveFile.main(loadedFile), Toast.LENGTH_SHORT);
+                msgSave.show();
+            } catch (IOException e) {
+                msgSave = Toast.makeText(getApplicationContext(), "Error when saving file!", Toast.LENGTH_SHORT);
+                msgSave.show();
+                e.printStackTrace();
+            }
+        } else {
+            Toast msgSave = Toast.makeText(getApplicationContext(), "No file currently loaded...", Toast.LENGTH_SHORT);
+            msgSave.show();
+        }
     }
 
     //We should offload this to its own class, too...

@@ -2,6 +2,7 @@
 package com.radelec.reconmobile;
 
 import android.util.Log;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -14,7 +15,7 @@ import java.util.ArrayList;
 
 public class SaveFile {
 
-    public static void UpdateTXT(File oldFile) throws IOException {
+    public static String main(File oldFile) throws IOException {
         BufferedReader br = null;
         String currentLine = null;
         BufferedWriter bw = null;
@@ -27,6 +28,8 @@ public class SaveFile {
         String updatedFileName = oldFile.getName();
         String newline = Constants.newline;
         ArrayList<String> workingFile = new ArrayList<String>();
+
+        Log.d("SaveFile","Creating buffered writer and beginning to save file...");
 
         try {
 
@@ -131,7 +134,8 @@ public class SaveFile {
                 }
             }
 
-            bw = new BufferedWriter(new FileWriter(new File(updatedFileName)));
+            Log.d("SaveFile","Creating buffered writer and beginning to save file...");
+            bw = new BufferedWriter(new FileWriter(new File(Globals.fileDir + File.separator + updatedFileName)));
 
             // Write out to new file.
             for (int i = 0; i < workingFile.size(); i++) {
@@ -155,10 +159,12 @@ public class SaveFile {
 
             bw.close();
             Log.d("SaveFile","File (" + Globals.globalLoadedFileName + ") has been manually saved by user!");
+            return "Saving file...";
         }
 
         catch (Exception anyEx) {
             Log.d("SaveFile","EXCEPTION: " + (anyEx.toString()));
+            return "Error saving file...";
         }
     }
 }
