@@ -63,10 +63,6 @@ public class MainActivity extends AppCompatActivity
 
         super.onCreate(savedInstanceState);
 
-        //At the very least, let's broadcast a few info log messages detailing the version info.
-        Log.i("VersionInfo","Version Build = " + version_build);
-        Log.i("VersionInfo", "Version Date = " + version_date);
-
         setContentView(R.layout.activity_main);
         TabLayout tabLayout = findViewById(R.id.tabLayout_Main);
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -75,9 +71,16 @@ public class MainActivity extends AppCompatActivity
         //Initialize database (in DatabaseOperations)
         db = DatabaseOperations.getInstance(this);
 
-        //Get file directory
+        //Get various directories used by Recon Mobile
         fileDir = getApplicationContext().getFilesDir();
         imageDir = getApplicationContext().getDir("images",MODE_PRIVATE);
+        logsDir = getApplicationContext().getDir("logs",MODE_PRIVATE);
+
+        Logging.createLogFile();
+
+        //At the very least, let's broadcast a few info log messages detailing the version info.
+        Logging.main("VersionInfo","Version Build = " + version_build);
+        Logging.main("VersionInfo", "Version Date = " + version_date);
 
         //Programmatically initialize fragmentConnect tab -- there has to be a better way to implement this??
         FragmentManager fm = getSupportFragmentManager();
