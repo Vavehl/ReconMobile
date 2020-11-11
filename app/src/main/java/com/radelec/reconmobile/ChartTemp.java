@@ -24,17 +24,17 @@ public class ChartTemp extends Fragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        Log.d("ChartTemp","OnCreateView() called!");
+        Logging.main("ChartTemp","OnCreateView() called!");
         View view = inflater.inflate(R.layout.chart_temp, container, false);
         if(Globals.connected == Globals.ReconConnected.Loaded && !Globals.globalLoadedFileName.isEmpty()) {
-            Log.d("ChartTemp","Recon Data File is loaded -- attempting to populate temperature chart.");
+            Logging.main("ChartTemp","Recon Data File is loaded -- attempting to populate temperature chart.");
             view = populateTempChart (view);
         }
         return view;
     }
 
     public View populateTempChart(View view) {
-        Log.d("ChartTemp","populateTempChart() called!");
+        Logging.main("ChartTemp","populateTempChart() called!");
 
         LineChart lcTemp;
         LineData lineData;

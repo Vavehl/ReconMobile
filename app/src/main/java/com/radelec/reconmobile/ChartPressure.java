@@ -24,17 +24,17 @@ public class ChartPressure extends Fragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        Log.d("ChartPressure","OnCreateView() called!");
+        Logging.main("ChartPressure","OnCreateView() called!");
         View view = inflater.inflate(R.layout.chart_pressure, container, false);
         if(Globals.connected == Globals.ReconConnected.Loaded && !Globals.globalLoadedFileName.isEmpty()) {
-            Log.d("ChartPressure","Recon Data File is loaded -- attempting to populate pressure chart.");
+            Logging.main("ChartPressure","Recon Data File is loaded -- attempting to populate pressure chart.");
             view = populatePressureChart (view);
         }
         return view;
     }
 
     public View populatePressureChart(View view) {
-        Log.d("ChartPressure","populatePressureChart() called!");
+        Logging.main("ChartPressure","populatePressureChart() called!");
 
         LineChart lcPressure;
         LineData lineData;

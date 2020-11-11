@@ -53,14 +53,14 @@ public class FragmentConnect extends Fragment implements ConsoleCallback, Servic
     private boolean initialStart = true;
 
     public FragmentConnect() {
-        Log.d("FragmentConnect","FragmentConnect() called!");
+        Logging.main("FragmentConnect","FragmentConnect() called!");
         broadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                Log.d("FragmentConnect","broadcastReceiver.onReceive() called!");
+                Logging.main("FragmentConnect","broadcastReceiver.onReceive() called!");
                 if(Objects.requireNonNull(intent.getAction()).equals(INTENT_ACTION_GRANT_USB)) {
                     Boolean granted = intent.getBooleanExtra(UsbManager.EXTRA_PERMISSION_GRANTED, false);
-                    Log.d("ReconSearchList","Permission Granted? [" + granted + "]");
+                    Logging.main("ReconSearchList","Permission Granted? [" + granted + "]");
                     if(granted) connect(granted);
                 }
             }
@@ -82,25 +82,25 @@ public class FragmentConnect extends Fragment implements ConsoleCallback, Servic
 
         switch(connected) {
             case True:
-                Log.d("FragmentConnect","Setting button to Disconnect [connected = " + connected + "]");
+                Logging.main("FragmentConnect","Setting button to Disconnect [connected = " + connected + "]");
                 btnConnect.setText("Disconnect");
                 break;
             case False:
-                Log.d("FragmentConnect","Setting button to Connect [connected = " + connected + "]");
+                Logging.main("FragmentConnect","Setting button to Connect [connected = " + connected + "]");
                 btnConnect.setText("Connect");
                 break;
             case Pending:
-                Log.d("FragmentConnect","Setting button to Wait [connected = " + connected + "]");
+                Logging.main("FragmentConnect","Setting button to Wait [connected = " + connected + "]");
                 btnConnect.setText("Wait");
                 break;
             case Loaded:
-                Log.d("FragmentConnect","Setting status to Loaded File [connected = " + connected + "]");
+                Logging.main("FragmentConnect","Setting status to Loaded File [connected = " + connected + "]");
         }
         checkConnectionStatus();
 
         btnClear.setOnClickListener(v -> {
             if (connected == ReconConnected.True) {
-                Log.d("FragmentConnect", "Clear Session button pressed!");
+                Logging.main("FragmentConnect", "Clear Session button pressed!");
                 if(service != null)
                     service.attach(this);
                 else
@@ -110,7 +110,7 @@ public class FragmentConnect extends Fragment implements ConsoleCallback, Servic
                 rfRecon.clearCurrentSession();
                 rfRecon.send(cmdReadProtocol); //Let's get the number of data sessions by issuing :RP
             } else {
-                Log.d("FragmentConnect", "Clear Session button pressed, but not connected!?");
+                Logging.main("FragmentConnect", "Clear Session button pressed, but not connected!?");
             }
         });
 
@@ -119,7 +119,7 @@ public class FragmentConnect extends Fragment implements ConsoleCallback, Servic
             public void onClick(View v) {
                 switch(connected) {
                     case True:
-                        Log.d("FragmentConnect","Disconnect button pressed!");
+                        Logging.main("FragmentConnect","Disconnect button pressed!");
                         Toast txtOnClick_Disconnect = Toast.makeText(getContext(),"Disconnecting...",Toast.LENGTH_SHORT);
                         txtOnClick_Disconnect.show();
                         ReconFunctions rfRecon = new ReconFunctions(null);
@@ -127,7 +127,7 @@ public class FragmentConnect extends Fragment implements ConsoleCallback, Servic
                         checkConnectionStatus();
                         break;
                     case False:
-                        Log.d("FragmentConnect","Connect button pressed!");
+                        Logging.main("FragmentConnect","Connect button pressed!");
                         Toast txtOnClick_Connect = Toast.makeText(getContext(),"Searching for Recon...",Toast.LENGTH_SHORT);
                         txtOnClick_Connect.show();
                         showSearchList();
@@ -142,9 +142,9 @@ public class FragmentConnect extends Fragment implements ConsoleCallback, Servic
 
         btnCloseFile.setOnClickListener(v -> {
             if (connected == ReconConnected.Loaded) {
-                Log.d("FragmentConnect", "Close File button pressed!");
+                Logging.main("FragmentConnect", "Close File button pressed!");
             } else {
-                Log.d("FragmentConnect", "Close File button pressed, but no file was loaded!?");
+                Logging.main("FragmentConnect", "Close File button pressed, but no file was loaded!?");
             }
             Globals.globalLoadedFileName = "";
             Globals.globalReconCF1 = 6;
@@ -169,17 +169,17 @@ public class FragmentConnect extends Fragment implements ConsoleCallback, Servic
             TabLayout tabLayout = v.getRootView().findViewById(R.id.tabLayout_Main);
             if (connected == ReconConnected.Loaded) {
                 tabLayout.getTabAt(2).setText("Report");
-                Log.d("MainActivity","Setting tab to Report...");
+                Logging.main("MainActivity","Setting tab to Report...");
             } else {
                 tabLayout.getTabAt(2).setText("Defaults");
-                Log.d("MainActivity","Setting tab to Defaults...");
+                Logging.main("MainActivity","Setting tab to Defaults...");
             }
 
         });
 
         btnDownload.setOnClickListener(v -> {
             if (connected == ReconConnected.True) {
-                Log.d("FragmentConnect", "Download button pressed!");
+                Logging.main("FragmentConnect", "Download button pressed!");
                 if(service != null)
                     service.attach(this);
                 else
@@ -191,7 +191,7 @@ public class FragmentConnect extends Fragment implements ConsoleCallback, Servic
                 ReconFunctions rfRecon = new ReconFunctions(null);
                 rfRecon.checkNewRecord();
             } else {
-                Log.d("FragmentConnect", "Download button pressed, but not currently connected.");
+                Logging.main("FragmentConnect", "Download button pressed, but not currently connected.");
             }
         });
 
@@ -201,30 +201,30 @@ public class FragmentConnect extends Fragment implements ConsoleCallback, Servic
     @Override
     public void updateSystemConsole(String strConsole) {
         try {
-            Log.d("FragmentConnect", "updateSystemConsole() called!");
+            Logging.main("FragmentConnect", "updateSystemConsole() called!");
             globalLastSystemConsole = strConsole;
             txtSystemConsole.setText(strConsole);
-            Log.d("FragmentConnect", "System Console updated to: " + strConsole);
+            Logging.main("FragmentConnect", "System Console updated to: " + strConsole);
         } catch (NullPointerException ex) {
-            Log.d("FragmentConnect","Unable to update system console -- it isn't instantiated!");
+            Logging.main("FragmentConnect","Unable to update system console -- it isn't instantiated!");
         }
     }
 
     //Show Device Search popup
     private void showSearchList() {
-        Log.d("FragmentConnect", "showSearchList() called!");
+        Logging.main("FragmentConnect", "showSearchList() called!");
         FragmentSearch dialogSearch = new FragmentSearch();
         dialogSearch.setRetainInstance(true);
         dialogSearch.show(getFragmentManager(),"");
 
         if(dialogSearch.isDetached()) {
-            Log.d("FragmentConnect","SEARCH FRAGMENT DETACHED!");
+            Logging.main("FragmentConnect","SEARCH FRAGMENT DETACHED!");
             checkConnectionStatus();
         }
     }
 
     public void onStart() {
-        Log.d("FragmentConnect", "onStart() called!");
+        Logging.main("FragmentConnect", "onStart() called!");
         super.onStart();
         if(service != null)
             service.attach(this);
@@ -234,28 +234,28 @@ public class FragmentConnect extends Fragment implements ConsoleCallback, Servic
 
     @Override
     public void onStop() {
-        Log.d("FragmentConnect","onStop() called!");
+        Logging.main("FragmentConnect","onStop() called!");
         if(service != null && !Objects.requireNonNull(getActivity()).isChangingConfigurations())
             service.detach();
         super.onStop();
     }
 
     public void onPause() {
-        Log.d("FragmentConnect", "onPause() called!");
+        Logging.main("FragmentConnect", "onPause() called!");
         Objects.requireNonNull(getActivity()).unregisterReceiver(broadcastReceiver);
         super.onPause();
     }
 
     public void onResume() {
-        Log.d("FragmentConnect", "onResume() called!");
+        Logging.main("FragmentConnect", "onResume() called!");
         super.onResume();
         Objects.requireNonNull(getActivity()).registerReceiver(broadcastReceiver, new IntentFilter(INTENT_ACTION_GRANT_USB));
-        Log.d("FragmentConnect", "onResume():: initialStart = " + initialStart);
+        Logging.main("FragmentConnect", "onResume():: initialStart = " + initialStart);
         if(connected == ReconConnected.True) {
-            Log.d("FragmentConnect","onResume() :: Recon is already connected. Setting initialStart to false...");
+            Logging.main("FragmentConnect","onResume() :: Recon is already connected. Setting initialStart to false...");
             initialStart = false;
         } else if(initialStart && service !=null) {
-            Log.d("FragmentConnect", "onResume() :: initialStart = true && service != null");
+            Logging.main("FragmentConnect", "onResume() :: initialStart = true && service != null");
             initialStart = false;
             getActivity().runOnUiThread(this::connect);
         }
@@ -265,30 +265,30 @@ public class FragmentConnect extends Fragment implements ConsoleCallback, Servic
     @SuppressWarnings("deprecation") // onAttach(context) was added with API 23. onAttach(activity) works for all API versions
     @Override
     public void onAttach(@NonNull Activity activity) {
-        Log.d("FragmentConnect","onAttach() called!");
+        Logging.main("FragmentConnect","onAttach() called!");
         super.onAttach(activity);
         Objects.requireNonNull(getActivity()).bindService(new Intent(getActivity(), SerialService.class), this, Context.BIND_AUTO_CREATE);
     }
 
     @Override
     public void onDetach() {
-        Log.d("FragmentConnect","onDetach() called!");
+        Logging.main("FragmentConnect","onDetach() called!");
         try { Objects.requireNonNull(getActivity()).unbindService(this); } catch(Exception ignored) {}
         super.onDetach();
     }
 
     @Override
     public void onDestroy() {
-        Log.d("FragmentConnect","onDestroy() called!");
+        Logging.main("FragmentConnect","onDestroy() called!");
         Objects.requireNonNull(getActivity()).stopService(new Intent(getActivity(), SerialService.class));
         super.onDestroy();
     }
 
     public void checkConnectionStatus() {
-        Log.d("FragmentConnect", "checkConnectionStatus() called!");
+        Logging.main("FragmentConnect", "checkConnectionStatus() called!");
         switch(connected) {
             case True:
-                Log.d("FragmentConnect","Setting button to Disconnect [connected = " + connected + "]");
+                Logging.main("FragmentConnect","Setting button to Disconnect [connected = " + connected + "]");
                 if(btnClear != null) btnClear.setVisibility(View.VISIBLE);
                 if(btnConnect != null) btnConnect.setText("Disconnect");
                 if(btnDownload != null) btnDownload.setVisibility(View.VISIBLE);
@@ -301,7 +301,7 @@ public class FragmentConnect extends Fragment implements ConsoleCallback, Servic
                 if(txtSystemConsole != null) txtSystemConsole.setText(Globals.globalLastSystemConsole);
                 break;
             case False:
-                Log.d("FragmentConnect","Setting button to Connect [connected = " + connected + "]");
+                Logging.main("FragmentConnect","Setting button to Connect [connected = " + connected + "]");
                 if(btnClear != null) btnClear.setVisibility(View.GONE);
                 if(btnConnect != null) btnConnect.setText("Connect");
                 if(btnConnect != null) btnConnect.setVisibility(View.VISIBLE);
@@ -313,7 +313,7 @@ public class FragmentConnect extends Fragment implements ConsoleCallback, Servic
                 if(txtSystemConsole != null) txtSystemConsole.setVisibility(View.GONE);
                 break;
             case Pending: //This should never proc...
-                Log.d("FragmentConnect","Pending connection... [connected = " + connected + "]");
+                Logging.main("FragmentConnect","Pending connection... [connected = " + connected + "]");
                 if(btnClear != null) btnClear.setVisibility(View.GONE);
                 if(btnConnect != null) btnConnect.setText("Disconnect");
                 if(btnConnect != null) btnConnect.setVisibility(View.VISIBLE);
@@ -325,7 +325,7 @@ public class FragmentConnect extends Fragment implements ConsoleCallback, Servic
                 if(txtSystemConsole != null) txtSystemConsole.setVisibility(View.GONE);
                 break;
             case Loaded: //This should only be displayed when a file is loaded
-                Log.d("FragmentConnect","Loaded File " + globalLoadedFileName + "... [connected = " + connected + "]");
+                Logging.main("FragmentConnect","Loaded File " + globalLoadedFileName + "... [connected = " + connected + "]");
                 if(btnClear != null) btnClear.setVisibility(View.GONE);
                 if(btnConnect != null) btnConnect.setVisibility(View.GONE);
                 if(btnDownload != null) btnDownload.setVisibility(View.GONE);
@@ -338,7 +338,7 @@ public class FragmentConnect extends Fragment implements ConsoleCallback, Servic
     }
 
     public void onServiceConnected(ComponentName name, IBinder binder) {
-        Log.d("FragmentConnect","onServiceConnected() called!");
+        Logging.main("FragmentConnect","onServiceConnected() called!");
         service = ((SerialService.SerialBinder) binder).getService();
         if(initialStart && isResumed()) {
             initialStart = false;
@@ -348,7 +348,7 @@ public class FragmentConnect extends Fragment implements ConsoleCallback, Servic
 
     @Override
     public void onServiceDisconnected(ComponentName name) {
-        Log.d("FragmentConnect","onServiceDisconnected() called!");
+        Logging.main("FragmentConnect","onServiceDisconnected() called!");
         service = null;
     }
 
@@ -357,86 +357,86 @@ public class FragmentConnect extends Fragment implements ConsoleCallback, Servic
     }
 
     private void connect(Boolean permissionGranted) {
-        Log.d("FragmentConnect","connect(" + permissionGranted + ") called!");
+        Logging.main("FragmentConnect","connect(" + permissionGranted + ") called!");
         UsbDevice device = null;
         UsbManager usbManager = (UsbManager) getActivity().getSystemService(Context.USB_SERVICE);
         for(UsbDevice v : usbManager.getDeviceList().values())
             if (v.getDeviceId() == deviceId) {
                 device = v;
-                Log.d("FragmentConnect","connect(): Scanning Connected Devices = " + v.toString());
+                Logging.main("FragmentConnect","connect(): Scanning Connected Devices = " + v.toString());
             }
         if(device == null) {
-            Log.d("FragmentConnect","connect(): Connection Failed / Recon Not Found or No Recon Selected!");
+            Logging.main("FragmentConnect","connect(): Connection Failed / Recon Not Found or No Recon Selected!");
             return;
         }
-        Log.d("FragmentConnect","Device = " + device.toString());
+        Logging.main("FragmentConnect","Device = " + device.toString());
         UsbSerialDriver driver = UsbSerialProber.getDefaultProber().probeDevice(device);
         if(driver == null) {
             driver = CustomProber.getCustomProber().probeDevice(device);
         }
         if(driver == null) {
-            Log.d("FragmentConnect","connect(): Connection Failed / No Recon Driver Found!");
+            Logging.main("FragmentConnect","connect(): Connection Failed / No Recon Driver Found!");
             return;
         }
         if(driver.getPorts().size() < portNum) {
-            Log.d("FragmentConnect","connect(): Connection Failed / No Free Ports!");
+            Logging.main("FragmentConnect","connect(): Connection Failed / No Free Ports!");
             return;
         }
         UsbSerialPort usbSerialPort = driver.getPorts().get(portNum);
         UsbDeviceConnection usbConnection = usbManager.openDevice(driver.getDevice());
         if(usbConnection == null && permissionGranted == null && !usbManager.hasPermission(driver.getDevice())) {
-            Log.d("FragmentConnect", "connect(): No Permission Granted -- attempting to request!");
+            Logging.main("FragmentConnect", "connect(): No Permission Granted -- attempting to request!");
             PendingIntent usbPermissionIntent = PendingIntent.getBroadcast(getActivity(), 0, new Intent(INTENT_ACTION_GRANT_USB), 0);
             usbManager.requestPermission(driver.getDevice(), usbPermissionIntent);
             return;
         }
         if(usbConnection == null) {
             if (!usbManager.hasPermission(driver.getDevice())) {
-                Log.d("FragmentConnect", "connect(): Connection Failed / Permission Denied!");
+                Logging.main("FragmentConnect", "connect(): Connection Failed / Permission Denied!");
             } else {
-                Log.d("FragmentConnect", "connect(): Connection Failed / Open Failed!");
+                Logging.main("FragmentConnect", "connect(): Connection Failed / Open Failed!");
             }
             return;
         }
 
         connected = ReconConnected.Pending;
-        Log.d("FragmentConnect","connect(): Connection Pending...");
+        Logging.main("FragmentConnect","connect(): Connection Pending...");
         try {
-            Log.d("FragmentConnect","connect(): socket = new SerialSocket();");
+            Logging.main("FragmentConnect","connect(): socket = new SerialSocket();");
             socket = new SerialSocket();
-            Log.d("FragmentConnect","connect(): service.connect(this, Connected);");
+            Logging.main("FragmentConnect","connect(): service.connect(this, Connected);");
             service.connect((SerialListener) this, "Connected");
-            Log.d("FragmentConnect","connect(): socket.connect(getContext(), service, usbConnection, usbSerialPort, baudRate);");
-            Log.d("FragmentConnect","connect(): usbSerialPort = " + usbSerialPort.toString() + " / baudRate = " + baudRate);
+            Logging.main("FragmentConnect","connect(): socket.connect(getContext(), service, usbConnection, usbSerialPort, baudRate);");
+            Logging.main("FragmentConnect","connect(): usbSerialPort = " + usbSerialPort.toString() + " / baudRate = " + baudRate);
             socket.connect(getContext(), service, usbConnection, usbSerialPort, baudRate);
             // usb connect is not asynchronous. connect-success and connect-error are returned immediately from socket.connect
             // for consistency to bluetooth/bluetooth-LE app use same SerialListener and SerialService classes
             onSerialConnect();
-            Log.d("FragmentConnect", "WRITE_WAIT_MILLIS = " + WRITE_WAIT_MILLIS);
+            Logging.main("FragmentConnect", "WRITE_WAIT_MILLIS = " + WRITE_WAIT_MILLIS);
         } catch (Exception e) {
             onSerialConnectError(e);
-            Log.d("FragmentConnect","connect(): Exception!");
+            Logging.main("FragmentConnect","connect(): Exception!");
         }
     }
 
     public void onSerialConnect() {
-        Log.d("FragmentConnect","onSerialConnect() called!");
+        Logging.main("FragmentConnect","onSerialConnect() called!");
         connected = ReconConnected.True;
-        Log.d("FragmentConnect","onSerialConnect(): Connected!");
+        Logging.main("FragmentConnect","onSerialConnect(): Connected!");
     }
 
     public void onSerialConnectError(Exception e) {
-        Log.d("FragmentConnect","onSerialConnectError() called!");
-        Log.d("FragmentConnect", e.toString());
+        Logging.main("FragmentConnect","onSerialConnectError() called!");
+        Logging.main("FragmentConnect", e.toString());
         ReconFunctions rfRecon = new ReconFunctions(null);
         rfRecon.disconnect();
     }
 
     public void onSerialRead(byte[] data) {
-        Log.d("FragmentConnect","onSerialRead() called!");
+        Logging.main("FragmentConnect","onSerialRead() called!");
         receive(data);
         String response = new String(data);
-        Log.d("FragmentConnect","Receiving " + response);
+        Logging.main("FragmentConnect","Receiving " + response);
         response = response.replaceAll("[\\n\\r+]", ""); // strip line feeds
         globalLastResponse = response;
         String[] parsedResponse = null;
@@ -459,26 +459,26 @@ public class FragmentConnect extends Fragment implements ConsoleCallback, Servic
                 break;
             case "=OK":
                 //Response for :CD clear current session
-                Log.d("FragmentConnect","onSerialRead():: =OK Response from Recon... presumably from :CD command?");
+                Logging.main("FragmentConnect","onSerialRead():: =OK Response from Recon... presumably from :CD command?");
                 break;
             case "=RL":
                 rfRecon.getCalibrationFactors(response);
                 break;
             case "=BD":
-                Log.d("FragmentConnect","onSerialRead():: =BD Response from Recon... invalid request OR zero sessions remaining after :CD?");
+                Logging.main("FragmentConnect","onSerialRead():: =BD Response from Recon... invalid request OR zero sessions remaining after :CD?");
                 break;
         }
     }
 
     public void onSerialIoError(Exception e) {
-        Log.d("FragmentConnect","onSerialIoError() called!");
-        Log.d("FragmentConnect", e.toString());
+        Logging.main("FragmentConnect","onSerialIoError() called!");
+        Logging.main("FragmentConnect", e.toString());
         ReconFunctions rfRecon = new ReconFunctions(null);
         rfRecon.disconnect();
     }
 
     private String receive(byte[] data) {
-        Log.d("FragmentConnect","receive() called!");
+        Logging.main("FragmentConnect","receive() called!");
         return (new String(data));
     }
 

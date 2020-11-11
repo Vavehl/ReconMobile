@@ -29,7 +29,7 @@ public class CreateTXT {
 
     public static void main() {
 
-        Log.d("CreateTXT","CreateTXT() called!");
+        Logging.main("CreateTXT","CreateTXT() called!");
         String ReconWaitTime = "Unknown";
         String ReconDurationSetting = "Unknown";
         String ReconCalDate = "Unknown";
@@ -99,23 +99,23 @@ public class CreateTXT {
         cursorReportDefaults = globalDBDefaults.getReportDefaultData();
         cursorReportDefaults.moveToFirst(); //Critical to moveToFirst() here, or else we're sitting at an invalid index.
 
-        Log.d("CreateTXT","All variables initialized!");
-        Log.d("CreateTXT","CF1 = " + CF1 + " / CF2 = " + CF2);
+        Logging.main("CreateTXT","All variables initialized!");
+        Logging.main("CreateTXT","CF1 = " + CF1 + " / CF2 = " + CF2);
 
         String strFileName = DetermineFileName.determineFileName();
         // create text file
         try {
-            Log.d("CreateTXT","Beginning to create TXT file. Array size = " + arrayDataSession.size());
+            Logging.main("CreateTXT","Beginning to create TXT file. Array size = " + arrayDataSession.size());
             writer = new PrintWriter(strFileName, "UTF-8");
-            Log.d("CreateTXT","FileName = " + strFileName);
+            Logging.main("CreateTXT","FileName = " + strFileName);
 
             // print first line of data (start of test)
             writer.println(Arrays.toString(arrayDataSession.get(sessionCounter)));
 
             while (sessionCounter < arrayDataSession.size()) {
-                Log.d("CreateTXT","Creating TXT file with Record #" + sessionCounter);
+                Logging.main("CreateTXT","Creating TXT file with Record #" + sessionCounter);
                 if (arrayDataSession.get(sessionCounter)[2].equals("S")) {
-                    Log.d("CreateTXT", "Found S flag! Beginning to average...");
+                    Logging.main("CreateTXT", "Found S flag! Beginning to average...");
                     BeginAveraging = true;
                     TempYear = 2000 + Integer.parseInt(arrayDataSession.get(sessionCounter)[3]);
                     if (Build.VERSION.SDK_INT >= 26) {
@@ -137,7 +137,7 @@ public class CreateTXT {
 
                 if (arrayDataSession.get(sessionCounter)[2].equals("E")) {
                     TempYear = 2000 + Integer.parseInt(arrayDataSession.get(sessionCounter)[3]);
-                    Log.d("CreateTXT","Found E flag! Wrapping up...");
+                    Logging.main("CreateTXT","Found E flag! Wrapping up...");
                     if (Build.VERSION.SDK_INT >= 26) {
                         EndDate = LocalDateTime.of(TempYear, Integer.parseInt(arrayDataSession.get(sessionCounter)[4]), Integer.parseInt(arrayDataSession.get(sessionCounter)[5]), Integer.parseInt(arrayDataSession.get(sessionCounter)[6]), Integer.parseInt(arrayDataSession.get(sessionCounter)[7]), Integer.parseInt(arrayDataSession.get(sessionCounter)[8]));
                     } else {
@@ -152,7 +152,7 @@ public class CreateTXT {
                     }
                 }
                 if (arrayDataSession.get(sessionCounter)[2].equals("Z")) {
-                    Log.d("CreateTXT","Found Z flag! Let's get out of here...");
+                    Logging.main("CreateTXT","Found Z flag! Let's get out of here...");
                 }
                 if (BeginAveraging && !arrayDataSession.get(sessionCounter)[2].equals("Z")) {
                     ActiveRecordCounts++;
@@ -172,7 +172,7 @@ public class CreateTXT {
                     if(ch1Counter==0) {
                         consecutiveZeroTally_Ch1++;
                         if(consecutiveZeroTally_Ch1>=ConsecutiveZeroLimit) {
-                            Log.d("CreateTXT","WARNING: " + ConsecutiveZeroLimit + " consecutive zero counts read on Chamber 1!");
+                            Logging.main("CreateTXT","WARNING: " + ConsecutiveZeroLimit + " consecutive zero counts read on Chamber 1!");
                             photodiodeFailure_Ch1 = true;
                         }
                     } else {
@@ -181,7 +181,7 @@ public class CreateTXT {
                     if(ch2Counter==0) {
                         consecutiveZeroTally_Ch2++;
                         if(consecutiveZeroTally_Ch2>=ConsecutiveZeroLimit) {
-                            Log.d("CreateTXT","WARNING: " + ConsecutiveZeroLimit + " consecutive zero counts read on Chamber 2!");
+                            Logging.main("CreateTXT","WARNING: " + ConsecutiveZeroLimit + " consecutive zero counts read on Chamber 2!");
                             photodiodeFailure_Ch2 = true;
                         }
                     } else {
@@ -214,10 +214,10 @@ public class CreateTXT {
                 sessionCounter++;
             }  // end while loop
 
-            Log.d("CreateTXT","BeginAveraging= " + BeginAveraging);
+            Logging.main("CreateTXT","BeginAveraging= " + BeginAveraging);
             // do this if we're in diagnostic mode
             if (BeginAveraging && boolDiagnosticMode) {
-                Log.d("CreateTXT","Creating TXT details in diagnostic mode.");
+                Logging.main("CreateTXT","Creating TXT details in diagnostic mode.");
                 // write customer info to file
                 writer.println(newline);
                 writer.println("Customer information:");
@@ -280,7 +280,7 @@ public class CreateTXT {
                 writer.println("Retrieved By: " + cursorReportDefaults.getString(5));
                 writer.println(newline);
             } else if (BeginAveraging) { // or this if we're in regular user mode
-                Log.d("CreateTXT","Creating TXT details...");
+                Logging.main("CreateTXT","Creating TXT details...");
                 // write customer info to file
                 writer.println(newline);
                 writer.println("Customer information:");
@@ -382,7 +382,7 @@ public class CreateTXT {
                 writer.println("Average Bq/m3 = " + si.format((avgResult1 + avgResult2) / 2 * 37));
             }
         } catch (UnsupportedEncodingException e) {
-            Log.d("CreateTXT","Unhandled UnsupportedEncodingException!");
+            Logging.main("CreateTXT","Unhandled UnsupportedEncodingException!");
             e.printStackTrace();
         } catch (FileNotFoundException e) {
             e.printStackTrace();

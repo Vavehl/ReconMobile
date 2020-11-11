@@ -78,11 +78,11 @@ public class SerialService extends Service implements SerialListener {
      * Api
      */
     public void connect(SerialListener listener, String notificationMsg) {
-        Log.d("SerialService","connect() called!");
+        Logging.main("SerialService","connect() called!");
         this.listener = listener;
         boolConnected = true;
         this.notificationMsg = notificationMsg;
-        Log.d("SerialService","listener = " + listener.toString());
+        Logging.main("SerialService","listener = " + listener.toString());
     }
 
     public void disconnect() {
@@ -124,14 +124,14 @@ public class SerialService extends Service implements SerialListener {
     }
 
     public void detach() {
-        Log.d("SerialService","detach() called!");
+        Logging.main("SerialService","detach() called!");
         if(boolConnected)
             createNotification();
         // items already in event queue (posted before detach() to mainLooper) will end up in queue1
         // items occurring later, will be moved directly to queue2
         // detach() and mainLooper.post run in the main thread, so all items are caught
         listener = null;
-        Log.d("SerialService","listener = null");
+        Logging.main("SerialService","listener = null");
     }
 
     private void createNotification() {
@@ -164,9 +164,9 @@ public class SerialService extends Service implements SerialListener {
     }
 
     private void cancelNotification() {
-        Log.d("SerialService","cancelNotification() called!");
+        Logging.main("SerialService","cancelNotification() called!");
         stopForeground(true);
-        Log.d("SerialService","[connected = " + connected + "]");
+        Logging.main("SerialService","[connected = " + connected + "]");
     }
 
     /**
@@ -217,16 +217,16 @@ public class SerialService extends Service implements SerialListener {
                     mainLooper.post(() -> {
                         if (listener != null) {
                             listener.onSerialRead(data);
-                            Log.d("SerialService","Receiving = " + Arrays.toString(data));
+                            Logging.main("SerialService","Receiving = " + Arrays.toString(data));
                             globalLastResponse = new String(data); //...this doesn't seem to always work. Why?
                         } else {
                             queue1.add(new QueueItem(QueueType.Read, data, null));
-                            Log.d("SerialService","Queueing (1) = " + Arrays.toString(data));
+                            Logging.main("SerialService","Queueing (1) = " + Arrays.toString(data));
                         }
                     });
                 } else {
                     queue2.add(new QueueItem(QueueType.Read, data, null));
-                    Log.d("SerialService","Queueing (2) = " + Arrays.toString(data));
+                    Logging.main("SerialService","Queueing (2) = " + Arrays.toString(data));
                 }
             }
         }

@@ -26,7 +26,7 @@ public class FragmentSearch extends DialogFragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        Log.d("FragmentSearch","onCreate() called!");
+        Logging.main("FragmentSearch","onCreate() called!");
         super.onCreate(savedInstanceState);
         setStyle(DialogFragment.STYLE_NO_TITLE, R.style.DialogStyle);
     }
@@ -35,15 +35,15 @@ public class FragmentSearch extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        Log.d("FragmentSearch","FragmentSearch.onCreateView() called!");
+        Logging.main("FragmentSearch","FragmentSearch.onCreateView() called!");
         View view = inflater.inflate(R.layout.fragment_search, container, false);
         ImageView imgCloseSearch = view.findViewById(R.id.imgCloseSearch);
 
         imgCloseSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("FragmentSearch","Close button pressed!");
-                Log.d("FragmentSearch", "Recon Connected? [" + connected + "]");
+                Logging.main("FragmentSearch","Close button pressed!");
+                Logging.main("FragmentSearch", "Recon Connected? [" + connected + "]");
 
                 //BEGIN: Refresh FragmentConnect
                 Fragment frg = null;
@@ -74,7 +74,7 @@ public class FragmentSearch extends DialogFragment {
 
     @Override
     public void onAttach(Context context) {
-        Log.d("FragmentSearch","onAttach() called!");
+        Logging.main("FragmentSearch","onAttach() called!");
         super.onAttach(context);
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
@@ -86,7 +86,7 @@ public class FragmentSearch extends DialogFragment {
 
     @Override
     public void onDetach() {
-        Log.d("FragmentSearch","onDetach() called!");
+        Logging.main("FragmentSearch","onDetach() called!");
         super.onDetach();
         mListener = null;
         FragmentManager fm = getFragmentManager();
@@ -96,10 +96,10 @@ public class FragmentSearch extends DialogFragment {
             if (fragmentConnect != null) {
                 fragmentConnect.checkConnectionStatus();
             } else {
-                Log.d("FragmentSearch","Fragment Connect is NULL!");
+                Logging.main("FragmentSearch","Fragment Connect is NULL!");
             }
         } else {
-            Log.d("FragmentSearch","Fragment Manager is NULL!");
+            Logging.main("FragmentSearch","Fragment Manager is NULL!");
         }
 
     }

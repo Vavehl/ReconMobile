@@ -95,7 +95,7 @@ public class FragmentCompany extends Fragment {
             }
 
         } catch (NullPointerException ex) {
-            Log.d("FragmentCompany", "Failed to find application directory in order to check if company logo and/or signature exists!");
+            Logging.main("FragmentCompany", "Failed to find application directory in order to check if company logo and/or signature exists!");
         }
 
         //Pull the Company Defaults in the database with a Cursor class...
@@ -106,40 +106,40 @@ public class FragmentCompany extends Fragment {
             //Set the Company Defaults to the TextInputEditText boxes
             //How should we best handle the company logo and signature?
             if(db_company.ReconTableExists("COMPANY",true)) {
-                Log.d("FragmentCompany","Column Names in table COMPANY = " + Arrays.toString(cursorCompanyDefaults.getColumnNames()));
+                Logging.main("FragmentCompany","Column Names in table COMPANY = " + Arrays.toString(cursorCompanyDefaults.getColumnNames()));
                 if(cursorCompanyDefaults.getCount()==0) {
-                    Log.d("FragmentCompany","No data found in table COMPANY!");
+                    Logging.main("FragmentCompany","No data found in table COMPANY!");
                     db_company.resetCompanyData();
                 }
                 if(cursorCompanyDefaults.getColumnIndex("COMPANY_NAME")==1) {
                     if(!cursorCompanyDefaults.isNull(1)) {
                         etCompanyName.setText(cursorCompanyDefaults.getString(1));
                     } else {
-                        Log.d("FragmentCompany","WARNING! Column COMPANY_NAME is null!");
+                        Logging.main("FragmentCompany","WARNING! Column COMPANY_NAME is null!");
                     }
                 } else {
-                    Log.d("FragmentCompany","WARNING! Column COMPANY_NAME not found!");
+                    Logging.main("FragmentCompany","WARNING! Column COMPANY_NAME not found!");
                 }
                 if(cursorCompanyDefaults.getColumnIndex("COMPANY_DETAILS")==2) {
                     if(!cursorCompanyDefaults.isNull(2)) {
                         etCompanyDetails.setText(cursorCompanyDefaults.getString(2));
                     } else {
-                        Log.d("FragmentCompany","WARNING! Column COMPANY_DETAILS is null!");
+                        Logging.main("FragmentCompany","WARNING! Column COMPANY_DETAILS is null!");
                     }
                 } else {
-                    Log.d("FragmentCompany","WARNING! Column COMPANY_DETAILS not found!");
+                    Logging.main("FragmentCompany","WARNING! Column COMPANY_DETAILS not found!");
                 }
                 if(cursorCompanyDefaults.getColumnIndex("COMPANY_EMAIL")==3) {
                     if(!cursorCompanyDefaults.isNull(3)) {
                         etCompanyEmail.setText(cursorCompanyDefaults.getString(3));
                     } else {
-                        Log.d("FragmentCompany","WARNING! Column COMPANY_EMAIL is null!");
+                        Logging.main("FragmentCompany","WARNING! Column COMPANY_EMAIL is null!");
                     }
                 } else {
-                    Log.d("FragmentCompany","WARNING! Column COMPANY_EMAIL not found!");
+                    Logging.main("FragmentCompany","WARNING! Column COMPANY_EMAIL not found!");
                 }
             } else {
-                Log.d("FragmentCompany","WARNING! Table COMPANY not found!");
+                Logging.main("FragmentCompany","WARNING! Table COMPANY not found!");
             }
         } catch (Exception ex) {
 
@@ -249,7 +249,7 @@ public class FragmentCompany extends Fragment {
     }
 
     public void onDestroy() {
-        Log.d("FragmentCompany","onDestroy() called!");
+        Logging.main("FragmentCompany","onDestroy() called!");
         if(cursorCompanyDefaults != null) {
             cursorCompanyDefaults.close();
             db_company.close(); //This is needed to prevent a memory leak, I think?
@@ -269,13 +269,13 @@ public class FragmentCompany extends Fragment {
                 saveBitmapToInternalStorage(bmpCompanyLogo,"company_logo.png");
                 imgCompanyLogo.setImageBitmap(bmpCompanyLogo);
             } catch (FileNotFoundException ex) {
-                Log.d("FragmentCompany","Failure to find/load company logo image!");
+                Logging.main("FragmentCompany","Failure to find/load company logo image!");
                 ex.printStackTrace();
             } catch (IOException ex) {
-                Log.d("FragmentCompany", "Generalized I/O error when loading company logo image.");
+                Logging.main("FragmentCompany", "Generalized I/O error when loading company logo image.");
                 ex.printStackTrace();
             } catch (NullPointerException ex) {
-                Log.d("FragmentCompany", "Null Pointer Exception when loading company logo image.");
+                Logging.main("FragmentCompany", "Null Pointer Exception when loading company logo image.");
                 ex.printStackTrace();
             }
         }
@@ -288,13 +288,13 @@ public class FragmentCompany extends Fragment {
                 saveBitmapToInternalStorage(bmpAnalystSignature,"signature.png");
                 imgAnalystSignature.setImageBitmap(bmpAnalystSignature);
             } catch (FileNotFoundException ex) {
-                Log.d("FragmentCompany","Failure to find/load analyst signature!");
+                Logging.main("FragmentCompany","Failure to find/load analyst signature!");
                 ex.printStackTrace();
             } catch (IOException ex) {
-                Log.d("FragmentCompany", "Generalized I/O error when loading analyst signature.");
+                Logging.main("FragmentCompany", "Generalized I/O error when loading analyst signature.");
                 ex.printStackTrace();
             } catch (NullPointerException ex) {
-                Log.d("FragmentCompany", "Null Pointer Exception when loading analyst signature.");
+                Logging.main("FragmentCompany", "Null Pointer Exception when loading analyst signature.");
                 ex.printStackTrace();
             }
         }
@@ -312,13 +312,13 @@ public class FragmentCompany extends Fragment {
             fos = new FileOutputStream(pathToImage);
             bmpImage.compress(Bitmap.CompressFormat.PNG, 100, fos);
         } catch (Exception ex) {
-            Log.d("FragmentCompany", "General Exception when saving bitmap to local storage.");
+            Logging.main("FragmentCompany", "General Exception when saving bitmap to local storage.");
             ex.printStackTrace();
         } finally {
             try {
                 fos.close();
             } catch (IOException ex) {
-                Log.d("FragmentCompany", "I/O Exception when saving bitmap to local storage.");
+                Logging.main("FragmentCompany", "I/O Exception when saving bitmap to local storage.");
                 ex.printStackTrace();
             }
         }

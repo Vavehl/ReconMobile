@@ -14,7 +14,7 @@ public class GraphAxisFormatter extends ValueFormatter {
             long longEpochMilliseconds = (long)value * 60000;
             Date date = new Date(longEpochMilliseconds); //This result needs to be in Epoch milliseconds.
             SimpleDateFormat sdf = new SimpleDateFormat(" dd-MMM-yyyy HH:mm ");
-            Log.d("GraphAxisFormatter","Converting Epoch Time (" + value + ") to human-readable time (" + date.toString() + ").");
+            Logging.main("GraphAxisFormatter","Converting Epoch Time (" + value + ") to human-readable time (" + date.toString() + ").");
             return sdf.format(date);
         } catch (Exception ex) {
             return Float.toString(value);

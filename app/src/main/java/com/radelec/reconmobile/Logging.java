@@ -39,6 +39,7 @@ public class Logging {
             }
         } catch (FileNotFoundException ex) {
             System.out.println("ERROR: Unable to create logging file!"); //No need to write to a log if we can't even create the damn thing...
+            System.out.println(ex);
         }
     }
 

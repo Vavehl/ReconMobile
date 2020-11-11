@@ -13,7 +13,7 @@ public class DatabaseOperations extends SQLiteOpenHelper {
 
     public DatabaseOperations(Context context) {
         super(context, "ReconMobile.db", null, 1);
-        Log.d("DatabaseOperations", "Looking for ReconMobile.db...");
+        Logging.main("DatabaseOperations", "Looking for ReconMobile.db...");
     }
 
     public static synchronized DatabaseOperations getInstance(Context context) {
@@ -26,7 +26,7 @@ public class DatabaseOperations extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
 
-        Log.d("DatabaseOperations", "No Database Found! Creating ReconMobile.db...");
+        Logging.main("DatabaseOperations", "No Database Found! Creating ReconMobile.db...");
         String createTable;
 
         //Create Settings Table
@@ -93,9 +93,9 @@ public class DatabaseOperations extends SQLiteOpenHelper {
 
         long result = db.insert(table, null, contentValues);
         if(result == -1) {
-            Log.d("DatabaseOperations", "DatabaseOperations.addData: FAILED to add " + value + " to " + table + "." + column);
+            Logging.main("DatabaseOperations", "DatabaseOperations.addData: FAILED to add " + value + " to " + table + "." + column);
         } else {
-            Log.d("DatabaseOperations", "DatabaseOperations.addData: Adding " + value + " to " + table + "." + column);
+            Logging.main("DatabaseOperations", "DatabaseOperations.addData: Adding " + value + " to " + table + "." + column);
         }
 
     }
@@ -107,7 +107,7 @@ public class DatabaseOperations extends SQLiteOpenHelper {
 
         db.update(table, contentValues,primarycolumn+"='1'",null);
 
-        Log.d("DatabaseOperations", "DatabaseOperations.UpdateData: Updating " + table + "." + column + " with " + value);
+        Logging.main("DatabaseOperations", "DatabaseOperations.UpdateData: Updating " + table + "." + column + " with " + value);
     }
 
     Cursor getReportDefaultData() {
@@ -131,13 +131,13 @@ public class DatabaseOperations extends SQLiteOpenHelper {
     }
 
     String getCompanyEmail() {
-        Log.d("DatabaseOperations","getCompanyEmail() called!");
+        Logging.main("DatabaseOperations","getCompanyEmail() called!");
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursorEmail = db.rawQuery("SELECT COMPANY_EMAIL FROM COMPANY",null);
         cursorEmail.moveToFirst();
         String company_email = "";
         if(cursorEmail.getCount()==0) {
-            Log.d("DatabaseOperations","No COMPANY_EMAIL found.");
+            Logging.main("DatabaseOperations","No COMPANY_EMAIL found.");
         } else {
             if(cursorEmail.getColumnIndex("COMPANY_EMAIL")==0) {
                 company_email = cursorEmail.getString(cursorEmail.getColumnIndex("COMPANY_EMAIL"));
@@ -149,7 +149,7 @@ public class DatabaseOperations extends SQLiteOpenHelper {
     }
 
     public void resetCompanyData() {
-        Log.d("DatabaseOperations","resetCompanyData() called!");
+        Logging.main("DatabaseOperations","resetCompanyData() called!");
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("DELETE FROM COMPANY");
         db.execSQL("DELETE FROM sqlite_sequence WHERE NAME='COMPANY'"); //This will reset the primary index.
@@ -157,7 +157,7 @@ public class DatabaseOperations extends SQLiteOpenHelper {
     }
 
     public boolean ReconTableExists(String strTableName, boolean boolOpenDB) {
-        Log.d("DatabaseOperations","ReconTableExists(" + strTableName + ", " + boolOpenDB + ") called!");
+        Logging.main("DatabaseOperations","ReconTableExists(" + strTableName + ", " + boolOpenDB + ") called!");
         boolean boolTableExists = false;
         SQLiteDatabase db = this.getWritableDatabase();
         if(boolOpenDB) {
@@ -178,7 +178,7 @@ public class DatabaseOperations extends SQLiteOpenHelper {
                     boolTableExists = true;
                 }
             }
-            Log.d("DatabaseOperations","ReconTableExists = " + boolTableExists);
+            Logging.main("DatabaseOperations","ReconTableExists = " + boolTableExists);
             return boolTableExists;
         }
     }

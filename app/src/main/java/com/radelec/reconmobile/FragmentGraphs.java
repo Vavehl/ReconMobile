@@ -17,12 +17,12 @@ import com.google.android.material.tabs.TabLayout;
 public class FragmentGraphs extends Fragment {
 
     public FragmentGraphs() {
-        Log.d("FragmentGraphs","FragmentGraphs() called!");
+        Logging.main("FragmentGraphs","FragmentGraphs() called!");
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        Log.d("FragmentGraphs","onCreate() called!");
+        Logging.main("FragmentGraphs","onCreate() called!");
         super.onCreate(savedInstanceState);
 
         //Programmatically initialize ChartRadon tab -- there has to be a better way to implement this??
@@ -37,7 +37,7 @@ public class FragmentGraphs extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        Log.d("FragmentGraphs","onCreateView() called!");
+        Logging.main("FragmentGraphs","onCreateView() called!");
         View view = inflater.inflate(R.layout.fragment_graphs, container, false);
         TabLayout tabLayout = view.findViewById(R.id.tabLayout_Graphs);
 
@@ -45,7 +45,7 @@ public class FragmentGraphs extends Fragment {
 
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                Log.d("FragmentGraphs","onTabSelected(TabLayout.Tab " + tab.toString() + ") called!");
+                Logging.main("FragmentGraphs","onTabSelected(TabLayout.Tab " + tab.toString() + ") called!");
                 Fragment fragment = null;
                 switch (tab.getPosition()) {
                     case 0:
@@ -76,12 +76,12 @@ public class FragmentGraphs extends Fragment {
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
-                Log.d("FragmentGraphs","onTabUnselected(TabLayout.Tab " + tab.toString() + ") called!");
+                Logging.main("FragmentGraphs","onTabUnselected(TabLayout.Tab " + tab.toString() + ") called!");
             }
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
-                Log.d("FragmentGraphs","onTabReselected(TabLayout.Tab " + tab.toString() + ") called!");
+                Logging.main("FragmentGraphs","onTabReselected(TabLayout.Tab " + tab.toString() + ") called!");
                 Fragment fragment = null;
                 switch (tab.getPosition()) {
                     case 0:

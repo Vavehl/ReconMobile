@@ -24,17 +24,17 @@ public class ChartTilts extends Fragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        Log.d("ChartTilts","OnCreateView() called!");
+        Logging.main("ChartTilts","OnCreateView() called!");
         View view = inflater.inflate(R.layout.chart_tilts, container, false);
         if(Globals.connected == Globals.ReconConnected.Loaded && !Globals.globalLoadedFileName.isEmpty()) {
-            Log.d("ChartTilts","Recon Data File is loaded -- attempting to populate tilts chart.");
+            Logging.main("ChartTilts","Recon Data File is loaded -- attempting to populate tilts chart.");
             view = populateTiltsChart (view);
         }
         return view;
     }
 
     public View populateTiltsChart(View view) {
-        Log.d("ChartTilts","populateTiltsChart() called!");
+        Logging.main("ChartTilts","populateTiltsChart() called!");
 
         BarChart bcTilts;
         BarData barData;

@@ -24,17 +24,17 @@ public class ChartHumidity extends Fragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        Log.d("ChartHumidity","OnCreateView() called!");
+        Logging.main("ChartHumidity","OnCreateView() called!");
         View view = inflater.inflate(R.layout.chart_humidity, container, false);
         if(Globals.connected == Globals.ReconConnected.Loaded && !Globals.globalLoadedFileName.isEmpty()) {
-            Log.d("ChartHumidity","Recon Data File is loaded -- attempting to populate humidity chart.");
+            Logging.main("ChartHumidity","Recon Data File is loaded -- attempting to populate humidity chart.");
             view = populateHumidityChart (view);
         }
         return view;
     }
 
     public View populateHumidityChart(View view) {
-        Log.d("ChartHumidity","populateHumidityChart() called!");
+        Logging.main("ChartHumidity","populateHumidityChart() called!");
 
         LineChart lcHumidity;
         LineData lineData;

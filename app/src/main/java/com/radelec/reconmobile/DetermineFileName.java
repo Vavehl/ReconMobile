@@ -18,7 +18,7 @@ public class DetermineFileName {
     // in CreateTXT and CreateXLS individually
     public static String determineFileName() {
 
-        Log.d("DetermineFileName","determineFileName() called!");
+        Logging.main("DetermineFileName","determineFileName() called!");
 
         String TXT_name = null;			// filename we want to use for the txt
         String defaultFilename = DetermineFileName.SetDefaultFilename(); //default filename
@@ -43,11 +43,11 @@ public class DetermineFileName {
 
         //This while loop will check for user input and determine if we need to tack a number onto the end of the filename to avoid overwrites.
         while(DoesReconFileExist) {
-            Log.d("DetermineFileName","DoesReconFileExist = " + DoesReconFileExist + " // loopCounter = " + loopCounter);
+            Logging.main("DetermineFileName","DoesReconFileExist = " + DoesReconFileExist + " // loopCounter = " + loopCounter);
             // Are we using the new filenaming method?
             if (boolUseTestSiteFileName && testSite.length() > 0) {
-                Log.d("DetermineFileName","Attempting to dynamically generate filename...");
-                Log.d("DetermineFileName","preliminaryFileName = " + testSite);
+                Logging.main("DetermineFileName","Attempting to dynamically generate filename...");
+                Logging.main("DetermineFileName","preliminaryFileName = " + testSite);
                 // check for invalid characters in TestSiteInfo
                 patternMatcher = acceptableFilenameChars.matcher(testSite);
                 if (!patternMatcher.matches()) {
@@ -100,19 +100,19 @@ public class DetermineFileName {
         }
 
         // Finally, set the names that are going to be used.
-        Log.d("DetermineFileName","FileName = " + TXT_name);
+        Logging.main("DetermineFileName","FileName = " + TXT_name);
         return TXT_name;
     }
 
     public static String SetDefaultFilename() {
         // Get serial number and start date in case we need to use the default filename:
-        Log.d("DetermineFileName","SetDefaultFileName() called!");
+        Logging.main("DetermineFileName","SetDefaultFileName() called!");
         DateFormat dateFormat = new SimpleDateFormat("MMddyyyy");
         Calendar cal = Calendar.getInstance();
         String ConfirmSN = globalReconSerial;
         dateFormat.setCalendar(cal);
         String strFileName = "Recon_" + ConfirmSN + "_" + dateFormat.format(cal.getTime());
-        Log.d("DetermineFileName","Default FileName (if employed) = " + strFileName);
+        Logging.main("DetermineFileName","Default FileName (if employed) = " + strFileName);
         return strFileName;
     }
 

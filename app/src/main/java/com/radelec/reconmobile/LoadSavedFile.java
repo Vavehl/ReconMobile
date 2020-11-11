@@ -37,8 +37,8 @@ public class LoadSavedFile {
         public static String strEmail = "";
 
         public static void main(String ReconTXTFile, String strFileName) {
-            Log.d("LoadSavedFile","LoadSavedFile() called!");
-            Log.d("LoadSavedFile","Full Path = " + ReconTXTFile + " // FileName = " + strFileName);
+            Logging.main("LoadSavedFile","LoadSavedFile() called!");
+            Logging.main("LoadSavedFile","Full Path = " + ReconTXTFile + " // FileName = " + strFileName);
 
             //Variable declarations
             ArrayList<String> arrLine = new ArrayList<>();
@@ -73,10 +73,10 @@ public class LoadSavedFile {
                             }
                             arrLine_temp = (ArrayList<String>) arrLine.clone(); //This seems really stupid, but if you don't clone the ArrayList to a temporary holder, it'll be lost after arrLine.clear() below.
                             Globals.LoadedReconTXTFile.add(arrLine_temp); //This will add the temporary arrLine into the primary LoadedReconTXTFile ArrayList.
-                            Log.d("LoadSavedFile",Arrays.toString(Globals.LoadedReconTXTFile.get(i).toArray()));
-                            Log.d("LoadSavedFile","Adding record #"+Globals.LoadedReconTXTFile.get(i).get(1)+" to ArrayList, whose new size is now "+Globals.LoadedReconTXTFile.size()+".");
+                            Logging.main("LoadSavedFile",Arrays.toString(Globals.LoadedReconTXTFile.get(i).toArray()));
+                            Logging.main("LoadSavedFile","Adding record #"+Globals.LoadedReconTXTFile.get(i).get(1)+" to ArrayList, whose new size is now "+Globals.LoadedReconTXTFile.size()+".");
                             arrLine.clear(); //If we don't clear arrLine, it will turn into one massive, single-dimensional string array...
-                            Log.d("LoadSavedFile","Checking Status: "+ Arrays.toString(Globals.LoadedReconTXTFile.get(i).toArray()));
+                            Logging.main("LoadSavedFile","Checking Status: "+ Arrays.toString(Globals.LoadedReconTXTFile.get(i).toArray()));
                             i++;
                         }
                         if(strLine.contains("Instrument Serial: ")) {
@@ -84,10 +84,10 @@ public class LoadSavedFile {
                             try {
                                 strInstrumentSerial = strLine_parsed[2];
                                 Globals.globalReconSerial = strInstrumentSerial;
-                                Log.d("LoadSavedFile","Serial# found and parsed: " + strInstrumentSerial);
+                                Logging.main("LoadSavedFile","Serial# found and parsed: " + strInstrumentSerial);
                             } catch(ArrayIndexOutOfBoundsException ex) {
                                 strInstrumentSerial = "Unknown";
-                                Log.d("LoadSavedFile","WARNING Out Of Bounds: Serial# not parsed.");
+                                Logging.main("LoadSavedFile","WARNING Out Of Bounds: Serial# not parsed.");
                             }
                         }
                         if(strLine.contains("Chamber 1 CF: ")) {
@@ -95,11 +95,11 @@ public class LoadSavedFile {
                             try {
                                 LoadedReconCF1 = Double.parseDouble(strLine_parsed[3]);
                                 Globals.globalReconCF1 = LoadedReconCF1;
-                                Log.d("LoadSavedFile", "CF1 found and parsed: " + LoadedReconCF1);
+                                Logging.main("LoadSavedFile", "CF1 found and parsed: " + LoadedReconCF1);
                             } catch(ArrayIndexOutOfBoundsException ex) {
                                 LoadedReconCF1 = 6;
                                 Globals.globalReconCF1 = LoadedReconCF1;
-                                Log.d("LoadSavedFile","WARNING Out of Bounds: CF1 not parsed. Defaulting to 6...");
+                                Logging.main("LoadSavedFile","WARNING Out of Bounds: CF1 not parsed. Defaulting to 6...");
                             }
                         }
                         if(strLine.contains("Chamber 2 CF: ")) {
@@ -107,11 +107,11 @@ public class LoadSavedFile {
                             try {
                                 LoadedReconCF2 = Double.parseDouble(strLine_parsed[3]);
                                 Globals.globalReconCF2 = LoadedReconCF2;
-                                Log.d("LoadSavedFile", "CF2 found and parsed: " + LoadedReconCF2);
+                                Logging.main("LoadSavedFile", "CF2 found and parsed: " + LoadedReconCF2);
                             } catch(ArrayIndexOutOfBoundsException ex) {
                                 LoadedReconCF2 = 6;
                                 Globals.globalReconCF2 = LoadedReconCF2;
-                                Log.d("LoadSavedFile","WARNING Out of Bounds: CF2 not parsed. Defaulting to 6...");
+                                Logging.main("LoadSavedFile","WARNING Out of Bounds: CF2 not parsed. Defaulting to 6...");
                             }
                         }
                         if(strLine.contains("Start Date/Time:")) {
@@ -120,7 +120,7 @@ public class LoadSavedFile {
                                 strStartDate = strLine_parsed[2] + " " + strLine_parsed[3];
                             } catch(Exception ex) {
                                 strStartDate = "Unknown Start Date";
-                                Log.d("LoadSavedFile","WARNING: Start Date not parsed...");
+                                Logging.main("LoadSavedFile","WARNING: Start Date not parsed...");
                             }
                         }
                         if(strLine.contains("End Date/Time:")) {
@@ -129,60 +129,60 @@ public class LoadSavedFile {
                                 strEndDate = strLine_parsed[2] + " " + strLine_parsed[3];
                             } catch(Exception ex) {
                                 strEndDate = "Unknown End Date";
-                                Log.d("LoadSavedFile","WARNING: End Date not parsed...");
+                                Logging.main("LoadSavedFile","WARNING: End Date not parsed...");
                             }
                         }
                         if(strLine.contains("Deployed By:")) {
                             strDeployedBy = strLine.substring(12);
                             loadedDeployedBy = strDeployedBy;
-                            Log.d("LoadSavedFile","DeployedBy found and parsed: " + loadedDeployedBy);
+                            Logging.main("LoadSavedFile","DeployedBy found and parsed: " + loadedDeployedBy);
                         }
                         if(strLine.contains("Retrieved By:")) {
                             strRetrievedBy = strLine.substring(13);
                             loadedRetrievedBy = strRetrievedBy;
-                            Log.d("LoadSavedFile","RetrievedBy found and parsed: " + loadedRetrievedBy);
+                            Logging.main("LoadSavedFile","RetrievedBy found and parsed: " + loadedRetrievedBy);
                         }
                         if(strLine.contains("Analyzed By:")) {
                             strAnalyzedBy = strLine.substring(12);
                             loadedAnalyzedBy = strAnalyzedBy;
-                            Log.d("LoadSavedFile","AnalyzedBy found and parsed: " + loadedAnalyzedBy);
+                            Logging.main("LoadSavedFile","AnalyzedBy found and parsed: " + loadedAnalyzedBy);
                         }
                         if(strLine.contains("Calibration Date =")) {
                             strLine_parsed = StringUtils.split(strLine, "=");
                             strCalDate = strLine_parsed[1].trim();
                             loadedCalibrationDate = strCalDate;
                             Globals.globalReconCalibrationDate = loadedCalibrationDate;
-                            Log.d("LoadSavedFile","Calibration Date found and parsed: " + loadedCalibrationDate);
+                            Logging.main("LoadSavedFile","Calibration Date found and parsed: " + loadedCalibrationDate);
                         }
                         if(strLine.length() > 8 && strLine.substring(0,9).contains("Protocol:")) {
                             strReportProtocol = strLine.substring(9).trim(); //Should robustly parse protocol.
                             loadedReportProtocol = strReportProtocol;
-                            Log.d("LoadSavedFile","Protocol found and parsed: " + loadedReportProtocol);
+                            Logging.main("LoadSavedFile","Protocol found and parsed: " + loadedReportProtocol);
                         } else if(strLine.length() > 9 && strLine.substring(0,10).contains("Tampering:")) {
                             strReportTampering = strLine.substring(10).trim(); //Should robustly parse tampering.
                             loadedReportTampering = strReportTampering;
-                            Log.d("LoadSavedFile","Tampering found and parsed: " + loadedReportTampering);
+                            Logging.main("LoadSavedFile","Tampering found and parsed: " + loadedReportTampering);
                         } else if(strLine.length() > 7 && strLine.substring(0,8).contains("Weather:")) {
                             strReportWeather = strLine.substring(8).trim(); //Should robustly parse weather.
                             loadedReportWeather = strReportWeather;
-                            Log.d("LoadSavedFile","Weather found and parsed: " + loadedReportWeather);
+                            Logging.main("LoadSavedFile","Weather found and parsed: " + loadedReportWeather);
                         } else if(strLine.length() > 10 && strLine.substring(0,11).contains("Mitigation:")) {
                             strReportMitigation = strLine.substring(11).trim(); //Should robustly parse mitigation.
                             loadedReportMitigation = strReportMitigation;
-                            Log.d("LoadSavedFile","Mitigation found and parsed: " + loadedReportMitigation);
+                            Logging.main("LoadSavedFile","Mitigation found and parsed: " + loadedReportMitigation);
                         } else if(strLine.length() > 7 && strLine.substring(0,8).contains("Comment:")) {
                             strReportComment = strLine.substring(8).trim(); //Should robustly parse comment.
                             loadedReportComment = strReportComment;
-                            Log.d("LoadSavedFile","Comment found and parsed: " + loadedReportComment);
+                            Logging.main("LoadSavedFile","Comment found and parsed: " + loadedReportComment);
                         } else if((strLine.length() > 8 && strLine.substring(0,9).contains("Location:"))||(strLine.length()>5 && strLine.substring(0,5).contains("Room:"))) {
                             if(strLine.length() > 8 && strLine.substring(0,9).contains("Location:")) strRoomDeployed = strLine.substring(10).trim();
                             if(strLine.substring(0,5).contains("Room:")) strRoomDeployed = strLine.substring(6).trim();
                             loadedLocationDeployed = strRoomDeployed;
-                            Log.d("LoadSavedFile","Location found and parsed: " + loadedLocationDeployed);
+                            Logging.main("LoadSavedFile","Location found and parsed: " + loadedLocationDeployed);
                         } else if(strLine.length() > 5 && strLine.substring(0,6).contains("Email:")) {
                             strEmail = strLine.substring(5).trim();
                             loadedEmail = strEmail;
-                            Log.d("LoadSavedFile","Email found and parsed: " + loadedEmail);
+                            Logging.main("LoadSavedFile","Email found and parsed: " + loadedEmail);
                         }
                         //BEGIN: Test Site Parsing Block
                         if(testSiteFlag) {
@@ -191,9 +191,9 @@ public class LoadSavedFile {
                                 if (strTestSiteInfo.length() > 1) {
                                     strTestSiteInfo = strTestSiteInfo.trim(); //trim any anteceding or succeeding line-feeds...
                                     loadedTestSiteInfo = strTestSiteInfo;
-                                    Log.d("LoadSavedFile","Test Site Info: " + strTestSiteInfo);
+                                    Logging.main("LoadSavedFile","Test Site Info: " + strTestSiteInfo);
                                 } else {
-                                    Log.d("LoadSavedFile","Unable to find any Test Site Info in " + strFileName + "!");
+                                    Logging.main("LoadSavedFile","Unable to find any Test Site Info in " + strFileName + "!");
                                 }
                             } else {
                                 strTestSiteInfo = strTestSiteInfo + "\n" + strLine;
@@ -212,9 +212,9 @@ public class LoadSavedFile {
                                 if (strCustomerInfo.length() > 1) {
                                     strCustomerInfo = strCustomerInfo.trim(); //trim any anteceding or succeeding line-feeds...
                                     loadedCustomerInfo = strCustomerInfo;
-                                    Log.d("LoadSavedFile","Customer Info: " + strCustomerInfo);
+                                    Logging.main("LoadSavedFile","Customer Info: " + strCustomerInfo);
                                 } else {
-                                    Log.d("LoadSavedFile","Unable to find any Customer Info in " + strFileName + "!");
+                                    Logging.main("LoadSavedFile","Unable to find any Customer Info in " + strFileName + "!");
                                 }
                             } else {
                                 strCustomerInfo = strCustomerInfo + "\n" + strLine;
@@ -242,9 +242,9 @@ public class LoadSavedFile {
                 Globals.globalLoadedFileName = strFileName;
                 Globals.LoadedReconCF1 = LoadedReconCF1;
                 Globals.LoadedReconCF2 = LoadedReconCF2;
-                Log.d("LoadSavedFile", "Assigning LoadedReconCF1 to Globals.LoadedReconCF1 = " + Globals.LoadedReconCF1);
-                Log.d("LoadSavedFile", "Assigning LoadedReconCF2 to Globals.LoadedReconCF2 = " + Globals.LoadedReconCF2);
-                Log.d("LoadSavedFile","File (" + Globals.globalLoadedFileName + ") successfully loaded!");
+                Logging.main("LoadSavedFile", "Assigning LoadedReconCF1 to Globals.LoadedReconCF1 = " + Globals.LoadedReconCF1);
+                Logging.main("LoadSavedFile", "Assigning LoadedReconCF2 to Globals.LoadedReconCF2 = " + Globals.LoadedReconCF2);
+                Logging.main("LoadSavedFile","File (" + Globals.globalLoadedFileName + ") successfully loaded!");
 
                 //Creates graph
                 //Reset photodiode failure booleans...
@@ -254,10 +254,10 @@ public class LoadSavedFile {
                 CreateGraphArrays.main();
 
             } catch (FileNotFoundException ex) {
-                Log.d("LoadSavedFile","ERROR: Unable to find the requested Recon TXT file in LoadSavedFile.java!");
+                Logging.main("LoadSavedFile","ERROR: Unable to find the requested Recon TXT file in LoadSavedFile.java!");
                 Logger.getLogger(LoadSavedFile.class.getName()).log(Level.SEVERE, null, ex);
             } catch (IOException ex) {
-                Log.d("LoadSavedFile","ERROR: Fundamental IO Error encountered when parsing Recon TXT file.");
+                Logging.main("LoadSavedFile","ERROR: Fundamental IO Error encountered when parsing Recon TXT file.");
                 Logger.getLogger(LoadSavedFile.class.getName()).log(Level.SEVERE, null, ex);
             }
         }

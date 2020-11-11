@@ -34,7 +34,7 @@ public class FragmentOpen extends DialogFragment implements FileSearchListAdapte
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        Log.d("FragmentOpen","onCreate() called!");
+        Logging.main("FragmentOpen","onCreate() called!");
         super.onCreate(savedInstanceState);
         setStyle(DialogFragment.STYLE_NO_TITLE, R.style.DialogStyle);
     }
@@ -43,7 +43,7 @@ public class FragmentOpen extends DialogFragment implements FileSearchListAdapte
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         // Inflate the layout for this fragment
-        Log.d("FragmentOpen","FragmentOpen.onCreateView() called!");
+        Logging.main("FragmentOpen","FragmentOpen.onCreateView() called!");
         View view = inflater.inflate(R.layout.fragment_open, container, false);
         ImageView imgCloseSearch = view.findViewById(R.id.imgClose_openFile);
         alDataFiles = ListDataFiles.CreateDataFileList(Objects.requireNonNull(getContext()));
@@ -52,7 +52,7 @@ public class FragmentOpen extends DialogFragment implements FileSearchListAdapte
         mRecyclerView.setAdapter(new FileSearchListAdapter(ListDataFiles.CreateDataFileList(Objects.requireNonNull(getContext())),this));
 
         imgCloseSearch.setOnClickListener(v -> {
-            Log.d("FragmentOpen","Close button pressed!");
+            Logging.main("FragmentOpen","Close button pressed!");
             dismiss();
         });
 
@@ -64,7 +64,7 @@ public class FragmentOpen extends DialogFragment implements FileSearchListAdapte
 
     @Override
     public void onFileSearchListAdapterClick(int position) {
-        Log.d("FragmentOpen","onFileSearchListAdapterClick called for position[" + position + "]");
+        Logging.main("FragmentOpen","onFileSearchListAdapterClick called for position[" + position + "]");
         if(Globals.boolClickToLoad && intLastPositionHighlighted == position) {
             String strFileName = alDataFiles.get(position).getFileName();
             String strFilePath = alDataFiles.get(position).getFilePath();
@@ -87,10 +87,10 @@ public class FragmentOpen extends DialogFragment implements FileSearchListAdapte
                     TabLayout tabLayout = frg.getView().getRootView().findViewById(R.id.tabLayout_Main);
                     if (connected == Globals.ReconConnected.Loaded) {
                         tabLayout.getTabAt(2).setText("Report");
-                        Log.d("FragmentOpen","Setting tab to Report...");
+                        Logging.main("FragmentOpen","Setting tab to Report...");
                     } else {
                         tabLayout.getTabAt(2).setText("Defaults");
-                        Log.d("FragmentOpen","Setting tab to Defaults...");
+                        Logging.main("FragmentOpen","Setting tab to Defaults...");
                     }
                 }
             }

@@ -140,7 +140,7 @@ public class FragmentSettings extends Fragment {
     }
 
     public void onDestroy() {
-        Log.d("FragmentSettings","onDestroy() called!");
+        Logging.main("FragmentSettings","onDestroy() called!");
         //Properly closing cursor and database should ensure that the database doesn't create a memory leak...
         if(cursorSettingsDefaults != null) {
             cursorSettingsDefaults.close();

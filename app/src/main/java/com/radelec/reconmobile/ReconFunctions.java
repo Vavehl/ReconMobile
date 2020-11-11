@@ -24,35 +24,35 @@ class ReconFunctions {
     }
 
     void checkNewRecord() {
-        Log.d("ReconFunctions","checkNewRecord() called!");
+        Logging.main("ReconFunctions","checkNewRecord() called!");
         intDataSessionPointer = 0;
         boolRecordHeaderFound = false;
         boolRecordTrailerFound = false;
         arrayDataSession.clear();
-        Log.d("ReconFunctions","boolRecordHeaderFound=" + boolRecordHeaderFound + " / boolRecordTrailerFound=" + boolRecordTrailerFound);
+        Logging.main("ReconFunctions","boolRecordHeaderFound=" + boolRecordHeaderFound + " / boolRecordTrailerFound=" + boolRecordTrailerFound);
         send(cmdCheckNewRecord);
     }
 
     void clearCurrentSession() {
-        Log.d("ReconFunctions","clearCurrentSession() called!");
+        Logging.main("ReconFunctions","clearCurrentSession() called!");
         String strSystemConsole;
         send(cmdClearSession);
         strSystemConsole = "Clearing current session...";
         if(consoleCallback != null) {
             consoleCallback.updateSystemConsole(strSystemConsole);
         } else {
-            Log.d("ReconFunctions","consoleCallback() is null.");
+            Logging.main("ReconFunctions","consoleCallback() is null.");
             globalLastSystemConsole = strSystemConsole;
         }
     }
 
     void downloadDataSession(String response) {
-        Log.d("ReconFunctions","downloadDataSession() called!");
+        Logging.main("ReconFunctions","downloadDataSession() called!");
         String strSystemConsole = "System Console";
         String[] parsedResponse = null;
         parsedResponse = response.split(",");
         if(parsedResponse.length<15) {
-            Log.d("ReconFunctions","downloadDataSession: Session point at null record. Aborting download.");
+            Logging.main("ReconFunctions","downloadDataSession: Session point at null record. Aborting download.");
             return;
         } else if(!parsedResponse[0].equals("=DB")) {
             return;
@@ -60,11 +60,11 @@ class ReconFunctions {
         switch(parsedResponse[2]) {
             case "H":
                 if(boolRecordHeaderFound) {
-                    Log.d("ReconFunctions","WARNING! MULTIPLE HEADER FILES ENCOUNTERED -- ABORTING DOWNLOAD!");
+                    Logging.main("ReconFunctions","WARNING! MULTIPLE HEADER FILES ENCOUNTERED -- ABORTING DOWNLOAD!");
                     break;
                 } else {
                     boolRecordHeaderFound = true;
-                    Log.d("ReconFunctions","Header found!");
+                    Logging.main("ReconFunctions","Header found!");
                     intDataSessionPointer++;
                     send(cmdReadNextRecord);
                     break;
@@ -76,7 +76,7 @@ class ReconFunctions {
                     send(cmdReadNextRecord);
                     break;
                 } else {
-                    Log.d("ReconFunctions","WARNING! WAIT RECORD FOUND, BUT HEADER FILE NOT FOUND -- ABORTING DOWNLOAD!");
+                    Logging.main("ReconFunctions","WARNING! WAIT RECORD FOUND, BUT HEADER FILE NOT FOUND -- ABORTING DOWNLOAD!");
                     break;
                 }
             case "S":
@@ -86,7 +86,7 @@ class ReconFunctions {
                     send(cmdReadNextRecord);
                     break;
                 } else {
-                    Log.d("ReconFunctions","WARNING! START RECORD FOUND, BUT HEADER FILE NOT FOUND -- ABORTING DOWNLOAD!");
+                    Logging.main("ReconFunctions","WARNING! START RECORD FOUND, BUT HEADER FILE NOT FOUND -- ABORTING DOWNLOAD!");
                     break;
                 }
             case "I":
@@ -96,7 +96,7 @@ class ReconFunctions {
                     send(cmdReadNextRecord);
                     break;
                 } else {
-                    Log.d("ReconFunctions","WARNING! INTERIM RECORD FOUND, BUT HEADER FILE NOT FOUND -- ABORTING DOWNLOAD!");
+                    Logging.main("ReconFunctions","WARNING! INTERIM RECORD FOUND, BUT HEADER FILE NOT FOUND -- ABORTING DOWNLOAD!");
                     break;
                 }
             case "E":
@@ -106,19 +106,19 @@ class ReconFunctions {
                     send(cmdReadNextRecord);
                     break;
                 } else {
-                    Log.d("ReconFunctions","WARNING! END RECORD FOUND, BUT HEADER FILE NOT FOUND -- ABORTING DOWNLOAD!");
+                    Logging.main("ReconFunctions","WARNING! END RECORD FOUND, BUT HEADER FILE NOT FOUND -- ABORTING DOWNLOAD!");
                     break;
                 }
             case "Z":
                 boolRecordTrailerFound = true;
                 if(boolRecordHeaderFound) {
-                    Log.d("ReconFunctions","Record Trailer found! Data session downloaded.");
-                    Log.d("ReconFunctions","Record Length (intDataSessionPointer) = " + intDataSessionPointer);
+                    Logging.main("ReconFunctions","Record Trailer found! Data session downloaded.");
+                    Logging.main("ReconFunctions","Record Length (intDataSessionPointer) = " + intDataSessionPointer);
                     strSystemConsole = "Download Success!";
                     CreateTXT.main();
                     break;
                 } else {
-                    Log.d("ReconFunctions","WARNING! RECORD TRAILER FOUND, BUT NO RECORD HEADER FOUND.");
+                    Logging.main("ReconFunctions","WARNING! RECORD TRAILER FOUND, BUT NO RECORD HEADER FOUND.");
                 }
             default:
                 break;
@@ -126,13 +126,13 @@ class ReconFunctions {
         if(consoleCallback != null) {
             consoleCallback.updateSystemConsole(strSystemConsole);
         } else {
-            Log.d("ReconFunctions","consoleCallback is null, so system console won't be updated.");
+            Logging.main("ReconFunctions","consoleCallback is null, so system console won't be updated.");
             globalLastSystemConsole = strSystemConsole;
         }
     }
 
     void getCalibrationFactors(String response) {
-        Log.d("ReconFunctions","getCalibrationFactors() called!");
+        Logging.main("ReconFunctions","getCalibrationFactors() called!");
         Date reconDateTime = Calendar.getInstance().getTime();
         String[] parsedResponse = null;
         parsedResponse = response.split(",");
@@ -141,19 +141,19 @@ class ReconFunctions {
                 try {
                     globalReconCF1 = Double.parseDouble(parsedResponse[1].trim())/1000;
                 } catch (NumberFormatException ex) {
-                    Log.d("ReconFunctions","Unable to parse Recon CF1 as a double! Reverting to default CF1...");
+                    Logging.main("ReconFunctions","Unable to parse Recon CF1 as a double! Reverting to default CF1...");
                     globalReconCF1 = 6;
                 }
-                Log.d("ReconFunctions","Recon CF1 = " + globalReconCF1);
+                Logging.main("ReconFunctions","Recon CF1 = " + globalReconCF1);
             }
             if(!parsedResponse[2].trim().isEmpty()) {
                 try {
                     globalReconCF2 = Double.parseDouble(parsedResponse[2].trim())/1000;
                 } catch (NumberFormatException ex) {
-                    Log.d("ReconFunctions","Unable to parse Recon CF2 as a double! Reverting to default CF2...");
+                    Logging.main("ReconFunctions","Unable to parse Recon CF2 as a double! Reverting to default CF2...");
                     globalReconCF2 = 6;
                 }
-                Log.d("ReconFunctions","Recon CF2 = " + globalReconCF2);
+                Logging.main("ReconFunctions","Recon CF2 = " + globalReconCF2);
             }
 
             String strYear_Recon = parsedResponse[3];
@@ -179,9 +179,9 @@ class ReconFunctions {
                 calendar.setTime(Objects.requireNonNull(df.parse(strCalibrationDate)));
                 strCalibrationDate = df.format(calendar.getTime());
                 globalReconCalibrationDate = strCalibrationDate;
-                Log.d("ReconFunctions","Recon Calibration Date = " + globalReconCalibrationDate);
+                Logging.main("ReconFunctions","Recon Calibration Date = " + globalReconCalibrationDate);
             } catch (ParseException e) {
-                Log.d("ReconFunctions","Unable to parse Recon calibration date!");
+                Logging.main("ReconFunctions","Unable to parse Recon calibration date!");
                 e.printStackTrace();
             }
         }
@@ -190,9 +190,9 @@ class ReconFunctions {
     void getDataSessions(String response) {
         String[] parsedResponse = null;
         boolean boolUnexpectedResponse = true;
-        Log.d("ReconFunctions","getDataSessions() called!");
+        Logging.main("ReconFunctions","getDataSessions() called!");
         if(connected == Globals.ReconConnected.True) {
-            Log.d("ReconFunctions", "getDataSessions():: LastResponse = " + response);
+            Logging.main("ReconFunctions", "getDataSessions():: LastResponse = " + response);
             if(response != null) {
                 parsedResponse = response.split(",");
                 if(parsedResponse.length==4) {
@@ -203,28 +203,28 @@ class ReconFunctions {
                             if(consoleCallback != null) {
                                 consoleCallback.updateSystemConsole("# of Data Sets: " + globalDataSessions);
                             } else {
-                                Log.d("ReconFunctions","consoleCallback is null; not able to update the system console with data sessions.");
+                                Logging.main("ReconFunctions","consoleCallback is null; not able to update the system console with data sessions.");
                                 globalLastSystemConsole = "# of Data Sets: " + globalDataSessions;
                             }
-                            Log.d("ReconFunctions","getDataSessions() Data Sessions on Recon = " + globalDataSessions);
+                            Logging.main("ReconFunctions","getDataSessions() Data Sessions on Recon = " + globalDataSessions);
                         }
                     }
                 }
             }
             if(boolUnexpectedResponse) {
-                Log.d("ReconFunctions","getDataSessions() Unexpected Response from Recon! [" + response + "]");
+                Logging.main("ReconFunctions","getDataSessions() Unexpected Response from Recon! [" + response + "]");
             }
         } else {
-            Log.d("ReconFunctions", "getDataSessions():: Not Connected to Recon!");
+            Logging.main("ReconFunctions", "getDataSessions():: Not Connected to Recon!");
         }
     }
 
     void getSerialAndFirmware(String response, View view) {
         boolean boolReconConnected = false;
         String[] parsedResponse = null;
-        Log.d("ReconFunctions","getSerialAndFirmware() called!");
+        Logging.main("ReconFunctions","getSerialAndFirmware() called!");
         if(connected == Globals.ReconConnected.True) {
-            Log.d("ReconFunctions", "getSerialAndFirmware():: LastResponse = " + response);
+            Logging.main("ReconFunctions", "getSerialAndFirmware():: LastResponse = " + response);
             if(response != null) {
                 parsedResponse = response.split(",");
                 if(parsedResponse.length==4) {
@@ -234,7 +234,7 @@ class ReconFunctions {
                 }
             }
         } else {
-            Log.d("ReconFunctions", "getSerialAndFirmware():: Not Connected to Recon!");
+            Logging.main("ReconFunctions", "getSerialAndFirmware():: Not Connected to Recon!");
         }
         TextView ReconSerial = view.findViewById(R.id.txtFoundRecon_Serial);
         TextView ReconFirmware = view.findViewById(R.id.txtFoundRecon_Firmware);
@@ -250,7 +250,7 @@ class ReconFunctions {
     }
 
     void SyncDateTime(String response) {
-        Log.d("ReconFunctions","SyncDateTime() called!");
+        Logging.main("ReconFunctions","SyncDateTime() called!");
         String[] parsedResponse = null;
         parsedResponse = response.split(",");
         if(parsedResponse[0].equals("=DT") && parsedResponse.length==7 && connected== Globals.ReconConnected.True) {
@@ -281,31 +281,31 @@ class ReconFunctions {
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-            Log.d("ReconFunctions","Current DateTime = " + currentDateTime.toString());
+            Logging.main("ReconFunctions","Current DateTime = " + currentDateTime.toString());
             if (reconDateTime != null) {
                 long diffSeconds = Math.abs((reconDateTime.getTime() - currentDateTime.getTime())/1000);
-                Log.d("ReconFunctions","Recon DateTime = " + reconDateTime.toString());
-                Log.d("ReconFunctions", "Difference between two times = " + diffSeconds + " seconds.");
+                Logging.main("ReconFunctions","Recon DateTime = " + reconDateTime.toString());
+                Logging.main("ReconFunctions", "Difference between two times = " + diffSeconds + " seconds.");
                 if(diffSeconds>10) {
-                    Log.d("ReconFunctions","Difference between time exceeds threshold of 10 seconds. Issuing :WT command to synchronize Recon with phone...");
+                    Logging.main("ReconFunctions","Difference between time exceeds threshold of 10 seconds. Issuing :WT command to synchronize Recon with phone...");
                     String strWriteNewDateTime = ":WT," + strYear_Phone + "," + strMonth_Phone + "," + strDay_Phone + "," + strHour_Phone + ","+ strMinute_Phone + "," + strSecond_Phone;
                     synchronized(socket) {
                         send(strWriteNewDateTime);
                     }
                 }
             } else {
-                Log.d("ReconFunctions","Unable to parse Recon DateTime!");
+                Logging.main("ReconFunctions","Unable to parse Recon DateTime!");
             }
 
         } else {
-            Log.d("ReconFunctions","Unexpected instrument response in SyncDateTime(). Synchronization not performed!");
+            Logging.main("ReconFunctions","Unexpected instrument response in SyncDateTime(). Synchronization not performed!");
         }
     }
 
     void send(String str) {
-        Log.d("ReconFunctions","send() called!");
+        Logging.main("ReconFunctions","send() called!");
         if(connected != Globals.ReconConnected.True) {
-            Log.d("ReconFunctions","send() was called, but no Recon is connected!");
+            Logging.main("ReconFunctions","send() was called, but no Recon is connected!");
             return;
         }
         try {
@@ -315,7 +315,7 @@ class ReconFunctions {
                 socket.write(data);
                 socket.wait(50);
                 globalLastWrite = str;
-                Log.d("ReconFunctions", "Writing " + str + " " + Arrays.toString(data));
+                Logging.main("ReconFunctions", "Writing " + str + " " + Arrays.toString(data));
             }
         } catch (Exception e) {
             onSerialIoError(e);
@@ -323,7 +323,7 @@ class ReconFunctions {
     }
 
     void disconnect() {
-        Log.d("ReconFunctions","disconnect() called!");
+        Logging.main("ReconFunctions","disconnect() called!");
         connected = Globals.ReconConnected.False;
         if(service != null) service.disconnect();
         if(socket != null) socket.disconnect();
@@ -333,12 +333,12 @@ class ReconFunctions {
         globalReconFirmwareRevision = 0;
         globalReconCalibrationDate = null;
         initialStart = false;
-        Log.d("ReconFunctions","[connected = " + connected + "]");
+        Logging.main("ReconFunctions","[connected = " + connected + "]");
     }
 
     private void onSerialIoError(Exception e) {
-        Log.d("ReconFunctions","onSerialIoError() called!");
-        Log.d("ReconFunctions", e.toString());
+        Logging.main("ReconFunctions","onSerialIoError() called!");
+        Logging.main("ReconFunctions", e.toString());
         disconnect();
     }
 }

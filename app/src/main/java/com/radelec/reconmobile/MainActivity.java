@@ -117,7 +117,7 @@ public class MainActivity extends AppCompatActivity
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                Log.d("MainActivity","onTabSelected(TabLayout.Tab " + tab.toString() + ") called!");
+                Logging.main("MainActivity","onTabSelected(TabLayout.Tab " + tab.toString() + ") called!");
                 Fragment fragment = null;
                 switch (tab.getPosition()) {
                     case 0:
@@ -142,7 +142,7 @@ public class MainActivity extends AppCompatActivity
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
-                Log.d("MainActivity","onTabUnselected(TabLayout.Tab " + tab.toString() + ") called!");
+                Logging.main("MainActivity","onTabUnselected(TabLayout.Tab " + tab.toString() + ") called!");
             }
 
             @Override
@@ -172,21 +172,21 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void onBackStackChanged() {
-        Log.d("MainActivity","onBackStackChanged() called!");
+        Logging.main("MainActivity","onBackStackChanged() called!");
         //getSupportActionBar().setDisplayHomeAsUpEnabled(getSupportFragmentManager().getBackStackEntryCount()>0);
     }
 
     //Creates Recon Main Menu
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        Log.d("MainActivity","onCreateOptionsMenu() called!");
+        Logging.main("MainActivity","onCreateOptionsMenu() called!");
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Log.d("MainActivity","onOptionsItemSelected(MenuItem " + item.toString() + ") called!");
+        Logging.main("MainActivity","onOptionsItemSelected(MenuItem " + item.toString() + ") called!");
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
@@ -219,7 +219,7 @@ public class MainActivity extends AppCompatActivity
     */
     protected void showAboutPopUp() {
 
-        Log.d("MainActivity","showAboutPopUp() called!");
+        Logging.main("MainActivity","showAboutPopUp() called!");
 
         //Initialize the "About" dialog window in the menu...
         dialogAbout = new Dialog(this);
@@ -275,7 +275,7 @@ public class MainActivity extends AppCompatActivity
 
     //This will load/show the Settings fragment
     protected void showSettings() {
-        Log.d("MainActivity","showSettings() called!");
+        Logging.main("MainActivity","showSettings() called!");
         Fragment fragment;
         fragment = new FragmentSettings();
         FragmentManager fm = getSupportFragmentManager();
@@ -287,7 +287,7 @@ public class MainActivity extends AppCompatActivity
 
     //This will load/show the Company fragment
     protected void showMyCompany() {
-        Log.d("MainActivity","showMyCompany() called!");
+        Logging.main("MainActivity","showMyCompany() called!");
         Fragment fragment;
         fragment = new FragmentCompany();
         FragmentManager fm = getSupportFragmentManager();
@@ -299,9 +299,9 @@ public class MainActivity extends AppCompatActivity
 
     //We should offload this to its own class...
     protected void saveFile() {
-        Log.d("MainActivity","saveFile() called!");
+        Logging.main("MainActivity","saveFile() called!");
         if(globalLoadedFileName.length()>0) {
-            Log.d("MainActivity","Currently Loaded File = " + globalLoadedFileName);
+            Logging.main("MainActivity","Currently Loaded File = " + globalLoadedFileName);
             Toast msgSave;
             File loadedFile = new File(fileDir + File.separator + globalLoadedFileName);
             try {
@@ -320,7 +320,7 @@ public class MainActivity extends AppCompatActivity
 
     //We should offload this to its own class, too...
     protected void openFile() {
-        Log.d("MainActivity","openFile() called!");
+        Logging.main("MainActivity","openFile() called!");
         Globals.boolClickToLoad = false;
         FragmentOpen fragmentOpen = new FragmentOpen();
         fragmentOpen.setRetainInstance(true);
@@ -335,13 +335,13 @@ public class MainActivity extends AppCompatActivity
         //End initial implementation of fragmentConnect
 
         if(fragmentOpen.isDetached()) {
-            Log.d("MainActivity","FRAGMENT_OPEN DETACHED!");
+            Logging.main("MainActivity","FRAGMENT_OPEN DETACHED!");
         }
     }
 
     protected void emailPDF() {
         try {
-            Log.d("MainActivity", "emailPDF() called!");
+            Logging.main("MainActivity", "emailPDF() called!");
 
             //Generate PDF when the email button is pressed.
 
@@ -365,12 +365,12 @@ public class MainActivity extends AppCompatActivity
             intent.putExtra(Intent.EXTRA_BCC, self_email);
             if (filePDF != null) {
                 if (filePDF.exists()) {
-                    Log.d("MainActivity", "emailPDF(): Attempting to attach PDF to email!");
+                    Logging.main("MainActivity", "emailPDF(): Attempting to attach PDF to email!");
                     //filePDF.setReadable(true, false);
                     intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(filePDF));
                     intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                 } else {
-                    Log.d("MainActivity", "emailPDF(): No PDF found for attachment!");
+                    Logging.main("MainActivity", "emailPDF(): No PDF found for attachment!");
                 }
             }
             intent.setData(data);
@@ -381,12 +381,12 @@ public class MainActivity extends AppCompatActivity
                 msgEmail.show();
             }
         } catch (ActivityNotFoundException ex) {
-            Log.d("MainActivity","emailPDF(): Email client not found?");
+            Logging.main("MainActivity","emailPDF(): Email client not found?");
         }
     }
 
     public void populateRadonChart() {
-        Log.d("MainActivity","populateRadonChart() called!");
+        Logging.main("MainActivity","populateRadonChart() called!");
 
         LineData lineDataRadon;
         XAxis xAxis;
@@ -453,11 +453,11 @@ public class MainActivity extends AppCompatActivity
             lcRadon.invalidate(); //Is this needed?
         }
 
-        Log.d("MainActivity","Chart Height = " + lcRadon.getHeight() + " // Chart Width = " + lcRadon.getWidth());
+        Logging.main("MainActivity","Chart Height = " + lcRadon.getHeight() + " // Chart Width = " + lcRadon.getWidth());
     }
 
     public void populateHumidityChart() {
-        Log.d("MainActivity","populateHumidityChart() called!");
+        Logging.main("MainActivity","populateHumidityChart() called!");
 
         LineData lineDataHumidity;
         XAxis xAxis;
@@ -515,7 +515,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void populatePressureChart() {
-        Log.d("MainActivity","populatePressureChart() called!");
+        Logging.main("MainActivity","populatePressureChart() called!");
 
         LineData lineDataPressure;
         XAxis xAxis;
@@ -577,7 +577,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void populateTiltsChart() {
-        Log.d("MainActivity","populateTiltsChart() called!");
+        Logging.main("MainActivity","populateTiltsChart() called!");
 
         BarData barDataTilts;
         XAxis xAxis;
@@ -630,9 +630,9 @@ public class MainActivity extends AppCompatActivity
 
 
     public void createImagesFromChart() {
-        Log.d("MainActivity","createImagesFromChart() called!");
+        Logging.main("MainActivity","createImagesFromChart() called!");
         if(lcRadon.getHeight() > 0 && lcRadon.getWidth() > 0) {
-            Log.d("MainActivity","Attempting to create PNG from Radon Chart!");
+            Logging.main("MainActivity","Attempting to create PNG from Radon Chart!");
             Bitmap bmpRadon;
             Bitmap bmpHumidity;
             Bitmap bmpPressure;
@@ -646,7 +646,7 @@ public class MainActivity extends AppCompatActivity
                 outputStream.flush();
                 outputStream.close();
             } catch (Exception ex){
-                Log.d("MainActivity","createImagesFromChart():: Exception while creating Radon PNG!");
+                Logging.main("MainActivity","createImagesFromChart():: Exception while creating Radon PNG!");
                 ex.printStackTrace();
             }
 
@@ -658,7 +658,7 @@ public class MainActivity extends AppCompatActivity
                 outputStream.flush();
                 outputStream.close();
             } catch (Exception ex){
-                Log.d("MainActivity","createImagesFromChart():: Exception while creating Humidity PNG!");
+                Logging.main("MainActivity","createImagesFromChart():: Exception while creating Humidity PNG!");
                 ex.printStackTrace();
             }
 
@@ -670,7 +670,7 @@ public class MainActivity extends AppCompatActivity
                 outputStream.flush();
                 outputStream.close();
             } catch (Exception ex){
-                Log.d("MainActivity","createImagesFromChart():: Exception while creating Pressure PNG!");
+                Logging.main("MainActivity","createImagesFromChart():: Exception while creating Pressure PNG!");
                 ex.printStackTrace();
             }
 
@@ -682,12 +682,12 @@ public class MainActivity extends AppCompatActivity
                 outputStream.flush();
                 outputStream.close();
             } catch (Exception ex){
-                Log.d("MainActivity","createImagesFromChart():: Exception while creating Tilts PNG!");
+                Logging.main("MainActivity","createImagesFromChart():: Exception while creating Tilts PNG!");
                 ex.printStackTrace();
             }
 
         } else {
-            Log.d("MainActivity","createImagesFromChart():: Height and/or Width is zero!");
+            Logging.main("MainActivity","createImagesFromChart():: Height and/or Width is zero!");
         }
     }
 

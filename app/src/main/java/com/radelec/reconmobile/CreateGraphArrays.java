@@ -32,7 +32,7 @@ public class CreateGraphArrays {
 
     public static void main() {
 
-        Log.d("CreateGraphArrays","CreateGraphArrays.main() called!");
+        Logging.main("CreateGraphArrays","CreateGraphArrays.main() called!");
         SimpleDateFormat DateTimeDisplay = new SimpleDateFormat("dd-mmm-yyyy hh:mm");
         LocalDateTime ReconDate = null;
         LocalDateTime HourCounter = null;
@@ -99,9 +99,9 @@ public class CreateGraphArrays {
                                 Integer.parseInt(LoadedReconTXTFile.get(arrayCounter).get(6)),
                                 Integer.parseInt(LoadedReconTXTFile.get(arrayCounter).get(7)),
                                 Integer.parseInt(LoadedReconTXTFile.get(arrayCounter).get(8)));
-                        Log.d("CreateGraphArrays","Beginning Exposure (HourCounter) = " + HourCounter.toString());
+                        Logging.main("CreateGraphArrays","Beginning Exposure (HourCounter) = " + HourCounter.toString());
                     } else {
-                        Log.d("CreateGraphArrays","Android API " + Build.VERSION.SDK_INT + " will use deprecated Date format.");
+                        Logging.main("CreateGraphArrays","Android API " + Build.VERSION.SDK_INT + " will use deprecated Date format.");
                         deprecatedHourCounter = new Date();
                         TempYear = Integer.parseInt(LoadedReconTXTFile.get(arrayCounter).get(3))+100; //deprecatedHourCounter years start at 1900, not zero!
                         deprecatedHourCounter.setYear(TempYear);
@@ -110,7 +110,7 @@ public class CreateGraphArrays {
                         deprecatedHourCounter.setHours(Integer.parseInt(LoadedReconTXTFile.get(arrayCounter).get(6)));
                         deprecatedHourCounter.setMinutes(Integer.parseInt(LoadedReconTXTFile.get(arrayCounter).get(7)));
                         deprecatedHourCounter.setSeconds(Integer.parseInt(LoadedReconTXTFile.get(arrayCounter).get(8)));
-                        Log.d("CreateGraphArrays","Beginning Exposure (deprecatedHourCounter) = " + deprecatedHourCounter.toString());
+                        Logging.main("CreateGraphArrays","Beginning Exposure (deprecatedHourCounter) = " + deprecatedHourCounter.toString());
                     }
                 }
 
@@ -161,11 +161,11 @@ public class CreateGraphArrays {
                     }
                     if(consecutiveZeroTally_Ch1>=ConsecutiveZeroLimit && photodiodeFailure_Ch1==false) {
                         if(boolPhotodiodeFailureRecovery==true) {
-                            Log.d("CreateGraphArrays", "Potential photodiode failure has been detected in chamber 1. The software will attempt to construct the graph and report using chamber 2.");
+                            Logging.main("CreateGraphArrays", "Potential photodiode failure has been detected in chamber 1. The software will attempt to construct the graph and report using chamber 2.");
                         } else {
-                            Log.d("CreateGraphArrays", "Potential photodiode failure has been detected in chamber 1.");
+                            Logging.main("CreateGraphArrays", "Potential photodiode failure has been detected in chamber 1.");
                         }
-                        Log.d("CreateGraphsArray","WARNING: Possible photodiode failure detected in chamber 1 when creating graph.");
+                        Logging.main("CreateGraphsArray","WARNING: Possible photodiode failure detected in chamber 1 when creating graph.");
                         photodiodeFailure_Ch1 = true;
                     }
                 } else {
@@ -179,11 +179,11 @@ public class CreateGraphArrays {
                     }
                     if(consecutiveZeroTally_Ch2>=ConsecutiveZeroLimit && photodiodeFailure_Ch2==false) {
                         if(boolPhotodiodeFailureRecovery==true) {
-                            Log.d("CreateGraphArrays", "Potential photodiode failure has been detected in chamber 2. The software will attempt to construct the graph and report using chamber 1.");
+                            Logging.main("CreateGraphArrays", "Potential photodiode failure has been detected in chamber 2. The software will attempt to construct the graph and report using chamber 1.");
                         } else {
-                            Log.d("CreateGraphArrays", "Potential photodiode failure has been detected in chamber 2.");
+                            Logging.main("CreateGraphArrays", "Potential photodiode failure has been detected in chamber 2.");
                         }
-                        Log.d("CreateGraphArrays","WARNING: Possible photodiode failure detected in chamber 2 when creating graph.");
+                        Logging.main("CreateGraphArrays","WARNING: Possible photodiode failure detected in chamber 2 when creating graph.");
                         photodiodeFailure_Ch2 = true;
                     }
                 } else {
@@ -207,7 +207,7 @@ public class CreateGraphArrays {
                     deprecatedReconDate.setHours(Integer.parseInt(LoadedReconTXTFile.get(arrayCounter).get(6)));
                     deprecatedReconDate.setMinutes(Integer.parseInt(LoadedReconTXTFile.get(arrayCounter).get(7)));
                     deprecatedReconDate.setSeconds(Integer.parseInt(LoadedReconTXTFile.get(arrayCounter).get(8)));
-                    Log.d("CreateGraphArrays","Beginning Exposure (deprecatedHourCounter) = " + deprecatedHourCounter.toString());
+                    Logging.main("CreateGraphArrays","Beginning Exposure (deprecatedHourCounter) = " + deprecatedHourCounter.toString());
                 }
 
 
@@ -217,7 +217,7 @@ public class CreateGraphArrays {
                     } else {
                         long diffInMilliseconds = Math.abs(deprecatedReconDate.getTime() - deprecatedHourCounter.getTime());
                         long diff = TimeUnit.MINUTES.convert(diffInMilliseconds, TimeUnit.MILLISECONDS);
-                        Log.d("CreateGraphArrays","diffMinutes = " + diffMinutes);
+                        Logging.main("CreateGraphArrays","diffMinutes = " + diffMinutes);
                         diffMinutes = diff;
                     }
                     if (diffMinutes >= 60) { //Every time we have more than 60 minutes, let's calculate our hourly radon concentration

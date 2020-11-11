@@ -28,7 +28,7 @@ public class SaveFile {
         String newline = Constants.newline;
         ArrayList<String> workingFile = new ArrayList<String>();
 
-        Log.d("SaveFile","Creating buffered writer and beginning to save file...");
+        Logging.main("SaveFile","Creating buffered writer and beginning to save file...");
 
         try {
 
@@ -133,7 +133,7 @@ public class SaveFile {
                 }
             }
 
-            Log.d("SaveFile","Creating buffered writer and beginning to save file...");
+            Logging.main("SaveFile","Creating buffered writer and beginning to save file...");
             bw = new BufferedWriter(new FileWriter(new File(Globals.fileDir + File.separator + updatedFileName)));
 
             // Write out to new file.
@@ -157,12 +157,12 @@ public class SaveFile {
             }
 
             bw.close();
-            Log.d("SaveFile","File (" + Globals.globalLoadedFileName + ") has been manually saved by user!");
+            Logging.main("SaveFile","File (" + Globals.globalLoadedFileName + ") has been manually saved by user!");
             return "Saving file...";
         }
 
         catch (Exception anyEx) {
-            Log.d("SaveFile","EXCEPTION: " + (anyEx.toString()));
+            Logging.main("SaveFile","EXCEPTION: " + (anyEx.toString()));
             return "Error saving file...";
         }
     }

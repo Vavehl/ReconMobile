@@ -56,14 +56,14 @@ public class ReconSearchList extends ListFragment implements ServiceConnection, 
     private int baudRate = 9600;
 
     public ReconSearchList() {
-        Log.d("ReconSearchList","ReconSearchList() called!");
+        Logging.main("ReconSearchList","ReconSearchList() called!");
         broadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                Log.d("ReconSearchList","broadcastReceiver.onReceive() called!");
+                Logging.main("ReconSearchList","broadcastReceiver.onReceive() called!");
                 if(intent.getAction().equals(INTENT_ACTION_GRANT_USB)) {
                     Boolean granted = intent.getBooleanExtra(UsbManager.EXTRA_PERMISSION_GRANTED, false);
-                    Log.d("ReconSearchList","Permission Granted? [" + granted + "]");
+                    Logging.main("ReconSearchList","Permission Granted? [" + granted + "]");
                     connect(granted);
                 }
             }
@@ -73,13 +73,13 @@ public class ReconSearchList extends ListFragment implements ServiceConnection, 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d("ReconSearchList","onCreate() called!");
-        Log.d("ReconSearchList", "onCreate():: initialStart = " + initialStart);
+        Logging.main("ReconSearchList","onCreate() called!");
+        Logging.main("ReconSearchList", "onCreate():: initialStart = " + initialStart);
     }
 
     @Override
     public void onStart() {
-        Log.d("ReconSearchList","onStart() called!");
+        Logging.main("ReconSearchList","onStart() called!");
         super.onStart();
         if(service != null)
             service.attach(this);
@@ -90,14 +90,14 @@ public class ReconSearchList extends ListFragment implements ServiceConnection, 
 
     @Override
     public void onPause() {
-        Log.d("ReconSearchList","onPause() called!");
+        Logging.main("ReconSearchList","onPause() called!");
         getActivity().unregisterReceiver(broadcastReceiver);
         super.onPause();
     }
 
     @Override
     public void onStop() {
-        Log.d("ReconSearchList","onStop() called!");
+        Logging.main("ReconSearchList","onStop() called!");
         if(service != null && !getActivity().isChangingConfigurations())
             service.detach();
         super.onStop();
@@ -106,28 +106,28 @@ public class ReconSearchList extends ListFragment implements ServiceConnection, 
     @SuppressWarnings("deprecation") // onAttach(context) was added with API 23. onAttach(activity) works for all API versions
     @Override
     public void onAttach(Activity activity) {
-        Log.d("ReconSearchList","onAttach() called!");
+        Logging.main("ReconSearchList","onAttach() called!");
         super.onAttach(activity);
         getActivity().bindService(new Intent(getActivity(), SerialService.class), this, Context.BIND_AUTO_CREATE);
     }
 
     @Override
     public void onDetach() {
-        Log.d("ReconSearchList","onDetach() called!");
+        Logging.main("ReconSearchList","onDetach() called!");
         try { getActivity().unbindService(this); } catch(Exception ignored) {}
         super.onDetach();
     }
 
     @Override
     public void onDestroy() {
-        Log.d("ReconSearchList","onDestroy() called!");
+        Logging.main("ReconSearchList","onDestroy() called!");
         getActivity().stopService(new Intent(getActivity(), SerialService.class));
         super.onDestroy();
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
-        Log.d("ReconSearchList","onActivityCreated() called!");
+        Logging.main("ReconSearchList","onActivityCreated() called!");
         super.onActivityCreated(savedInstanceState);
         setListAdapter(null);
         setListAdapter(listAdapter);
@@ -135,12 +135,12 @@ public class ReconSearchList extends ListFragment implements ServiceConnection, 
 
     @Override
     public void onResume() {
-        Log.d("ReconSearchList","onResume() called!");
+        Logging.main("ReconSearchList","onResume() called!");
         super.onResume();
         getActivity().registerReceiver(broadcastReceiver, new IntentFilter(INTENT_ACTION_GRANT_USB));
-        Log.d("ReconSearchList", "onResume():: initialStart = " + initialStart);
+        Logging.main("ReconSearchList", "onResume():: initialStart = " + initialStart);
         if(initialStart && service !=null) {
-            Log.d("ReconSearchList", "onResume() :: initialStart = true && service != null");
+            Logging.main("ReconSearchList", "onResume() :: initialStart = true && service != null");
             initialStart = false;
             getActivity().runOnUiThread(this::connect);
         }
@@ -148,7 +148,7 @@ public class ReconSearchList extends ListFragment implements ServiceConnection, 
     }
 
     private void createReconList() {
-        Log.d("ReconSearchList","createReconList() called!");
+        Logging.main("ReconSearchList","createReconList() called!");
         listAdapter = new ArrayAdapter<ListItem>(getActivity(), 0, listItems) {
 
             @Override
@@ -157,7 +157,7 @@ public class ReconSearchList extends ListFragment implements ServiceConnection, 
                 ListItem item = listItems.get(position);
 
                 if (view == null) {
-                    Log.d("ReconSearchList","VIEW=NULL, instantiating new view! [initialStart=" + initialStart + "]");
+                    Logging.main("ReconSearchList","VIEW=NULL, instantiating new view! [initialStart=" + initialStart + "]");
                     view = getActivity().getLayoutInflater().inflate(R.layout.device_list_item,parent, false);
                 }
 
@@ -169,7 +169,7 @@ public class ReconSearchList extends ListFragment implements ServiceConnection, 
                 else if(item.driver.getPorts().size() == 1) {
                     //Here we need to issue a command to pull the serial number.
                     if((item.device.getVendorId()==0x15A2) && (item.device.getProductId()==0x8143)){
-                        Log.d("ReconSearchList","createReconList():: Broadcasting / tethered device meeting initial parameters found!");
+                        Logging.main("ReconSearchList","createReconList():: Broadcasting / tethered device meeting initial parameters found!");
                         if(connected == ReconConnected.True) {
                             ReconSerial.setText(item.driver.getClass().getSimpleName().replace("CdcAcmSerialDriver", "Rad Elec Recon #" + globalReconSerial));
                             ReconFirmware.setText(String.format(Locale.US, "Firmware v" + globalReconFirmwareRevision));
@@ -196,7 +196,7 @@ public class ReconSearchList extends ListFragment implements ServiceConnection, 
     }
 
     void refreshReconList() {
-        Log.d("ReconSearchList","refresh() called!");
+        Logging.main("ReconSearchList","refresh() called!");
         UsbManager usbManager = (UsbManager) getActivity().getSystemService(Context.USB_SERVICE);
         UsbSerialProber usbDefaultProber = UsbSerialProber.getDefaultProber();
         UsbSerialProber usbCustomProber = CustomProber.getCustomProber();
@@ -224,7 +224,7 @@ public class ReconSearchList extends ListFragment implements ServiceConnection, 
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-        Log.d("ReconSearchList","onListItemClick() called!");
+        Logging.main("ReconSearchList","onListItemClick() called!");
         Toast.makeText(getActivity(), "Connecting...", Toast.LENGTH_SHORT).show();
         ListItem item = listItems.get(position);
         intCurrentPositionRecon = position;
@@ -235,7 +235,7 @@ public class ReconSearchList extends ListFragment implements ServiceConnection, 
             args.putInt("device", item.device.getDeviceId());
             args.putInt("port", item.port);
             args.putInt("baud", baudRate);
-            Log.d("ReconSearchList","DeviceId = " + item.device.getDeviceId() + " / Port = " + item.port + " / Baud = " + baudRate);
+            Logging.main("ReconSearchList","DeviceId = " + item.device.getDeviceId() + " / Port = " + item.port + " / Baud = " + baudRate);
             this.setArguments(args);
             deviceId = getArguments().getInt("device");
             portNum = getArguments().getInt("port");
@@ -245,14 +245,14 @@ public class ReconSearchList extends ListFragment implements ServiceConnection, 
             UsbManager usbManager = (UsbManager) getActivity().getSystemService(Context.USB_SERVICE);
             /*PendingIntent pi = PendingIntent.getBroadcast(getContext(),0,new Intent(INTENT_ACTION_GRANT_USB),0);
             if (usbManager != null && !usbManager.hasPermission(item.device)) {
-                Log.d("ReconSearchList", "Requesting permission to access USB device...");
+                Logging.main("ReconSearchList", "Requesting permission to access USB device...");
                 usbManager.requestPermission(item.device, pi);
             }*/
 
             //If permissions are true, let's pull the serial number and firmware revision.
             if(usbManager != null) {
-                Log.d("ReconSearchList","Attempting to Connect... [Current Connected State = " + connected + ")");
-                if(connected == ReconConnected.True) Log.d("ReconSearchList","WARNING: Recon connected was previously set to True! Attempting to connect again...");
+                Logging.main("ReconSearchList","Attempting to Connect... [Current Connected State = " + connected + ")");
+                if(connected == ReconConnected.True) Logging.main("ReconSearchList","WARNING: Recon connected was previously set to True! Attempting to connect again...");
                 connect(usbManager.hasPermission(item.device));
                 if(usbManager.hasPermission(item.device)) {
                     ReconFunctions rfRecon = new ReconFunctions(null);
@@ -262,26 +262,26 @@ public class ReconSearchList extends ListFragment implements ServiceConnection, 
                     rfRecon.send(cmdReadCalibrationFactors);
                 }
             } else if(usbManager != null && usbManager.hasPermission(item.device) && connected == ReconConnected.True) {
-                Log.d("ReconSearchList", "Already connected to this device... [Current Connected State = " + connected + ")");
+                Logging.main("ReconSearchList", "Already connected to this device... [Current Connected State = " + connected + ")");
             } else {
-                Log.d("ReconSearchList","Unknown problem connecting to Recon!");
+                Logging.main("ReconSearchList","Unknown problem connecting to Recon!");
                 if (usbManager != null) {
-                    Log.d("ReconSearchList","usbManager = " + usbManager.toString());
+                    Logging.main("ReconSearchList","usbManager = " + usbManager.toString());
                 } else {
-                    Log.d("ReconSearchList","usbManager = NULL!");
+                    Logging.main("ReconSearchList","usbManager = NULL!");
                 }
                 if (usbManager != null) {
-                    Log.d("ReconSearchList","usbManager Permission? " + usbManager.hasPermission(item.device));
+                    Logging.main("ReconSearchList","usbManager Permission? " + usbManager.hasPermission(item.device));
                 } else {
-                    Log.d("ReconSearchList","usbManager Per5mission? NULL!");
+                    Logging.main("ReconSearchList","usbManager Per5mission? NULL!");
                 }
-                Log.d("ReconSearchList","ReconConnected = " + connected);
+                Logging.main("ReconSearchList","ReconConnected = " + connected);
             }
         }
     }
 
     private String receive(byte[] data) {
-        Log.d("ReconSearchList","receive() called!");
+        Logging.main("ReconSearchList","receive() called!");
         return (new String(data));
     }
 
@@ -290,82 +290,82 @@ public class ReconSearchList extends ListFragment implements ServiceConnection, 
     }
 
     private void connect(Boolean permissionGranted) {
-        Log.d("ReconSearchList","connect(" + permissionGranted + ") called!");
+        Logging.main("ReconSearchList","connect(" + permissionGranted + ") called!");
         checkAndRequestPermission();
         UsbDevice device = null;
         UsbManager usbManager = (UsbManager) getActivity().getSystemService(Context.USB_SERVICE);
         for(UsbDevice v : usbManager.getDeviceList().values())
             if (v.getDeviceId() == deviceId) {
                 device = v;
-                Log.d("ReconSearchList","connect(): Scanning Connected Devices = " + v.toString());
+                Logging.main("ReconSearchList","connect(): Scanning Connected Devices = " + v.toString());
             }
         if(device == null) {
-            Log.d("ReconSearchList","connect(): Connection Failed / Recon Not Found or No Recon Selected!");
+            Logging.main("ReconSearchList","connect(): Connection Failed / Recon Not Found or No Recon Selected!");
             return;
         }
-        Log.d("ReconSearchList","Device = " + device.toString());
+        Logging.main("ReconSearchList","Device = " + device.toString());
         UsbSerialDriver driver = UsbSerialProber.getDefaultProber().probeDevice(device);
         if(driver == null) {
             driver = CustomProber.getCustomProber().probeDevice(device);
         }
         if(driver == null) {
-            Log.d("ReconSearchList","connect(): Connection Failed / No Recon Driver Found!");
+            Logging.main("ReconSearchList","connect(): Connection Failed / No Recon Driver Found!");
             return;
         }
         if(driver.getPorts().size() < portNum) {
-            Log.d("ReconSearchList","connect(): Connection Failed / No Free Ports!");
+            Logging.main("ReconSearchList","connect(): Connection Failed / No Free Ports!");
             return;
         }
         UsbSerialPort usbSerialPort = driver.getPorts().get(portNum);
         UsbDeviceConnection usbConnection = usbManager.openDevice(driver.getDevice());
         if(usbConnection == null && permissionGranted == null && !usbManager.hasPermission(driver.getDevice())) {
-            Log.d("ReconSearchList", "connect(): No Permission Granted -- attempting to request!");
+            Logging.main("ReconSearchList", "connect(): No Permission Granted -- attempting to request!");
             PendingIntent usbPermissionIntent = PendingIntent.getBroadcast(getActivity(), 0, new Intent(INTENT_ACTION_GRANT_USB), 0);
             usbManager.requestPermission(driver.getDevice(), usbPermissionIntent);
             return;
         }
         if(usbConnection == null) {
             if (!usbManager.hasPermission(driver.getDevice())) {
-                Log.d("ReconSearchList", "connect(): Connection Failed / Permission Denied!");
+                Logging.main("ReconSearchList", "connect(): Connection Failed / Permission Denied!");
             } else {
-                Log.d("ReconSearchList", "connect(): Connection Failed / Open Failed!");
+                Logging.main("ReconSearchList", "connect(): Connection Failed / Open Failed!");
             }
             return;
         }
 
         connected = ReconConnected.Pending;
-        Log.d("ReconSearchList","connect(): Connection Pending...");
+        Logging.main("ReconSearchList","connect(): Connection Pending...");
         try {
-            Log.d("ReconSearchList","connect(): socket = new SerialSocket();");
+            Logging.main("ReconSearchList","connect(): socket = new SerialSocket();");
             socket = new SerialSocket();
-            Log.d("ReconSearchList","connect(): service.connect(this, Connected);");
+            Logging.main("ReconSearchList","connect(): service.connect(this, Connected);");
             service.connect((SerialListener) this, "Connected");
-            Log.d("ReconSearchList","connect(): socket.connect(getContext(), service, usbConnection, usbSerialPort, baudRate);");
-            Log.d("ReconSearchList","connect(): usbSerialPort = " + usbSerialPort.toString() + " / baudRate = " + baudRate);
+            Logging.main("ReconSearchList","connect(): socket.connect(getContext(), service, usbConnection, usbSerialPort, baudRate);");
+            Logging.main("ReconSearchList","connect(): usbSerialPort = " + usbSerialPort.toString() + " / baudRate = " + baudRate);
             socket.connect(getContext(), service, usbConnection, usbSerialPort, baudRate);
             // usb connect is not asynchronous. connect-success and connect-error are returned immediately from socket.connect
             // for consistency to bluetooth/bluetooth-LE app use same SerialListener and SerialService classes
             onSerialConnect();
-            Log.d("ReconSearchList", "WRITE_WAIT_MILLIS = " + WRITE_WAIT_MILLIS);
+            Logging.main("ReconSearchList", "WRITE_WAIT_MILLIS = " + WRITE_WAIT_MILLIS);
         } catch (Exception e) {
             onSerialConnectError(e);
-            Log.d("ReconSearchList","connect(): Exception!");
+            Logging.main("ReconSearchList","connect(): Exception!");
             connected = ReconConnected.False;
         }
     }
 
     public void onSerialConnect() {
-        Log.d("ReconSearchList","onSerialConnect() called!");
+        Logging.main("ReconSearchList","onSerialConnect() called!");
         connected = ReconConnected.True;
-        Log.d("ReconSearchList","onSerialConnect(): Connected!");
+        Logging.main("ReconSearchList","onSerialConnect(): Connected!");
     }
 
     public void onSerialRead(byte[] data) {
-        Log.d("ReconSearchList","onSerialRead() called!");
+        Logging.main("ReconSearchList","onSerialRead() called!");
         receive(data);
         String response = new String(data);
         globalLastResponse = response;
-        Log.d("ReconSearchList","Receiving " + response);
+        Logging.main("ReconSearchList","Receiving " + response);
         String[] parsedResponse = null;
         parsedResponse = response.split(",");
         if(parsedResponse.length<1) return;
@@ -387,14 +387,14 @@ public class ReconSearchList extends ListFragment implements ServiceConnection, 
                 rfRecon.getCalibrationFactors(response);
                 break;
             case "=BD":
-                Log.d("ReconFunctions","onSerialRead():: =BD Response from Recon... invalid request?");
+                Logging.main("ReconFunctions","onSerialRead():: =BD Response from Recon... invalid request?");
                 break;
         }
     }
 
     @Override
     public void onServiceConnected(ComponentName name, IBinder binder) {
-        Log.d("ReconSearchList","onServiceConnected() called!");
+        Logging.main("ReconSearchList","onServiceConnected() called!");
         service = ((SerialService.SerialBinder) binder).getService();
         if(initialStart && isResumed()) {
             initialStart = false;
@@ -404,38 +404,38 @@ public class ReconSearchList extends ListFragment implements ServiceConnection, 
 
     @Override
     public void onServiceDisconnected(ComponentName name) {
-        Log.d("ReconSearchList","onServiceDisconnected() called!");
+        Logging.main("ReconSearchList","onServiceDisconnected() called!");
         service = null;
     }
 
     public void onSerialIoError(Exception e) {
-        Log.d("ReconSearchList","onSerialIoError() called!");
-        Log.d("ReconSearchList", e.toString());
+        Logging.main("ReconSearchList","onSerialIoError() called!");
+        Logging.main("ReconSearchList", e.toString());
         ReconFunctions rfRecon = new ReconFunctions(null);
         rfRecon.disconnect();
     }
 
     public void onSerialConnectError(Exception e) {
-        Log.d("ReconSearchList","onSerialConnectError() called!");
-        Log.d("ReconSearchList", e.toString());
+        Logging.main("ReconSearchList","onSerialConnectError() called!");
+        Logging.main("ReconSearchList", e.toString());
         ReconFunctions rfRecon = new ReconFunctions(null);
         rfRecon.disconnect();
     }
 
     public void checkAndRequestPermission() {
-        Log.d("ReconSearchList","checkAndRequestPermission() called!");
+        Logging.main("ReconSearchList","checkAndRequestPermission() called!");
         try {
             ListItem item = listItems.get(intCurrentPositionRecon);
             UsbManager usbManager = (UsbManager) getActivity().getSystemService(Context.USB_SERVICE);
             PendingIntent pi = PendingIntent.getBroadcast(getContext(), 0, new Intent(INTENT_ACTION_GRANT_USB), 0);
             if (usbManager != null && !usbManager.hasPermission(item.device)) {
-                Log.d("ReconSearchList", "Requesting permission to access USB device...");
+                Logging.main("ReconSearchList", "Requesting permission to access USB device...");
                 usbManager.requestPermission(item.device, pi);
             } else {
-                Log.d("ReconSearchList", "User already granted permission or usbManager is null?");
+                Logging.main("ReconSearchList", "User already granted permission or usbManager is null?");
             }
         } catch(IndexOutOfBoundsException ex) {
-            Log.d("ReconSearchList","checkAndRequestPermission() index out of bounds!");
+            Logging.main("ReconSearchList","checkAndRequestPermission() index out of bounds!");
         }
     }
 }

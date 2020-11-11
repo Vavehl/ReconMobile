@@ -84,39 +84,39 @@ public class CreatePDF {
 
         PDDocument doc = new PDDocument();
 
-        Log.d("CreatePDF","Searching for digital signature in " + imageDir);
+        Logging.main("CreatePDF","Searching for digital signature in " + imageDir);
         File fileSignatureAnalystBMP = new File(imageDir + File.separator + "signature.bmp");
         if (fileSignatureAnalystBMP.exists()) {
             boolFoundSignatureBMP = true;
-            Log.d("CreatePDF","Analyst signature found as BMP!");
+            Logging.main("CreatePDF","Analyst signature found as BMP!");
         }
         File fileSignatureAnalystPNG = new File(imageDir + File.separator + "signature.png");
         if (fileSignatureAnalystPNG.exists()) {
             boolFoundSignaturePNG = true;
-            Log.d("CreatePDF","Analyst signature found as PNG!");
+            Logging.main("CreatePDF","Analyst signature found as PNG!");
         }
         File fileSignatureAnalystJPG = new File(imageDir + File.separator + "signature.jpg");
         if (fileSignatureAnalystJPG.exists()) {
             boolFoundSignatureJPG = true;
-            Log.d("CreatePDF","Analyst signature found as JPG!");
+            Logging.main("CreatePDF","Analyst signature found as JPG!");
         }
         File fileSignatureAnalystJPEG = new File(imageDir + File.separator + "signature.jpeg");
         if (fileSignatureAnalystJPEG.exists()) {
             boolFoundSignatureJPEG = true;
-            Log.d("CreatePDF","Analyst signature found as JPEG!");
+            Logging.main("CreatePDF","Analyst signature found as JPEG!");
         }
 
         if (boolFoundSignatureBMP || boolFoundSignaturePNG || boolFoundSignatureJPG || boolFoundSignatureJPEG) {
             boolFoundSignature = true;
         } else {
-            Log.d("CreatePDF","No digital signature (as BMP/PNG/JPG/JPEG) found for PDF... ignoring.");
+            Logging.main("CreatePDF","No digital signature (as BMP/PNG/JPG/JPEG) found for PDF... ignoring.");
         }
 
-        Log.d("CreatePDF","Searching for company logo in " + imageDir);
+        Logging.main("CreatePDF","Searching for company logo in " + imageDir);
         File fileCompanyLogoPNG = new File(imageDir + File.separator + "company_logo.png");
         if (fileCompanyLogoPNG.exists()) {
             boolFoundCompanyLogo = true;
-            Log.d("CreatePDF","Company Logo Found as PNG!");
+            Logging.main("CreatePDF","Company Logo Found as PNG!");
         }
 
         String textLine;
@@ -133,7 +133,7 @@ public class CreatePDF {
 
             PDPageContentStream contents = new PDPageContentStream(doc, page);
 
-            Log.d("CreatePDF","Beginning PDF creation...");
+            Logging.main("CreatePDF","Beginning PDF creation...");
 
             //********************
             //Begin PDF Generation
@@ -178,7 +178,7 @@ public class CreatePDF {
                     dateInstance.add(Calendar.YEAR,1);
                     strDateCalibrationDue = dateFormatCalibration.format(dateInstance.getTime());
                 } catch (ParseException ex) {
-                    Log.d("CreatePDF","Unable to parse calibration date... this shouldn't have happened!");
+                    Logging.main("CreatePDF","Unable to parse calibration date... this shouldn't have happened!");
                     strDateCalibrationDue = "Unknown";
                 }
             } else {
@@ -362,7 +362,7 @@ public class CreatePDF {
             cursorSettingsData = db.getSettingsData();
             cursorSettingsData.moveToFirst(); //Critical to moveToFirst() here, or else we're sitting at an invalid index!
 
-            Log.d("CreatePDF","CreatePDF:: Signature Option = " + cursorSettingsData.getString(3));
+            Logging.main("CreatePDF","CreatePDF:: Signature Option = " + cursorSettingsData.getString(3));
             String displaySig = cursorSettingsData.getString(3);
             if(displaySig.equals("Display Line Only")) { //Draw Signature Line
                 drawSignatureLine(contents, page, fontDefault); //Draw Signature Line; for now, only if DisplaySig = 1 or 2 in options.
@@ -607,21 +607,21 @@ public class CreatePDF {
 
             contents.close();
 
-            Log.d("CreatePDF","End PDF generation stage. Writing to file...");
+            Logging.main("CreatePDF","End PDF generation stage. Writing to file...");
 
             drawFooterInfo(doc);
             doc.save(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS + File.separator + PDF_Name));
-            Log.d("CreatePDF","PDF saved to: " + Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS + File.separator + PDF_Name));
+            Logging.main("CreatePDF","PDF saved to: " + Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS + File.separator + PDF_Name));
             //Draw the footer info (page #, version, etc.)
             //It's a bit shoddy, but because we're appending, we need to have already saved it
             //and then re-open the file.
             filePDF = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + File.separator + PDF_Name);
             if (filePDF != null) {
                 if (filePDF.exists()) {
-                    Log.d("CreatePDF", PDF_Name + " has been created. [" + filePDF.getAbsolutePath() + "]");
+                    Logging.main("CreatePDF", PDF_Name + " has been created. [" + filePDF.getAbsolutePath() + "]");
                     globalLastSystemConsole = "PDF has been created.";
                 } else {
-                    Log.d("CreatePDF", "Problem creating PDF.");
+                    Logging.main("CreatePDF", "Problem creating PDF.");
                     globalLastSystemConsole = "Problem creating PDF.";
                 }
             }
@@ -630,10 +630,10 @@ public class CreatePDF {
             StringWriter swEx = new StringWriter();
             ex.printStackTrace(new PrintWriter(swEx));
             String strEx = swEx.toString();
-            Log.d("CreatePDF",strEx);
+            Logging.main("CreatePDF",strEx);
         }
         finally {
-            Log.d("CreatePDF","Closing document and terminating unused resources.");
+            Logging.main("CreatePDF","Closing document and terminating unused resources.");
             doc.close();
         }
     }
@@ -677,27 +677,27 @@ public class CreatePDF {
             StringWriter swEx = new StringWriter();
             ex.printStackTrace(new PrintWriter(swEx));
             String strEx = swEx.toString();
-            Log.d("CreatePDF",strEx);
+            Logging.main("CreatePDF",strEx);
         }
     }
 
     public static void GetCompanyInfo() {
-        Log.d("CreatePDF","Called CreatePDF::GetCompanyInfo() for PDF generation...");
+        Logging.main("CreatePDF","Called CreatePDF::GetCompanyInfo() for PDF generation...");
         try {
             Cursor cursorCompanyDefaults;
             cursorCompanyDefaults = db.getCompanyData();
             cursorCompanyDefaults.moveToFirst(); //Critical to moveToFirst() here, or else we're sitting at an invalid index.
             strCompany_Name = cursorCompanyDefaults.getString(1);
             strCompany_Details = cursorCompanyDefaults.getString(2);
-            Log.d("CreatePDF","CreatePDF::GetCompanyInfo(): Successfully parsed company information for PDF!");
+            Logging.main("CreatePDF","CreatePDF::GetCompanyInfo(): Successfully parsed company information for PDF!");
         } catch (Exception e) {
-            Log.d("CreatePDF","ERROR: Unable to parse company information from DB. There was a problem loading the settings.");
+            Logging.main("CreatePDF","ERROR: Unable to parse company information from DB. There was a problem loading the settings.");
         }
     }
 
     public void DrawCompanyHeader(PDPageContentStream contents, PDFont fontDefault) {
         //Note: getCompanyInfo() needs to be called beforehand
-        Log.d("CreatePDF","CreatePDF::DrawCompanyHeader has been called...");
+        Logging.main("CreatePDF","CreatePDF::DrawCompanyHeader has been called...");
         int fontSize = 14;
         float textHeight = fontDefault.getFontDescriptor().getFontBoundingBox().getHeight() / 1000 * fontSize;
         try {
@@ -717,13 +717,13 @@ public class CreatePDF {
             contents.newLineAtOffset(0, -1.0f*fontSize);
             contents.showText(textLine);
             contents.endText();
-            Log.d("CreatePDF","Successful CreatePDF::DrawCompanyHeader()!");
+            Logging.main("CreatePDF","Successful CreatePDF::DrawCompanyHeader()!");
         } catch (IOException ex) {
             StringWriter swEx = new StringWriter();
             ex.printStackTrace(new PrintWriter(swEx));
             String strEx = swEx.toString();
-            Log.d("CreatePDF",strEx);
-            Log.d("CreatePDF","ERROR: Unhandled error in CreatePDF::DrawCompanyHeader()!");
+            Logging.main("CreatePDF",strEx);
+            Logging.main("CreatePDF","ERROR: Unhandled error in CreatePDF::DrawCompanyHeader()!");
         }
     }
 
@@ -755,18 +755,18 @@ public class CreatePDF {
             contents.setFont(fontDate, fontSize);
             contents.showText(textLine);
             contents.endText(); //end date text block
-            Log.d("CreatePDF","Successful CreatePDF::DrawTitleHeader()!");
+            Logging.main("CreatePDF","Successful CreatePDF::DrawTitleHeader()!");
         } catch (IOException ex) {
             StringWriter swEx = new StringWriter();
             ex.printStackTrace(new PrintWriter(swEx));
             String strEx = swEx.toString();
-            Log.d("CreatePDF",strEx);
+            Logging.main("CreatePDF",strEx);
         }
     }
 
     public void DrawCustomerTestSiteBlock(PDPageContentStream contents, PDPage page, PDFont fontBold, PDFont fontDefault) {
         try {
-            Log.d("CreatePDF","DrawCustomerTestSiteBlock() called!");
+            Logging.main("CreatePDF","DrawCustomerTestSiteBlock() called!");
             //Test Site Banner Block
             PDF_Y -= 35;
             contents.moveTo(marginSide, PDF_Y); //getting ready to draw a line (starting coordinates)
@@ -853,12 +853,12 @@ public class CreatePDF {
             contents.moveTo(marginSide, PDF_Y); //getting ready to draw a line (starting coordinates)
             contents.lineTo(page.getMediaBox().getWidth() - marginSide, PDF_Y); //getting ready to draw a line (ending coordinates)
             contents.stroke(); //draw the line, starting at moveTo and ending at lineTo
-            Log.d("CreatePDF","Successful DrawCustomerTestSiteBlock()!");
+            Logging.main("CreatePDF","Successful DrawCustomerTestSiteBlock()!");
         } catch (IOException ex) {
             StringWriter swEx = new StringWriter();
             ex.printStackTrace(new PrintWriter(swEx));
             String strEx = swEx.toString();
-            Log.d("CreatePDF",strEx);
+            Logging.main("CreatePDF",strEx);
         }
     }
 
@@ -908,12 +908,12 @@ public class CreatePDF {
             contents.moveTo(marginSide, PDF_Y); //getting ready to draw a line (starting coordinates)
             contents.lineTo(page.getMediaBox().getWidth() - marginSide, PDF_Y); //getting ready to draw a line (ending coordinates)
             contents.stroke(); //draw the line, starting at moveTo and ending at lineTo
-            Log.d("CreatePDF","Successful CreatePDF::DrawAverageRadonBanner()!");
+            Logging.main("CreatePDF","Successful CreatePDF::DrawAverageRadonBanner()!");
         } catch (IOException ex) {
             StringWriter swEx = new StringWriter();
             ex.printStackTrace(new PrintWriter(swEx));
             String strEx = swEx.toString();
-            Log.d("CreatePDF",strEx);
+            Logging.main("CreatePDF",strEx);
         }
     }
 
@@ -1016,7 +1016,7 @@ public class CreatePDF {
             StringWriter swEx = new StringWriter();
             ex.printStackTrace(new PrintWriter(swEx));
             String strEx = swEx.toString();
-            Log.d("CreatePDF",strEx);
+            Logging.main("CreatePDF",strEx);
         }
     }
 
@@ -1099,12 +1099,12 @@ public class CreatePDF {
                 contents.showText(combinedDataArray[i]);
             }
             contents.endText();
-            Log.d("CreatePDF","Successful CreatePDF::DrawTestSummaryBlock()!");
+            Logging.main("CreatePDF","Successful CreatePDF::DrawTestSummaryBlock()!");
         } catch (IOException ex) {
             StringWriter swEx = new StringWriter();
             ex.printStackTrace(new PrintWriter(swEx));
             String strEx = swEx.toString();
-            Log.d("CreatePDF",strEx);
+            Logging.main("CreatePDF",strEx);
         }
     }
 
@@ -1137,15 +1137,15 @@ public class CreatePDF {
             contents.moveTo(page.getMediaBox().getWidth()/2 + 30 + textWidth, marginBottom); //getting ready to draw a line (starting coordinates)
             contents.lineTo(page.getMediaBox().getWidth() - marginSide, marginBottom); //getting ready to draw a line (ending coordinates)
             contents.stroke(); //draw the line, starting at moveTo and ending at lineTo
-            Log.d("CreatePDF","Successful CreatePDF::drawSignatureLine()!");
+            Logging.main("CreatePDF","Successful CreatePDF::drawSignatureLine()!");
         } catch (IOException ex) {
-            Log.d("CreatePDF","ERROR: Unable to draw signature line!");
+            Logging.main("CreatePDF","ERROR: Unable to draw signature line!");
         }
     }
 
     private void drawDigitalSignature(PDDocument doc, PDPageContentStream contents, PDPage page, PDFont font) {
         try {
-            Log.d("CreatePDF","CreatePDF::DrawDigitalSignature called.");
+            Logging.main("CreatePDF","CreatePDF::DrawDigitalSignature called.");
             if (boolFoundSignature) {
 
                 //This is only for determining the width offset of "Signature" to properly place the digital signatur image.
@@ -1162,12 +1162,12 @@ public class CreatePDF {
                         if (!fileSignatureAnalyst.exists()) {
                             fileSignatureAnalyst = new File(imageDir + File.separator + "signature.jpeg");
                         } else {
-                            Log.d("CreatePDF","CreatePDF::DrawDigitalSignature ERROR: Signature file not found!");
+                            Logging.main("CreatePDF","CreatePDF::DrawDigitalSignature ERROR: Signature file not found!");
                         }
                     }
                 }
 
-                Log.d("CreatePDF","Digital Signature Path = " + fileSignatureAnalyst.getAbsolutePath());
+                Logging.main("CreatePDF","Digital Signature Path = " + fileSignatureAnalyst.getAbsolutePath());
 
                 //Prepare and scale the digital signature image, then draw it.
                 imageSignature = PDImageXObject.createFromFile(fileSignatureAnalyst.getAbsolutePath(), doc);
@@ -1184,24 +1184,24 @@ public class CreatePDF {
                 contents.newLineAtOffset(((page.getMediaBox().getWidth()+page.getMediaBox().getWidth())/2 - marginSide)/2 + textDateWidth + 30 + textWidth/2, marginBottom+5);
                 contents.showText(textLine);
                 contents.endText();
-                Log.d("CreatePDF","Successful CreatePDF::DrawDigitalSignature()!");
+                Logging.main("CreatePDF","Successful CreatePDF::DrawDigitalSignature()!");
             }
         } catch (Exception ex) {
-            Log.d("CreatePDF","CreatePDF::DrawDigitalSignature ERROR! Unable to draw digital signature!");
-            Log.d("CreatePDF","CreatePDF::DrawDigitalSignature // " + ex);
+            Logging.main("CreatePDF","CreatePDF::DrawDigitalSignature ERROR! Unable to draw digital signature!");
+            Logging.main("CreatePDF","CreatePDF::DrawDigitalSignature // " + ex);
         }
     }
 
     private void drawCompanyLogo(PDDocument doc, PDPageContentStream contents, PDPage page) {
         try {
-            Log.d("CreatePDF","CreatePDF::DrawCompanyLogo called.");
+            Logging.main("CreatePDF","CreatePDF::DrawCompanyLogo called.");
             if (boolFoundCompanyLogo) {
                 //Prepare and scale the digital signature image, then draw it. Prioritize BMP > PNG > JPG/JPEG?
                 File fileCompanyLogo = new File(imageDir + File.separator + "company_logo.png");
                 if (!fileCompanyLogo.exists()) {
-                    Log.d("CreatePDF","CreatePDF::DrawCompanyLogo ERROR: Company Logo file not found!");
+                    Logging.main("CreatePDF","CreatePDF::DrawCompanyLogo ERROR: Company Logo file not found!");
                 } else {
-                    Log.d("CreatePDF","Company Logo Path = " + fileCompanyLogo.getAbsolutePath());
+                    Logging.main("CreatePDF","Company Logo Path = " + fileCompanyLogo.getAbsolutePath());
 
                     //Prepare and scale the logo, then draw it.
                     int intScaledHeight = 70;
@@ -1209,22 +1209,22 @@ public class CreatePDF {
                     Point scaledLogo = getScaledDimension(new Point(imageCompanyLogo.getWidth(), imageCompanyLogo.getHeight()), new Point((int) page.getMediaBox().getWidth(),intScaledHeight));
                     contents.drawImage(imageCompanyLogo, marginSide,page.getMediaBox().getHeight() - marginTop - intScaledHeight,scaledLogo.x,scaledLogo.y);
 
-                    Log.d("CreatePDF","Successful CreatePDF::DrawCompanyLogo()!");
+                    Logging.main("CreatePDF","Successful CreatePDF::DrawCompanyLogo()!");
                 }
             }
         } catch (Exception ex) {
-            Log.d("CreatePDF","CreatePDF::DrawCompanyLogo ERROR! Unable to draw company logo!");
-            Log.d("CreatePDF","CreatePDF::DrawCompanyLogo // " + ex);
+            Logging.main("CreatePDF","CreatePDF::DrawCompanyLogo ERROR! Unable to draw company logo!");
+            Logging.main("CreatePDF","CreatePDF::DrawCompanyLogo // " + ex);
         }
     }
 
     //Write page numbers and version numbers in lower right margin
     private void drawFooterInfo(PDDocument doc) {
         try {
-            Log.d("CreatePDF","drawFooterInfo() called!");
+            Logging.main("CreatePDF","drawFooterInfo() called!");
             PDFont fontDefault = PDType0Font.load(doc,assetManager.open("calibri.ttf"));
             if(doc.getNumberOfPages() >= 1) {
-                Log.d("CreatePDF","drawFooterInfo():: Number of PDF pages = " + doc.getNumberOfPages());
+                Logging.main("CreatePDF","drawFooterInfo():: Number of PDF pages = " + doc.getNumberOfPages());
                 fontSize = 8;
                 for (int numPages = 0; numPages < doc.getNumberOfPages(); numPages++) {
                     PDPage page = doc.getPage(numPages);
@@ -1242,8 +1242,8 @@ public class CreatePDF {
             }
             //doc.close();
         } catch (IOException ex) {
-            Log.d("CreatePDF","drawFooterInfo():: Could not write page footer lines!");
-            Log.d("CreatePDF","drawFooterInfo():: Exception! " + ex);
+            Logging.main("CreatePDF","drawFooterInfo():: Could not write page footer lines!");
+            Logging.main("CreatePDF","drawFooterInfo():: Exception! " + ex);
         }
     }
 
@@ -1252,8 +1252,8 @@ public class CreatePDF {
             //final ViewGroup viewGroup = (ViewGroup) ((ViewGroup) this.findViewById(android.R.id.content)).getChildAt(0);
 
         } catch (Exception ex) {
-            Log.d("CreatePDF","General Exception unhandled in drawCharts()!");
-            Log.d("CreatePDF","drawCharts():: Exception! " + ex);
+            Logging.main("CreatePDF","General Exception unhandled in drawCharts()!");
+            Logging.main("CreatePDF","drawCharts():: Exception! " + ex);
         }
     }
 

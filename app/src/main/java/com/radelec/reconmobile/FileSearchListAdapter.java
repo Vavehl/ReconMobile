@@ -39,13 +39,13 @@ public class FileSearchListAdapter extends RecyclerView.Adapter<FileSearchListAd
 
         @Override
         public void onClick(View v) {
-            Log.d("FileSearchListAdapter","onClick() pressed! [position = " + getAdapterPosition() + "]");
+            Logging.main("FileSearchListAdapter","onClick() pressed! [position = " + getAdapterPosition() + "]");
             onFileSearchListAdapterListener.onFileSearchListAdapterClick(getAdapterPosition());
             selectedPos = getAdapterPosition();
             if(selectedPos == getAdapterPosition()) {
-                Log.d("FileSearchListAdapter","IT true! selectedPos = " + selectedPos + " // position = " + getAdapterPosition());
+                Logging.main("FileSearchListAdapter","IT true! selectedPos = " + selectedPos + " // position = " + getAdapterPosition());
             } else {
-                Log.d("FileSearchListAdapter","IT false! selectedPos = " + selectedPos + " // position = " + getAdapterPosition());
+                Logging.main("FileSearchListAdapter","IT false! selectedPos = " + selectedPos + " // position = " + getAdapterPosition());
                 Globals.boolClickToLoad = false;
             }
             notifyDataSetChanged();
@@ -60,7 +60,7 @@ public class FileSearchListAdapter extends RecyclerView.Adapter<FileSearchListAd
     @NonNull
     @Override
     public FileSearchListAdapter.ReconFileViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        Log.d("FileSearchListAdapter","FileSearchList.onCreateViewHolder() called!");
+        Logging.main("FileSearchListAdapter","FileSearchList.onCreateViewHolder() called!");
         Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
 
@@ -71,11 +71,11 @@ public class FileSearchListAdapter extends RecyclerView.Adapter<FileSearchListAd
 
     @Override
     public void onBindViewHolder(@NonNull ReconFileViewHolder holder, int position) {
-        Log.d("FileSearchListAdapter","FileSearchList.onBindViewHolder() called!");
+        Logging.main("FileSearchListAdapter","FileSearchList.onBindViewHolder() called!");
         ListDataFiles element = alDataFiles.get(position);
-        Log.d("FileSearchListAdapter","Position [" + position + "] FileName=" + element.getFileName() + " / DateModified=" + element.getDateModified());
+        Logging.main("FileSearchListAdapter","Position [" + position + "] FileName=" + element.getFileName() + " / DateModified=" + element.getDateModified());
         holder.itemView.setSelected(selectedPos == position);
-        Log.d("FileSearchListAdapter","selectedPos=" + selectedPos);
+        Logging.main("FileSearchListAdapter","selectedPos=" + selectedPos);
         if (selectedPos == position) {
             holder.itemView.setBackgroundColor(holder.itemView.getResources().getColor(R.color.colorIvoryText));
             holder.tvFileName.setTextColor(holder.itemView.getResources().getColor(R.color.colorPrimaryDark));
@@ -84,16 +84,16 @@ public class FileSearchListAdapter extends RecyclerView.Adapter<FileSearchListAd
             holder.ibTrashDelete.setVisibility(View.VISIBLE);
             holder.ibTrashDelete.setFocusable(true);
             holder.ibTrashDelete.setOnClickListener(v -> {
-                Log.d("FileSearchListAdapter","Delete icon pressed for selectedPos=" + selectedPos + "!");
+                Logging.main("FileSearchListAdapter","Delete icon pressed for selectedPos=" + selectedPos + "!");
                 String strFileName = alDataFiles.get(position).getFileName();
                 String strFilePath = alDataFiles.get(position).getFilePath();
-                Log.d("FileSearchListAdapter", "DELETING RECON FILE (" + strFileName + ") LOCATED AT " + strFilePath + "...");
+                Logging.main("FileSearchListAdapter", "DELETING RECON FILE (" + strFileName + ") LOCATED AT " + strFilePath + "...");
                 File fileReconDeleted = new File(strFilePath);
                 if (fileReconDeleted.delete()) {
-                    Log.d("FileSearchListAdapter", "File successfully deleted per user request!");
+                    Logging.main("FileSearchListAdapter", "File successfully deleted per user request!");
                     this.notifyItemRemoved(position);
                 } else {
-                    Log.d("FileSearchListAdapter","File not deleted...");
+                    Logging.main("FileSearchListAdapter","File not deleted...");
                 }
             });
         } else {
@@ -110,7 +110,7 @@ public class FileSearchListAdapter extends RecyclerView.Adapter<FileSearchListAd
 
     @Override
     public int getItemCount() {
-        Log.d("FileSearchListAdapter","FileSearchList.getItemCount() called! File count = " + alDataFiles.size());
+        Logging.main("FileSearchListAdapter","FileSearchList.getItemCount() called! File count = " + alDataFiles.size());
         return alDataFiles.size();
     }
 

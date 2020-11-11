@@ -82,7 +82,7 @@ public class SerialSocket implements SerialInputOutputManager.Listener {
     }
 
     void write(byte[] data) throws IOException {
-        Log.d("SerialSocket","write(byte[] data) called!");
+        Logging.main("SerialSocket","write(byte[] data) called!");
         if(serialPort == null)
             throw new IOException("Not Connected to Recon!");
         serialPort.write(data, WRITE_WAIT_MILLIS);
