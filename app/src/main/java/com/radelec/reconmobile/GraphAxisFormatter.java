@@ -1,7 +1,5 @@
 package com.radelec.reconmobile;
 
-import android.util.Log;
-
 import com.github.mikephil.charting.formatter.ValueFormatter;
 
 import java.text.SimpleDateFormat;

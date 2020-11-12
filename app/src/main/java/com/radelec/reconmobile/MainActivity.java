@@ -29,7 +29,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
@@ -42,6 +41,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.text.ParseException;
+import java.util.Objects;
 
 import static com.radelec.reconmobile.Constants.*;
 import static com.radelec.reconmobile.Globals.*;
@@ -249,23 +249,15 @@ public class MainActivity extends AppCompatActivity
         }
 
         //Allow user to close About window by clicking on the X in the upper right
-        btnCloseAbout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialogAbout.dismiss();
-            }
-        });
+        btnCloseAbout.setOnClickListener(view -> dialogAbout.dismiss());
 
         //Allow user to open Rad Elec website by clicking on the link
-        btnWebsite.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                try {
-                    Intent intentRadElecWebsite = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.radelec.com"));
-                    startActivity(intentRadElecWebsite);
-                } catch (ActivityNotFoundException ex) {
-                    Toast.makeText(getApplicationContext(), "No web browser found.", Toast.LENGTH_LONG).show();
-                }
+        btnWebsite.setOnClickListener(view -> {
+            try {
+                Intent intentRadElecWebsite = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.radelec.com"));
+                startActivity(intentRadElecWebsite);
+            } catch (ActivityNotFoundException ex) {
+                Toast.makeText(getApplicationContext(), "No web browser found.", Toast.LENGTH_LONG).show();
             }
         });
 
@@ -447,7 +439,7 @@ public class MainActivity extends AppCompatActivity
         xAxis.setAvoidFirstLastClipping(true);
 
         //Modifiers if SI units are selected.
-        if(Globals.globalUnitType=="SI") {
+        if(Objects.equals(globalUnitType, "SI")) {
             lineDataSet.setLabel("Bq/m³");
             yAxis.setValueFormatter(new DefaultValueFormatter(0));
             lcRadon.invalidate(); //Is this needed?
@@ -570,7 +562,7 @@ public class MainActivity extends AppCompatActivity
         xAxis.setAvoidFirstLastClipping(true);
 
         //Modifiers if SI units are selected.
-        if(Globals.globalUnitType=="SI") {
+        if(Objects.equals(globalUnitType, "SI")) {
             lineDataSet.setLabel("mbar");
             lcPressure.invalidate(); //Is this needed?
         }

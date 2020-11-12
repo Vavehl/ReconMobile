@@ -4,7 +4,6 @@ import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.os.Environment;
-import android.util.Log;
 
 import com.tom_roush.pdfbox.pdmodel.PDDocument;
 import com.tom_roush.pdfbox.pdmodel.PDPage;

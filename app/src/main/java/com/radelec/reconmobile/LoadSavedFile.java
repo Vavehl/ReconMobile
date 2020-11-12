@@ -1,5 +1,4 @@
 package com.radelec.reconmobile;
-import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;

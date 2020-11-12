@@ -12,7 +12,6 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
-import android.util.Log;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
@@ -35,7 +34,7 @@ public class SerialService extends Service implements SerialListener {
 
     private enum QueueType {Connect, ConnectError, Read, IoError}
 
-    private class QueueItem {
+    private static class QueueItem {
         QueueType type;
         byte[] data;
         Exception e;

@@ -2,7 +2,6 @@ package com.radelec.reconmobile;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +16,8 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.DefaultValueFormatter;
+
+import java.util.Objects;
 
 import static com.radelec.reconmobile.Globals.chartdataTemp;
 
@@ -92,7 +93,7 @@ public class ChartTemp extends Fragment {
         xAxis.setAvoidFirstLastClipping(true);
 
         //Modifiers if SI units are selected.
-        if(Globals.globalUnitType=="SI") {
+        if(Objects.equals(Globals.globalUnitType, "SI")) {
             lineDataSet.setLabel("°C");
             lineDataSet.setValueFormatter(new DefaultValueFormatter(1));
             lcTemp.invalidate(); //Is this needed?

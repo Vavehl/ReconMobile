@@ -8,7 +8,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,28 +38,25 @@ public class FragmentSearch extends DialogFragment {
         View view = inflater.inflate(R.layout.fragment_search, container, false);
         ImageView imgCloseSearch = view.findViewById(R.id.imgCloseSearch);
 
-        imgCloseSearch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Logging.main("FragmentSearch","Close button pressed!");
-                Logging.main("FragmentSearch", "Recon Connected? [" + connected + "]");
+        imgCloseSearch.setOnClickListener(v -> {
+            Logging.main("FragmentSearch","Close button pressed!");
+            Logging.main("FragmentSearch", "Recon Connected? [" + connected + "]");
 
-                //BEGIN: Refresh FragmentConnect
-                Fragment frg = null;
-                if (getFragmentManager() != null) {
-                    frg = getFragmentManager().findFragmentByTag("fragConnect");
-                    FragmentTransaction ft = null;
-                    ft = getFragmentManager().beginTransaction();
-                    if (frg != null) {
-                        ft.detach(frg);
-                        ft.attach(frg);
-                        ft.commit();
-                    }
+            //BEGIN: Refresh FragmentConnect
+            Fragment frg = null;
+            if (getFragmentManager() != null) {
+                frg = getFragmentManager().findFragmentByTag("fragConnect");
+                FragmentTransaction ft = null;
+                ft = getFragmentManager().beginTransaction();
+                if (frg != null) {
+                    ft.detach(frg);
+                    ft.attach(frg);
+                    ft.commit();
                 }
-                //END: Refresh FragmentConnect
-
-                dismiss();
             }
+            //END: Refresh FragmentConnect
+
+            dismiss();
         });
 
         //Begin searching for Recons and populate the Dialog fragment with the discovered devices...

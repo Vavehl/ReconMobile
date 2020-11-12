@@ -4,7 +4,6 @@ import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.Shader;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +18,8 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.DefaultValueFormatter;
+
+import java.util.Objects;
 
 import static com.radelec.reconmobile.Globals.chartdataRadon;
 
@@ -98,7 +99,7 @@ public class ChartRadon extends Fragment {
         xAxis.setAvoidFirstLastClipping(true);
 
         //Modifiers if SI units are selected.
-        if(Globals.globalUnitType=="SI") {
+        if(Objects.equals(Globals.globalUnitType, "SI")) {
             lineDataSet.setLabel("Bq/m³");
             yAxis.setValueFormatter(new DefaultValueFormatter(0));
             lcRadon.invalidate(); //Is this needed?

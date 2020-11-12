@@ -5,7 +5,6 @@ package com.radelec.reconmobile;
 
 import android.database.Cursor;
 import android.os.Build;
-import android.util.Log;
 
 import java.io.File;
 import java.io.PrintWriter;

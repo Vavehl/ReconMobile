@@ -15,7 +15,6 @@ import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.Objects;
 
-import static androidx.constraintlayout.widget.ConstraintSet.VISIBLE;
 import static com.radelec.reconmobile.Globals.*;
 
 public class FragmentReport extends Fragment {
@@ -101,242 +100,162 @@ public class FragmentReport extends Fragment {
         etReportText.setText(cursorReportDefaults.getString(12));
 
         //Instrument Location Listener
-        etLocation.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Only overwrite defaults if a file is *NOT* currently loaded!
-                if (connected != ReconConnected.Loaded) db_report.updateData("REPORT_DEFAULTS","INSTRUMENT_LOCATION",etLocation.getText().toString(),"DefaultID");
-            }
+        etLocation.setOnClickListener(v -> {
+            //Only overwrite defaults if a file is *NOT* currently loaded!
+            if (connected != ReconConnected.Loaded) db_report.updateData("REPORT_DEFAULTS","INSTRUMENT_LOCATION",etLocation.getText().toString(),"DefaultID");
         });
-        etLocation.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if ((!hasFocus) && (connected != ReconConnected.Loaded)) {
-                    db_report.updateData("REPORT_DEFAULTS","INSTRUMENT_LOCATION",etLocation.getText().toString(),"DefaultID");
-                } else if(connected == ReconConnected.Loaded) {
-                    loadedLocationDeployed = Objects.requireNonNull(etLocation.getText()).toString();
-                }
+        etLocation.setOnFocusChangeListener((v, hasFocus) -> {
+            if ((!hasFocus) && (connected != ReconConnected.Loaded)) {
+                db_report.updateData("REPORT_DEFAULTS","INSTRUMENT_LOCATION",etLocation.getText().toString(),"DefaultID");
+            } else if(connected == ReconConnected.Loaded) {
+                loadedLocationDeployed = Objects.requireNonNull(etLocation.getText()).toString();
             }
         });
 
         //Customer Listener
-        etCustomer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Only overwrite defaults if a file is *NOT* currently loaded!
-                if (connected != ReconConnected.Loaded) db_report.updateData("REPORT_DEFAULTS","CUSTOMER_INFORMATION",etCustomer.getText().toString(),"DefaultID");
-            }
+        etCustomer.setOnClickListener(v -> {
+            //Only overwrite defaults if a file is *NOT* currently loaded!
+            if (connected != ReconConnected.Loaded) db_report.updateData("REPORT_DEFAULTS","CUSTOMER_INFORMATION",etCustomer.getText().toString(),"DefaultID");
         });
-        etCustomer.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if ((!hasFocus) && (connected != ReconConnected.Loaded)) {
-                    db_report.updateData("REPORT_DEFAULTS","CUSTOMER_INFORMATION",etCustomer.getText().toString(),"DefaultID");
-                } else if(connected == ReconConnected.Loaded) {
-                    loadedCustomerInfo = Objects.requireNonNull(etCustomer.getText()).toString();
-                }
+        etCustomer.setOnFocusChangeListener((v, hasFocus) -> {
+            if ((!hasFocus) && (connected != ReconConnected.Loaded)) {
+                db_report.updateData("REPORT_DEFAULTS","CUSTOMER_INFORMATION",etCustomer.getText().toString(),"DefaultID");
+            } else if(connected == ReconConnected.Loaded) {
+                loadedCustomerInfo = Objects.requireNonNull(etCustomer.getText()).toString();
             }
         });
 
         //Test Site Listener
-        etTestSite.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Only overwrite defaults if a file is *NOT* currently loaded!
-                if (connected != ReconConnected.Loaded) db_report.updateData("REPORT_DEFAULTS","TEST_SITE_INFORMATION",etTestSite.getText().toString(),"DefaultID");
-            }
+        etTestSite.setOnClickListener(v -> {
+            //Only overwrite defaults if a file is *NOT* currently loaded!
+            if (connected != ReconConnected.Loaded) db_report.updateData("REPORT_DEFAULTS","TEST_SITE_INFORMATION",etTestSite.getText().toString(),"DefaultID");
         });
-        etTestSite.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if ((!hasFocus) && (connected != ReconConnected.Loaded)) {
-                    db_report.updateData("REPORT_DEFAULTS","TEST_SITE_INFORMATION",etTestSite.getText().toString(),"DefaultID");
-                } else if(connected == ReconConnected.Loaded) {
-                    loadedTestSiteInfo = Objects.requireNonNull(etTestSite.getText()).toString();
-                }
+        etTestSite.setOnFocusChangeListener((v, hasFocus) -> {
+            if ((!hasFocus) && (connected != ReconConnected.Loaded)) {
+                db_report.updateData("REPORT_DEFAULTS","TEST_SITE_INFORMATION",etTestSite.getText().toString(),"DefaultID");
+            } else if(connected == ReconConnected.Loaded) {
+                loadedTestSiteInfo = Objects.requireNonNull(etTestSite.getText()).toString();
             }
         });
 
         //Email Listener
-        etCustomerEmail.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-            }
+        etCustomerEmail.setOnClickListener(v -> {
         });
-        etCustomerEmail.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                loadedEmail = Objects.requireNonNull(etCustomerEmail.getText()).toString();
-            }
-        });
+        etCustomerEmail.setOnFocusChangeListener((v, hasFocus) -> loadedEmail = Objects.requireNonNull(etCustomerEmail.getText()).toString());
 
         //Deployed By Listener
-        etDeployedBy.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Only overwrite defaults if a file is *NOT* currently loaded!
-                if (connected != ReconConnected.Loaded) db_report.updateData("REPORT_DEFAULTS","DEPLOYED_BY",etDeployedBy.getText().toString(),"DefaultID");
-            }
+        etDeployedBy.setOnClickListener(v -> {
+            //Only overwrite defaults if a file is *NOT* currently loaded!
+            if (connected != ReconConnected.Loaded) db_report.updateData("REPORT_DEFAULTS","DEPLOYED_BY",etDeployedBy.getText().toString(),"DefaultID");
         });
-        etDeployedBy.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if ((!hasFocus) && (connected != ReconConnected.Loaded)) {
-                    db_report.updateData("REPORT_DEFAULTS","DEPLOYED_BY",etDeployedBy.getText().toString(),"DefaultID");
-                } else if(connected == ReconConnected.Loaded) {
-                    loadedDeployedBy = Objects.requireNonNull(etDeployedBy.getText()).toString();
-                }
+        etDeployedBy.setOnFocusChangeListener((v, hasFocus) -> {
+            if ((!hasFocus) && (connected != ReconConnected.Loaded)) {
+                db_report.updateData("REPORT_DEFAULTS","DEPLOYED_BY",etDeployedBy.getText().toString(),"DefaultID");
+            } else if(connected == ReconConnected.Loaded) {
+                loadedDeployedBy = Objects.requireNonNull(etDeployedBy.getText()).toString();
             }
         });
 
         //Retrieved By Listener
-        etRetrievedBy.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Only overwrite defaults if a file is *NOT* currently loaded!
-                if (connected != ReconConnected.Loaded) db_report.updateData("REPORT_DEFAULTS","RETRIEVED_BY",etRetrievedBy.getText().toString(),"DefaultID");
-            }
+        etRetrievedBy.setOnClickListener(v -> {
+            //Only overwrite defaults if a file is *NOT* currently loaded!
+            if (connected != ReconConnected.Loaded) db_report.updateData("REPORT_DEFAULTS","RETRIEVED_BY",etRetrievedBy.getText().toString(),"DefaultID");
         });
-        etRetrievedBy.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if ((!hasFocus) && (connected != ReconConnected.Loaded)) {
-                    db_report.updateData("REPORT_DEFAULTS","RETRIEVED_BY",etRetrievedBy.getText().toString(),"DefaultID");
-                } else if(connected == ReconConnected.Loaded) {
-                    loadedRetrievedBy = Objects.requireNonNull(etRetrievedBy.getText()).toString();
-                }
+        etRetrievedBy.setOnFocusChangeListener((v, hasFocus) -> {
+            if ((!hasFocus) && (connected != ReconConnected.Loaded)) {
+                db_report.updateData("REPORT_DEFAULTS","RETRIEVED_BY",etRetrievedBy.getText().toString(),"DefaultID");
+            } else if(connected == ReconConnected.Loaded) {
+                loadedRetrievedBy = Objects.requireNonNull(etRetrievedBy.getText()).toString();
             }
         });
 
         //Analyzed By Listener
-        etAnalyzedBy.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Only overwrite defaults if a file is *NOT* currently loaded!
-                if (connected != ReconConnected.Loaded) db_report.updateData("REPORT_DEFAULTS","ANALYZED_BY",etAnalyzedBy.getText().toString(),"DefaultID");
-            }
+        etAnalyzedBy.setOnClickListener(v -> {
+            //Only overwrite defaults if a file is *NOT* currently loaded!
+            if (connected != ReconConnected.Loaded) db_report.updateData("REPORT_DEFAULTS","ANALYZED_BY",etAnalyzedBy.getText().toString(),"DefaultID");
         });
-        etAnalyzedBy.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if ((!hasFocus) && (connected != ReconConnected.Loaded)) {
-                    db_report.updateData("REPORT_DEFAULTS","ANALYZED_BY",etAnalyzedBy.getText().toString(),"DefaultID");
-                } else if(connected == ReconConnected.Loaded) {
-                    loadedAnalyzedBy = Objects.requireNonNull(etAnalyzedBy.getText()).toString();
-                }
+        etAnalyzedBy.setOnFocusChangeListener((v, hasFocus) -> {
+            if ((!hasFocus) && (connected != ReconConnected.Loaded)) {
+                db_report.updateData("REPORT_DEFAULTS","ANALYZED_BY",etAnalyzedBy.getText().toString(),"DefaultID");
+            } else if(connected == ReconConnected.Loaded) {
+                loadedAnalyzedBy = Objects.requireNonNull(etAnalyzedBy.getText()).toString();
             }
         });
 
         //Protocol Listener
-        etProtocol.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Only overwrite defaults if a file is *NOT* currently loaded!
-                if (connected != ReconConnected.Loaded) db_report.updateData("REPORT_DEFAULTS","PROTOCOL",etProtocol.getText().toString(),"DefaultID");
-            }
+        etProtocol.setOnClickListener(v -> {
+            //Only overwrite defaults if a file is *NOT* currently loaded!
+            if (connected != ReconConnected.Loaded) db_report.updateData("REPORT_DEFAULTS","PROTOCOL",etProtocol.getText().toString(),"DefaultID");
         });
-        etProtocol.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if ((!hasFocus) && (connected != ReconConnected.Loaded)) {
-                    db_report.updateData("REPORT_DEFAULTS","PROTOCOL",etProtocol.getText().toString(),"DefaultID");
-                } else if(connected == ReconConnected.Loaded) {
-                    loadedReportProtocol = Objects.requireNonNull(etProtocol.getText()).toString();
-                }
+        etProtocol.setOnFocusChangeListener((v, hasFocus) -> {
+            if ((!hasFocus) && (connected != ReconConnected.Loaded)) {
+                db_report.updateData("REPORT_DEFAULTS","PROTOCOL",etProtocol.getText().toString(),"DefaultID");
+            } else if(connected == ReconConnected.Loaded) {
+                loadedReportProtocol = Objects.requireNonNull(etProtocol.getText()).toString();
             }
         });
 
         //Tampering Listener
-        etTampering.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Only overwrite defaults if a file is *NOT* currently loaded!
-                if (connected != ReconConnected.Loaded) db_report.updateData("REPORT_DEFAULTS","TAMPERING",etTampering.getText().toString(),"DefaultID");
-            }
+        etTampering.setOnClickListener(v -> {
+            //Only overwrite defaults if a file is *NOT* currently loaded!
+            if (connected != ReconConnected.Loaded) db_report.updateData("REPORT_DEFAULTS","TAMPERING",etTampering.getText().toString(),"DefaultID");
         });
-        etTampering.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if ((!hasFocus) && (connected != ReconConnected.Loaded)) {
-                    db_report.updateData("REPORT_DEFAULTS","TAMPERING",etTampering.getText().toString(),"DefaultID");
-                } else if(connected == ReconConnected.Loaded) {
-                    loadedReportTampering = Objects.requireNonNull(etTampering.getText()).toString();
-                }
+        etTampering.setOnFocusChangeListener((v, hasFocus) -> {
+            if ((!hasFocus) && (connected != ReconConnected.Loaded)) {
+                db_report.updateData("REPORT_DEFAULTS","TAMPERING",etTampering.getText().toString(),"DefaultID");
+            } else if(connected == ReconConnected.Loaded) {
+                loadedReportTampering = Objects.requireNonNull(etTampering.getText()).toString();
             }
         });
 
         //Weather Listener
-        etWeather.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Only overwrite defaults if a file is *NOT* currently loaded!
-                if (connected != ReconConnected.Loaded) db_report.updateData("REPORT_DEFAULTS","WEATHER",etWeather.getText().toString(),"DefaultID");
-            }
+        etWeather.setOnClickListener(v -> {
+            //Only overwrite defaults if a file is *NOT* currently loaded!
+            if (connected != ReconConnected.Loaded) db_report.updateData("REPORT_DEFAULTS","WEATHER",etWeather.getText().toString(),"DefaultID");
         });
-        etWeather.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if ((!hasFocus) && (connected != ReconConnected.Loaded)) {
-                    db_report.updateData("REPORT_DEFAULTS","WEATHER",etWeather.getText().toString(),"DefaultID");
-                } else if(connected == ReconConnected.Loaded) {
-                    loadedReportWeather = Objects.requireNonNull(etWeather.getText()).toString();
-                }
+        etWeather.setOnFocusChangeListener((v, hasFocus) -> {
+            if ((!hasFocus) && (connected != ReconConnected.Loaded)) {
+                db_report.updateData("REPORT_DEFAULTS","WEATHER",etWeather.getText().toString(),"DefaultID");
+            } else if(connected == ReconConnected.Loaded) {
+                loadedReportWeather = Objects.requireNonNull(etWeather.getText()).toString();
             }
         });
 
         //Mitigation Listener
-        etMitigation.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Only overwrite defaults if a file is *NOT* currently loaded!
-                if (connected != ReconConnected.Loaded) db_report.updateData("REPORT_DEFAULTS","MITIGATION",etMitigation.getText().toString(),"DefaultID");
-            }
+        etMitigation.setOnClickListener(v -> {
+            //Only overwrite defaults if a file is *NOT* currently loaded!
+            if (connected != ReconConnected.Loaded) db_report.updateData("REPORT_DEFAULTS","MITIGATION",etMitigation.getText().toString(),"DefaultID");
         });
-        etMitigation.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if ((!hasFocus) && (connected != ReconConnected.Loaded)) {
-                    db_report.updateData("REPORT_DEFAULTS","MITIGATION",etMitigation.getText().toString(),"DefaultID");
-                } else if(connected == ReconConnected.Loaded) {
-                    loadedReportMitigation = Objects.requireNonNull(etMitigation.getText()).toString();
-                }
+        etMitigation.setOnFocusChangeListener((v, hasFocus) -> {
+            if ((!hasFocus) && (connected != ReconConnected.Loaded)) {
+                db_report.updateData("REPORT_DEFAULTS","MITIGATION",etMitigation.getText().toString(),"DefaultID");
+            } else if(connected == ReconConnected.Loaded) {
+                loadedReportMitigation = Objects.requireNonNull(etMitigation.getText()).toString();
             }
         });
 
         //Comment Listener
-        etComment.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Only overwrite defaults if a file is *NOT* currently loaded!
-                if (connected != ReconConnected.Loaded) db_report.updateData("REPORT_DEFAULTS","COMMENT",etComment.getText().toString(),"DefaultID");
-            }
+        etComment.setOnClickListener(v -> {
+            //Only overwrite defaults if a file is *NOT* currently loaded!
+            if (connected != ReconConnected.Loaded) db_report.updateData("REPORT_DEFAULTS","COMMENT",etComment.getText().toString(),"DefaultID");
         });
-        etComment.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if ((!hasFocus) && (connected != ReconConnected.Loaded)) {
-                    db_report.updateData("REPORT_DEFAULTS","COMMENT",etComment.getText().toString(),"DefaultID");
-                } else if(connected == ReconConnected.Loaded) {
-                    loadedReportComment = Objects.requireNonNull(etComment.getText()).toString();
-                }
+        etComment.setOnFocusChangeListener((v, hasFocus) -> {
+            if ((!hasFocus) && (connected != ReconConnected.Loaded)) {
+                db_report.updateData("REPORT_DEFAULTS","COMMENT",etComment.getText().toString(),"DefaultID");
+            } else if(connected == ReconConnected.Loaded) {
+                loadedReportComment = Objects.requireNonNull(etComment.getText()).toString();
             }
         });
 
         //Report Text Listener
-        etReportText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Only overwrite defaults if a file is *NOT* currently loaded!
-                if (connected != ReconConnected.Loaded) db_report.updateData("REPORT_DEFAULTS","REPORT_TEXT",etReportText.getText().toString(),"DefaultID");
-            }
+        etReportText.setOnClickListener(v -> {
+            //Only overwrite defaults if a file is *NOT* currently loaded!
+            if (connected != ReconConnected.Loaded) db_report.updateData("REPORT_DEFAULTS","REPORT_TEXT",etReportText.getText().toString(),"DefaultID");
         });
-        etReportText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                //Report Text isn't (currently) stored in the data file -- should we begin saving it to the file?
-                if ((!hasFocus) && (connected != ReconConnected.Loaded)) {
-                    db_report.updateData("REPORT_DEFAULTS","REPORT_TEXT",etReportText.getText().toString(),"DefaultID");
-                }
+        etReportText.setOnFocusChangeListener((v, hasFocus) -> {
+            //Report Text isn't (currently) stored in the data file -- should we begin saving it to the file?
+            if ((!hasFocus) && (connected != ReconConnected.Loaded)) {
+                db_report.updateData("REPORT_DEFAULTS","REPORT_TEXT",etReportText.getText().toString(),"DefaultID");
             }
         });
 

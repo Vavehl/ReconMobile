@@ -1,17 +1,12 @@
 package com.radelec.reconmobile;
 
-import android.graphics.Bitmap;
 import android.os.Build;
-import android.util.Log;
-import android.view.View;
 
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
 
-import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;

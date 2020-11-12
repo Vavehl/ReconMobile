@@ -1,7 +1,6 @@
 package com.radelec.reconmobile;
 
 import android.database.Cursor;
-import android.util.Log;
 
 import java.io.File;
 import java.text.DateFormat;

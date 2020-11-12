@@ -1,8 +1,6 @@
 // Simple class to handle updating of text file if the user wants to save/update/edit in-app
 package com.radelec.reconmobile;
 
-import android.util.Log;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;

@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.hardware.usb.UsbDeviceConnection;
-import android.util.Log;
 
 import com.hoho.android.usbserial.driver.UsbSerialPort;
 import com.hoho.android.usbserial.util.SerialInputOutputManager;
