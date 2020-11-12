@@ -21,6 +21,7 @@
     <string name="instrument_location">Instrument Location</string>
     <string name="customer_information_address">Customer Information / Address</string>
     <string name="test_site_information_address">Test Site Information / Address</string>
+    <string name="customer_email">Email</string>
     <string name="deployed_by">Deployed By</string>
     <string name="retrieved_by">Retrieved By</string>
     <string name="analyzed_by">Analyzed By</string>

@@ -11,9 +11,11 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.Objects;
 
+import static androidx.constraintlayout.widget.ConstraintSet.VISIBLE;
 import static com.radelec.reconmobile.Globals.*;
 
 public class FragmentReport extends Fragment {
@@ -41,6 +43,8 @@ public class FragmentReport extends Fragment {
         final TextInputEditText etMitigation;
         final TextInputEditText etComment;
         final TextInputEditText etReportText;
+        final TextInputEditText etCustomerEmail;
+        final TextInputLayout layoutCustomerEmail;
 
         etLocation = view.findViewById(R.id.reports_location);
         etCustomer = view.findViewById(R.id.reports_customer);
@@ -54,6 +58,8 @@ public class FragmentReport extends Fragment {
         etMitigation = view.findViewById(R.id.reports_mitigation);
         etComment = view.findViewById(R.id.reports_comment);
         etReportText = view.findViewById(R.id.reports_text);
+        etCustomerEmail = view.findViewById(R.id.customer_email);
+        layoutCustomerEmail = view.findViewById(R.id.layout_customer_email);
 
         //Pull the Report Defaults in the database with a Cursor class...
         Cursor cursorReportDefaults;
@@ -72,6 +78,8 @@ public class FragmentReport extends Fragment {
             etWeather.setText(loadedReportWeather);
             etMitigation.setText(loadedReportMitigation);
             etComment.setText(loadedReportComment);
+            etCustomerEmail.setText(loadedEmail);
+            layoutCustomerEmail.setVisibility(View.VISIBLE); //Show Customer Email when Reports tab is displayed / file is loaded!
         } else {
             //Set the Report Defaults to the TextInputEditText boxes
             //No need to set defaults for Customer or Test Site, as these will change every time...
@@ -86,6 +94,7 @@ public class FragmentReport extends Fragment {
             etWeather.setText(cursorReportDefaults.getString(9));
             etMitigation.setText(cursorReportDefaults.getString(10));
             etComment.setText(cursorReportDefaults.getString(11));
+            layoutCustomerEmail.setVisibility(View.GONE); //Hide Customer Email when Defaults tab is displayed!
         }
 
         //Report Text default will always be the same, at least for now...
