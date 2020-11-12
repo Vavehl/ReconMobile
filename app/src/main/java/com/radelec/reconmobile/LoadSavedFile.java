@@ -180,7 +180,7 @@ public class LoadSavedFile {
                             loadedLocationDeployed = strRoomDeployed;
                             Logging.main("LoadSavedFile","Location found and parsed: " + loadedLocationDeployed);
                         } else if(strLine.length() > 5 && strLine.substring(0,6).contains("Email:")) {
-                            strEmail = strLine.substring(5).trim();
+                            strEmail = strLine.substring(6).trim();
                             loadedEmail = strEmail;
                             Logging.main("LoadSavedFile","Email found and parsed: " + loadedEmail);
                         }

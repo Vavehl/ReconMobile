@@ -353,7 +353,7 @@ public class MainActivity extends AppCompatActivity
                 e.printStackTrace();
             }
 
-            String[] recipient_email = {"info@radelec.com"};
+            String[] recipient_email = {loadedEmail};
             String[] self_email = {db.getCompanyEmail()};
             String subject = "Radon Test Report";
             String body = "Please find attached your radon test results!";

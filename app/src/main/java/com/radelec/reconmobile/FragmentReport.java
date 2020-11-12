@@ -157,6 +157,19 @@ public class FragmentReport extends Fragment {
             }
         });
 
+        //Email Listener
+        etCustomerEmail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+            }
+        });
+        etCustomerEmail.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                loadedEmail = Objects.requireNonNull(etCustomerEmail.getText()).toString();
+            }
+        });
+
         //Deployed By Listener
         etDeployedBy.setOnClickListener(new View.OnClickListener() {
             @Override

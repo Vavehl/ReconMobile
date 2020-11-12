@@ -128,7 +128,7 @@ public class SaveFile {
 
                     if(workingFile.get(i).contains("Email:")) {
                         workingFile.remove(i);
-                        workingFile.add(i,"Email: ");
+                        workingFile.add(i,"Email: " + Globals.loadedEmail);
                     }
                 }
             }
