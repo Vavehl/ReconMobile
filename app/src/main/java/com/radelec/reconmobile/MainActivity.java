@@ -29,6 +29,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.os.Environment;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
@@ -68,7 +69,7 @@ public class MainActivity extends AppCompatActivity
         imageDir = getApplicationContext().getDir("images",MODE_PRIVATE);
         logsDir = getApplicationContext().getDir("logs",MODE_PRIVATE);
 
-        Logging.createLogFile();
+        Logging.prepareLogging();
 
         setContentView(R.layout.activity_main);
         TabLayout tabLayout = findViewById(R.id.tabLayout_Main);
@@ -171,6 +172,12 @@ public class MainActivity extends AppCompatActivity
         });
     }
 
+    public void onDestroy() {
+        Logging.main("MainActivity","onDestroy() called!");
+        super.onDestroy();
+        createLogcat();
+    }
+
     public void onBackStackChanged() {
         Logging.main("MainActivity","onBackStackChanged() called!");
         //getSupportActionBar().setDisplayHomeAsUpEnabled(getSupportFragmentManager().getBackStackEntryCount()>0);
@@ -206,6 +213,9 @@ public class MainActivity extends AppCompatActivity
                 return true;
             case R.id.menu_company:
                 showMyCompany();
+                return true;
+            case R.id.report_bugs:
+                emailLog();
                 return true;
             case R.id.menu_exit:
                 System.exit(0);
@@ -374,6 +384,45 @@ public class MainActivity extends AppCompatActivity
             }
         } catch (ActivityNotFoundException ex) {
             Logging.main("MainActivity","emailPDF(): Email client not found?");
+        }
+    }
+
+    public void emailLog(){
+        Logging.main("MainActivity","emailLog() called!");
+        File fileLastLog = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + File.separator + "ReconMobile.log");
+        String[] recipient_email = {"lcstieff@radelec.com"};
+        String subject = "Recon Mobile Bug Report";
+        String body = "Here is the latest bug report / log file!";
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        Uri data = Uri.parse("mailto:");
+        intent.putExtra(Intent.EXTRA_EMAIL, recipient_email);
+        intent.putExtra(Intent.EXTRA_SUBJECT, subject);
+        intent.putExtra(Intent.EXTRA_TEXT, body);
+        if (fileLastLog.exists()) {
+            Logging.main("MainActivity", "emailLog(): Attempting to attach ReconMobile.log!");
+            intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(fileLastLog));
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        } else {
+            Logging.main("MainActivity", "emailLog(): No accessible log file found for attachment!");
+        }
+        intent.setData(data);
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(Intent.createChooser(intent, "Creating email..."), 12);
+        } else {
+            Toast msgEmail = Toast.makeText(getApplicationContext(), "Unable to launch email client...", Toast.LENGTH_SHORT);
+            msgEmail.show();
+        }
+    }
+
+    public void createLogcat(){
+        Logging.main("MainActivity","createLog() called!");
+        File outputFile = new File(logsDir + File.separator, "logcat.txt");
+        try {
+            Runtime.getRuntime().exec(
+                    "logcat -f " + outputFile.getAbsolutePath());
+        } catch (IOException e) {
+            Logging.main("MainActivity","Exception when creating logcat.txt!");
+            e.printStackTrace();
         }
     }
 

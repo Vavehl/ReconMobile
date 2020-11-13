@@ -33,6 +33,7 @@
     <string name="report_text">Report Text</string>
     <string name="settings">Settings</string>
     <string name="save_file">Save</string>
+    <string name="report_bugs">Report Bugs!</string>
     <string name="graph_radon">Radon</string>
     <string name="graph_pressure">Pressure</string>
     <string name="graph_humidity">Humidity</string>

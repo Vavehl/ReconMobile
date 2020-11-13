@@ -24,6 +24,11 @@
         android:title="@string/settings"
         app:showAsAction="ifRoom" />
     <item
+        android:id="@+id/report_bugs"
+        android:icon="@drawable/ic_bug_report_24px"
+        android:title="@string/report_bugs"
+        app:showAsAction="ifRoom" />
+    <item
         android:id="@+id/menu_exit"
         android:title="@string/exit" />
 </menu>
