@@ -8,9 +8,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.nio.channels.FileChannel;
 import java.util.logging.FileHandler;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
@@ -21,7 +20,7 @@ public class Logging {
     private static FileHandler logHandler;
 
     public static void main(String strTag, String strLog) {
-        if(Globals.boolInitializedLogging == false) {
+        if(!Globals.boolInitializedLogging) {
             prepareLogging();
             Globals.boolInitializedLogging = true;
         }
@@ -48,36 +47,51 @@ public class Logging {
         }
     }
 
-    public static void copyLogFile() throws IOException {
-        Log.d("Logging","copyLogFile() called!");
-        try (InputStream in = new FileInputStream(Globals.logsDir + File.separator + "ReconMobile.log")) {
-            File filePublicLog = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + File.separator + "ReconMobile.log");
-            Log.d("Logging","Creating ReconMobile.log in public downloads directory...");
-            if (!(filePublicLog.exists())) {
-                PrintWriter pw = null;
-                pw = new PrintWriter(filePublicLog);
-                pw.close();
-            }
-            if (filePublicLog.exists()) {
-                Log.d("Logging", "Copying old log to public directory...");
-                try (OutputStream out = new FileOutputStream(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + File.separator + "ReconMobile.log")) {
-                    // Transfer bytes from in to out
-                    byte[] buf = new byte[1024];
-                    int len;
-                    while ((len = in.read(buf)) > 0) {
-                        out.write(buf, 0, len);
-                    }
-                }
-            } else {
-                Log.d("Logging","Unable to create public ReconMobile.log!");
-            }
+    public static void exportLogFile(String strSuffix) throws IOException {
+
+        Log.d("Logging","exportLogFile() called!");
+        String strPublicLogPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + File.separator + "ReconMobile" + (strSuffix.length() > 0 ? strSuffix + ".log" : ".log");
+
+        File src = new File(Globals.logsDir + File.separator + "ReconMobile.log");
+        File dst = new File(strPublicLogPath);
+
+        Log.d("Logging","SRC = " + src.getAbsolutePath() + " (" + src.length()/1024 + " kb) // DST = " + dst.getAbsolutePath());
+
+        if (!(dst.exists())) {
+            PrintWriter pw = null;
+            pw = new PrintWriter(dst);
+            pw.close();
+        } else {
+            Log.d("Logging","Public-accessible ReconMobile" + (strSuffix.length() > 0 ? strSuffix : "") + ".log already exists!");
+        }
+
+        File expFile = new File(strPublicLogPath);
+
+        FileChannel inChannel = null;
+        FileChannel outChannel = null;
+
+        try {
+            inChannel = new FileInputStream(src).getChannel();
+            outChannel = new FileOutputStream(expFile).getChannel();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            inChannel.transferTo(0, inChannel.size(), outChannel);
+        } finally {
+            if (inChannel != null)
+                inChannel.close();
+            if (outChannel != null)
+                outChannel.close();
         }
     }
 
     public static void prepareLogging() {
         try {
-            System.out.println("Initiating logging system...");
-            copyLogFile();
+            System.out.println("Initializing logging system...");
+            //copyLogFile("_last");
+            exportLogFile("_last");
             createLogFile();
             logHandler = new FileHandler(Globals.logsDir + File.separator + "ReconMobile.log");
             logger.addHandler(logHandler);

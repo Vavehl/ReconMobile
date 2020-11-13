@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity
         imageDir = getApplicationContext().getDir("images",MODE_PRIVATE);
         logsDir = getApplicationContext().getDir("logs",MODE_PRIVATE);
 
-        Logging.prepareLogging();
+        //Logging.prepareLogging();
 
         setContentView(R.layout.activity_main);
         TabLayout tabLayout = findViewById(R.id.tabLayout_Main);
@@ -389,7 +389,13 @@ public class MainActivity extends AppCompatActivity
 
     public void emailLog(){
         Logging.main("MainActivity","emailLog() called!");
-        File fileLastLog = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + File.separator + "ReconMobile.log");
+        File fileLastLog = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + File.separator + "ReconMobile_last.log");
+        /*try {
+            Logging.exportLogFile("_current");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }*/
+        File fileCurrentLog = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + File.separator + "ReconMobile_current.log");
         String[] recipient_email = {"lcstieff@radelec.com"};
         String subject = "Recon Mobile Bug Report";
         String body = "Here is the latest bug report / log file!";
@@ -401,6 +407,7 @@ public class MainActivity extends AppCompatActivity
         if (fileLastLog.exists()) {
             Logging.main("MainActivity", "emailLog(): Attempting to attach ReconMobile.log!");
             intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(fileLastLog));
+            //intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(fileCurrentLog));
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         } else {
             Logging.main("MainActivity", "emailLog(): No accessible log file found for attachment!");
