@@ -29,16 +29,19 @@ public class DetermineFileName {
         Pattern acceptableFilenameChars = Pattern.compile("[a-zA-Z0-9\\-\\_\\.]*");
         Matcher patternMatcher;
 
-        Cursor cursorReportDefaults;
-        cursorReportDefaults = globalDBDefaults.getReportDefaultData();
-        cursorReportDefaults.moveToFirst(); //Critical to moveToFirst() here, or else we're sitting at an invalid index.
-
         // Get the first line of Test Site Info in case we need it:
-        String[] testSiteArray = cursorReportDefaults.getString(3).split("\\r?\\n");
-        String testSite = testSiteArray[0];
-        testSite = testSite.replaceAll("[\\n\\r+]", "");
-        testSite = testSite.replaceAll(" ",""); //Let's get rid of spaces, too... just in case.
-        testSite = testSite.replaceAll("\\.",""); //And periods, just for good measure.
+        String testSite;
+        try {
+            String[] testSiteArray = loadedTestSiteInfo.split("\\r?\\n");
+            testSite = testSiteArray[0];
+            testSite = testSite.replaceAll("[\\n\\r+]", "");
+            testSite = testSite.replaceAll(" ", ""); //Let's get rid of spaces, too... just in case.
+            testSite = testSite.replaceAll("\\.", ""); //And periods, just for good measure.
+        } catch (Exception ex) {
+            Logging.main("DetermineFileName","ERROR: determineFileName() Assigning value from Globals.loadedTestSiteInfo to testSite string; assigning testSite default value of RadonTest.");
+            Logging.main("DetermineFileName",ex.toString());
+            testSite = "RadonTest";
+        }
 
         //This while loop will check for user input and determine if we need to tack a number onto the end of the filename to avoid overwrites.
         while(DoesReconFileExist) {
@@ -108,7 +111,7 @@ public class DetermineFileName {
         Logging.main("DetermineFileName","SetDefaultFileName() called!");
         DateFormat dateFormat = new SimpleDateFormat("MMddyyyy");
         Calendar cal = Calendar.getInstance();
-        String ConfirmSN = globalReconSerial;
+        String ConfirmSN = (globalReconSerial.length() > 0) ? globalReconSerial : "Recon";
         dateFormat.setCalendar(cal);
         String strFileName = "Recon_" + ConfirmSN + "_" + dateFormat.format(cal.getTime());
         Logging.main("DetermineFileName","Default FileName (if employed) = " + strFileName);
