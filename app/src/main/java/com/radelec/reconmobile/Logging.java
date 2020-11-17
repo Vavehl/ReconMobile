@@ -48,7 +48,7 @@ public class Logging {
         Log.d("Logging","Logging.createLogFile() called!");
         File logFile = new File(Globals.logsDir + File.separator + "ReconMobile.log");
         try {
-            PrintWriter pw = null;
+            PrintWriter pw;
             if (!(logFile.exists())) {
                 pw = new PrintWriter(logFile);
                 pw.close();
@@ -81,7 +81,7 @@ public class Logging {
 
         try {
             if (!(dst.exists())) {
-                PrintWriter pw = null;
+                PrintWriter pw;
                 pw = new PrintWriter(dst);
                 pw.close();
             } else {
@@ -97,8 +97,8 @@ public class Logging {
 
         File expFile = new File(strPublicLogPath);
 
-        FileChannel inChannel = null;
-        FileChannel outChannel = null;
+        FileChannel inChannel;
+        FileChannel outChannel;
 
         try {
             inChannel = new FileInputStream(src).getChannel();
