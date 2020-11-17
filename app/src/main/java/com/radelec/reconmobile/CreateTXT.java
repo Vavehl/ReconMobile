@@ -29,10 +29,10 @@ public class CreateTXT {
     public static void main() {
 
         Logging.main("CreateTXT","CreateTXT() called!");
-        String ReconWaitTime = "Unknown";
-        String ReconDurationSetting = "Unknown";
-        String ReconCalDate = "Unknown";
-        String strInstrumentSerial = "Unknown";
+        String ReconWaitTime;
+        String ReconDurationSetting;
+        String ReconCalDate;
+        String strInstrumentSerial;
 
         double AvgHumidity = 0;
         double AvgTemperature = 0;
@@ -40,8 +40,8 @@ public class CreateTXT {
         long TotalMovements = 0;
         long TotalChamber1Counts = 0;
         long TotalChamber2Counts = 0;
-        double CF1 = 0;
-        double CF2 = 0;
+        double CF1;
+        double CF2;
         boolean BeginAveraging = false;
         long ActiveRecordCounts = 0;
         int TempYear = 0;
@@ -86,13 +86,35 @@ public class CreateTXT {
         //List<Entry> listRadon = new ArrayList<Entry>();
 
         // pull CF's
-        CF1 = globalReconCF1; //We need to add error-handling for this...
-        CF2 = globalReconCF2; //We need to add error-handling for this, too...
-        ReconCalDate = globalReconCalibrationDate;
-        strInstrumentSerial = globalReconSerial;
+        try {
+            CF1 = globalReconCF1;
+        } catch (Exception ex) {
+            Logging.main("CreateTXT", "WARNING! Unable to parse CF1! Defaulting to 6...");
+            CF1 = 6;
+        }
+        try {
+            CF2 = globalReconCF2;
+        } catch (Exception ex) {
+            Logging.main("CreateTXT", "WARNING !Unable to parse CF2! Defaulting to 6...");
+            CF2 = 6;
+        }
 
-        ReconWaitTime = arrayDataSession.get(0)[12]; //Needs error handling!
-        ReconDurationSetting = arrayDataSession.get(0)[13]; //Needs error handling!
+        ReconCalDate = globalReconCalibrationDate.length() > 0 ? globalReconCalibrationDate : "Unknown";
+        strInstrumentSerial = globalReconSerial.length() > 0 ? globalReconSerial : "Unknown";
+
+        try {
+            ReconWaitTime = arrayDataSession.get(0)[12];
+        } catch (Exception ex) {
+            Logging.main("CreateTXT","WARNING: Unable to parse ReconWaitTime from arrayDatasession!");
+            ReconWaitTime = "Unknown";
+        }
+
+        try {
+            ReconDurationSetting = arrayDataSession.get(0)[13]; //Needs error handling!
+        } catch (Exception ex) {
+            Logging.main("CreateTXT","WARNING: Unable to parse ReconDurationSetting from arrayDatasession!");
+            ReconDurationSetting = "Unknown";
+        }
 
         Cursor cursorReportDefaults;
         cursorReportDefaults = globalDBDefaults.getReportDefaultData();
@@ -130,7 +152,7 @@ public class CreateTXT {
                         deprecatedStartDate.setSeconds(Integer.parseInt(arrayDataSession.get(sessionCounter)[8]));
                     }
                 }
-                if (arrayDataSession.get(sessionCounter)[2].equals("I") && BeginAveraging == true) {
+                if (arrayDataSession.get(sessionCounter)[2].equals("I") && BeginAveraging) {
                     tenMinuteCounter++;
                 }
 
