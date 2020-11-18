@@ -10,6 +10,7 @@ import com.tom_roush.pdfbox.pdmodel.PDPage;
 import com.tom_roush.pdfbox.pdmodel.PDPageContentStream;
 import com.tom_roush.pdfbox.pdmodel.font.PDFont;
 import com.tom_roush.pdfbox.pdmodel.font.PDType0Font;
+import com.tom_roush.pdfbox.pdmodel.font.PDType1Font;
 import com.tom_roush.pdfbox.pdmodel.common.PDRectangle;
 import com.tom_roush.pdfbox.pdmodel.graphics.image.PDImageXObject;
 
@@ -127,8 +128,21 @@ public class CreatePDF {
             doc.addPage(page);
 
             //Declare the fonts
-            PDFont fontDefault = PDType0Font.load(doc,assetManager.open("calibri.ttf"));
-            PDFont fontBold = PDType0Font.load(doc,assetManager.open("calibri_bold.ttf"));
+            PDFont fontDefault;
+            try {
+                fontDefault = PDType0Font.load(doc, assetManager.open("calibri.ttf"));
+            } catch (Exception ex) {
+                Logging.main("CreatePDF","ERROR: Exception encountered when trying to assign fontDefault as calibri.ttf! Defaulting to Helvetica...");
+                fontDefault = PDType1Font.HELVETICA;
+            }
+
+            PDFont fontBold;
+            try {
+                fontBold = PDType0Font.load(doc, assetManager.open("calibri_bold.ttf"));
+            } catch (Exception ex) {
+                Logging.main("CreatePDF","ERROR: Exception encountered when trying to assign fontBold as calibri_bold.ttf! Defaulting to Helvetica...");
+                fontBold = PDType1Font.HELVETICA_BOLD;
+            }
 
             PDPageContentStream contents = new PDPageContentStream(doc, page);
 
