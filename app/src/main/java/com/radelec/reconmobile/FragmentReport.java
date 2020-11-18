@@ -108,7 +108,7 @@ public class FragmentReport extends Fragment {
             if ((!hasFocus) && (connected != ReconConnected.Loaded)) {
                 db_report.updateData("REPORT_DEFAULTS","INSTRUMENT_LOCATION",etLocation.getText().toString(),"DefaultID");
             } else if(connected == ReconConnected.Loaded) {
-                loadedLocationDeployed = Objects.requireNonNull(etLocation.getText()).toString();
+                loadedLocationDeployed = (etLocation != null) ? Objects.requireNonNull(etLocation.getText()).toString() : "";
             }
         });
 
@@ -121,7 +121,7 @@ public class FragmentReport extends Fragment {
             if ((!hasFocus) && (connected != ReconConnected.Loaded)) {
                 db_report.updateData("REPORT_DEFAULTS","CUSTOMER_INFORMATION",etCustomer.getText().toString(),"DefaultID");
             } else if(connected == ReconConnected.Loaded) {
-                loadedCustomerInfo = Objects.requireNonNull(etCustomer.getText()).toString();
+                loadedCustomerInfo = (etCustomer != null) ? Objects.requireNonNull(etCustomer.getText()).toString() : "";
             }
         });
 
@@ -134,7 +134,7 @@ public class FragmentReport extends Fragment {
             if ((!hasFocus) && (connected != ReconConnected.Loaded)) {
                 db_report.updateData("REPORT_DEFAULTS","TEST_SITE_INFORMATION",etTestSite.getText().toString(),"DefaultID");
             } else if(connected == ReconConnected.Loaded) {
-                loadedTestSiteInfo = Objects.requireNonNull(etTestSite.getText()).toString();
+                loadedTestSiteInfo = (etTestSite != null) ? Objects.requireNonNull(etTestSite.getText()).toString() : "";
             }
         });
 
@@ -152,7 +152,7 @@ public class FragmentReport extends Fragment {
             if ((!hasFocus) && (connected != ReconConnected.Loaded)) {
                 db_report.updateData("REPORT_DEFAULTS","DEPLOYED_BY",etDeployedBy.getText().toString(),"DefaultID");
             } else if(connected == ReconConnected.Loaded) {
-                loadedDeployedBy = Objects.requireNonNull(etDeployedBy.getText()).toString();
+                loadedDeployedBy = (etDeployedBy != null) ? Objects.requireNonNull(etDeployedBy.getText()).toString() : "";
             }
         });
 
@@ -165,7 +165,7 @@ public class FragmentReport extends Fragment {
             if ((!hasFocus) && (connected != ReconConnected.Loaded)) {
                 db_report.updateData("REPORT_DEFAULTS","RETRIEVED_BY",etRetrievedBy.getText().toString(),"DefaultID");
             } else if(connected == ReconConnected.Loaded) {
-                loadedRetrievedBy = Objects.requireNonNull(etRetrievedBy.getText()).toString();
+                loadedRetrievedBy = (etRetrievedBy != null) ? Objects.requireNonNull(etRetrievedBy.getText()).toString() : "";
             }
         });
 
@@ -178,7 +178,7 @@ public class FragmentReport extends Fragment {
             if ((!hasFocus) && (connected != ReconConnected.Loaded)) {
                 db_report.updateData("REPORT_DEFAULTS","ANALYZED_BY",etAnalyzedBy.getText().toString(),"DefaultID");
             } else if(connected == ReconConnected.Loaded) {
-                loadedAnalyzedBy = Objects.requireNonNull(etAnalyzedBy.getText()).toString();
+                loadedAnalyzedBy = (etAnalyzedBy != null) ? Objects.requireNonNull(etAnalyzedBy.getText()).toString() : "";
             }
         });
 
@@ -191,7 +191,7 @@ public class FragmentReport extends Fragment {
             if ((!hasFocus) && (connected != ReconConnected.Loaded)) {
                 db_report.updateData("REPORT_DEFAULTS","PROTOCOL",etProtocol.getText().toString(),"DefaultID");
             } else if(connected == ReconConnected.Loaded) {
-                loadedReportProtocol = Objects.requireNonNull(etProtocol.getText()).toString();
+                loadedReportProtocol = (etProtocol != null) ? Objects.requireNonNull(etProtocol.getText()).toString() : "";
             }
         });
 
@@ -204,7 +204,7 @@ public class FragmentReport extends Fragment {
             if ((!hasFocus) && (connected != ReconConnected.Loaded)) {
                 db_report.updateData("REPORT_DEFAULTS","TAMPERING",etTampering.getText().toString(),"DefaultID");
             } else if(connected == ReconConnected.Loaded) {
-                loadedReportTampering = Objects.requireNonNull(etTampering.getText()).toString();
+                loadedReportTampering = (etTampering != null) ? Objects.requireNonNull(etTampering.getText()).toString() : "";
             }
         });
 
@@ -217,7 +217,7 @@ public class FragmentReport extends Fragment {
             if ((!hasFocus) && (connected != ReconConnected.Loaded)) {
                 db_report.updateData("REPORT_DEFAULTS","WEATHER",etWeather.getText().toString(),"DefaultID");
             } else if(connected == ReconConnected.Loaded) {
-                loadedReportWeather = Objects.requireNonNull(etWeather.getText()).toString();
+                loadedReportWeather = (etWeather != null) ? Objects.requireNonNull(etWeather.getText()).toString() : "";
             }
         });
 
@@ -230,7 +230,7 @@ public class FragmentReport extends Fragment {
             if ((!hasFocus) && (connected != ReconConnected.Loaded)) {
                 db_report.updateData("REPORT_DEFAULTS","MITIGATION",etMitigation.getText().toString(),"DefaultID");
             } else if(connected == ReconConnected.Loaded) {
-                loadedReportMitigation = Objects.requireNonNull(etMitigation.getText()).toString();
+                loadedReportMitigation = (etMitigation != null) ? Objects.requireNonNull(etMitigation.getText()).toString() : "";
             }
         });
 
@@ -243,7 +243,7 @@ public class FragmentReport extends Fragment {
             if ((!hasFocus) && (connected != ReconConnected.Loaded)) {
                 db_report.updateData("REPORT_DEFAULTS","COMMENT",etComment.getText().toString(),"DefaultID");
             } else if(connected == ReconConnected.Loaded) {
-                loadedReportComment = Objects.requireNonNull(etComment.getText()).toString();
+                loadedReportComment = (etComment != null) ? Objects.requireNonNull(etComment.getText()).toString() : "";
             }
         });
 
