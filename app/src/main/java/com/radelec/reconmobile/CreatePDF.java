@@ -149,7 +149,7 @@ public class CreatePDF {
             //Company Info Block
             GetCompanyInfo(); //pull info from the company.txt file, so that we can toss that info onto the PDF.
             if(boolFoundCompanyLogo) {
-                drawCompanyLogo(doc, contents, page);;
+                drawCompanyLogo(doc, contents, page);
             } else {
                 DrawCompanyHeader(contents, fontDefault);
             }
@@ -776,11 +776,6 @@ public class CreatePDF {
             contents.lineTo(page.getMediaBox().getWidth() - marginSide, PDF_Y); //getting ready to draw a line (ending coordinates)
             contents.stroke(); //draw the line, starting at moveTo and ending at lineTo
 
-            //Pull DB Info
-            Cursor cursorReportDefaults;
-            cursorReportDefaults = db.getReportDefaultData();
-            cursorReportDefaults.moveToFirst(); //Critical to moveToFirst() here, or else we're sitting at an invalid index.
-
             //Customer Info Block
             contents.beginText(); //write the customer info
             String textLine = "Customer Information:";
@@ -793,7 +788,7 @@ public class CreatePDF {
             contents.showText(textLine);
             contents.newLine();
             contents.setFont(fontDefault, fontSize);
-            String[] CustomerInfo_parsed = cursorReportDefaults.getString(2).split(Constants.newlinePDF);
+            String[] CustomerInfo_parsed = loadedCustomerInfo.split(Constants.newlinePDF);
             for(int i = 0; i < CustomerInfo_parsed.length; i++) {
                 textLine = CustomerInfo_parsed[i].replaceAll("\\t"," ").trim();
                 if ((fontDefault.getStringWidth(textLine) / 1000 * fontSize) > textWidth) {
@@ -814,7 +809,7 @@ public class CreatePDF {
             contents.showText(textLine);
             contents.newLine();
             contents.setFont(fontDefault, fontSize);
-            String[] TestSiteInfo_parsed = cursorReportDefaults.getString(3).split(Constants.newlinePDF);
+            String[] TestSiteInfo_parsed = loadedTestSiteInfo.split(Constants.newlinePDF);
             for(int i = 0; i < TestSiteInfo_parsed.length; i++) {
                 textLine = TestSiteInfo_parsed[i].replaceAll("\\t"," ").trim();
                 if ((fontDefault.getStringWidth(textLine) / 1000 * fontSize) > textWidth) {
