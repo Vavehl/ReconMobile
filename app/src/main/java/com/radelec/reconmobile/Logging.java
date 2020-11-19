@@ -20,7 +20,6 @@ public class Logging {
 
     public static void main(String strTag, String strLog) {
         try {
-            Log.d("Logging","Logging.main() called!");
             if (!Globals.boolInitializedLogging) {
                 prepareLogging();
                 Globals.boolInitializedLogging = true;
@@ -34,7 +33,6 @@ public class Logging {
 
     public static void log(String strTag, String strLog) {
         try {
-            Log.d("Logging","Logging.log() called!");
             logger.setUseParentHandlers(false);
             logger.info(strTag + ": " + strLog);
             Log.d(strTag, strLog);
