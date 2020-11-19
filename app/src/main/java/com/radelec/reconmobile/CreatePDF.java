@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import static com.radelec.reconmobile.Constants.version_build;
 import static com.radelec.reconmobile.Globals.*;
@@ -47,12 +48,12 @@ public class CreatePDF {
     private static PDImageXObject imageCompanyLogo = null;
 
     float PDF_Y = 0;
-    SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy");
-    SimpleDateFormat dateDetailedReport = new SimpleDateFormat("MMM-dd-yyyy HH:mm");
-    SimpleDateFormat dateArrayCounter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-    static String validDate = "MM/dd/yyyy";
+    SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy", Locale.US);
+    SimpleDateFormat dateDetailedReport = new SimpleDateFormat("MMM-dd-yyyy HH:mm", Locale.US);
+    SimpleDateFormat dateArrayCounter = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.US);
+    static String validDate = "dd-MMM-yyyy";
     static String validDateTimeForPDF = "yyyy-mm-dd HH:mm";
-    SimpleDateFormat dateFormatCalibration = new SimpleDateFormat("MM/dd/yyyy");
+    SimpleDateFormat dateFormatCalibration = new SimpleDateFormat("dd-MMM-yyyy", Locale.US);
     Date currentDate = new Date();
     Date arrayDate = new Date();
 
@@ -1274,6 +1275,8 @@ public class CreatePDF {
             df.parse(date);
             return true;
         } catch (ParseException ex) {
+            Logging.main("CreatePDF","CreatePDF.isValidDate() EXCEPTION!");
+            Logging.main("CreatePDF",ex.toString());
             return false;
         }
     }
