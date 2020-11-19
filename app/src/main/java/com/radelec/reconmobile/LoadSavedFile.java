@@ -133,17 +133,17 @@ public class LoadSavedFile {
                         }
                         if(strLine.contains("Deployed By:")) {
                             strDeployedBy = strLine.substring(12);
-                            loadedDeployedBy = strDeployedBy;
+                            loadedDeployedBy = strDeployedBy.trim();
                             Logging.main("LoadSavedFile","DeployedBy found and parsed: " + loadedDeployedBy);
                         }
                         if(strLine.contains("Retrieved By:")) {
                             strRetrievedBy = strLine.substring(13);
-                            loadedRetrievedBy = strRetrievedBy;
+                            loadedRetrievedBy = strRetrievedBy.trim();
                             Logging.main("LoadSavedFile","RetrievedBy found and parsed: " + loadedRetrievedBy);
                         }
                         if(strLine.contains("Analyzed By:")) {
                             strAnalyzedBy = strLine.substring(12);
-                            loadedAnalyzedBy = strAnalyzedBy;
+                            loadedAnalyzedBy = strAnalyzedBy.trim();
                             Logging.main("LoadSavedFile","AnalyzedBy found and parsed: " + loadedAnalyzedBy);
                         }
                         if(strLine.contains("Calibration Date =")) {
