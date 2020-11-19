@@ -1,5 +1,6 @@
 package com.radelec.reconmobile;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
@@ -31,7 +32,6 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Environment;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.Menu;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -97,21 +97,18 @@ public class MainActivity extends AppCompatActivity
         Permissions.verifyStoragePermissions(this);
 
         FloatingActionButton fab = findViewById(R.id.fabEmail);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(connected == ReconConnected.Loaded) {
-                    populateRadonChart();
-                    populateHumidityChart();
-                    populatePressureChart();
-                    populateTiltsChart();
-                    emailPDF();
-                } else {
-                    //If no file is loaded, let's try to prompt the user to load one...
-                    Toast no_file_loaded = Toast.makeText(getApplicationContext(),"You must load a file before emailing it!",Toast.LENGTH_SHORT);
-                    no_file_loaded.show();
-                    openFile();
-                }
+        fab.setOnClickListener(view -> {
+            if(connected == ReconConnected.Loaded) {
+                populateRadonChart();
+                populateHumidityChart();
+                populatePressureChart();
+                populateTiltsChart();
+                emailPDF();
+            } else {
+                //If no file is loaded, let's try to prompt the user to load one...
+                Toast no_file_loaded = Toast.makeText(getApplicationContext(),"You must load a file before emailing it!",Toast.LENGTH_SHORT);
+                no_file_loaded.show();
+                openFile();
             }
         });
 
@@ -191,6 +188,8 @@ public class MainActivity extends AppCompatActivity
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
+
+    @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         Logging.main("MainActivity","onOptionsItemSelected(MenuItem " + item.toString() + ") called!");
