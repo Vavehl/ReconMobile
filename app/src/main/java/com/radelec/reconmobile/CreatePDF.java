@@ -182,20 +182,21 @@ public class CreatePDF {
 
             //Calibration Line (same PDF_Y as Analyzed By)
             fontSize = 12;
-            textLine = "Cal. Date: " + globalReconCalibrationDate + "   Cal. Due: ";
+            textLine = "Cal. Date: " + loadedCalibrationDate + "   Cal. Due: ";
             String strDateCalibrationDue = "Unknown";
-            if(isValidDate(globalReconCalibrationDate)) {
+            if(isValidDate(loadedCalibrationDate)) {
                 try {
                     Calendar dateInstance = Calendar.getInstance();
-                    dateInstance.setTime(dateFormatCalibration.parse(globalReconCalibrationDate));
+                    dateInstance.setTime(dateFormatCalibration.parse(loadedCalibrationDate));
                     dateInstance.add(Calendar.YEAR,1);
                     strDateCalibrationDue = dateFormatCalibration.format(dateInstance.getTime());
                 } catch (ParseException ex) {
-                    Logging.main("CreatePDF","Unable to parse calibration date... this shouldn't have happened!");
-                    strDateCalibrationDue = "Unknown";
+                    Logging.main("CreatePDF","Unable to parse calibration date... this shouldn't have happened! Defaulting strDateCalibrationDue to Annually...");
+                    strDateCalibrationDue = "Annually";
                 }
             } else {
-                strDateCalibrationDue = "Unknown";
+                Logging.main("CreatePDF","ReconCalibrationDate (" + loadedCalibrationDate + ") not interpreted as valid date... this shouldn't have happened! Defaulting strDateCalibrationDue to Annually...");
+                strDateCalibrationDue = "Annually";
             }
             textLine += strDateCalibrationDue;
             textWidth = fontDefault.getStringWidth(textLine) / 1000 * fontSize;
