@@ -16,7 +16,7 @@ import static com.radelec.reconmobile.Globals.*;
 
 class ReconFunctions {
 
-    private ConsoleCallback consoleCallback = null;
+    private final ConsoleCallback consoleCallback;
 
     ReconFunctions(ConsoleCallback callback) {
         this.consoleCallback = callback;
@@ -48,7 +48,7 @@ class ReconFunctions {
     void downloadDataSession(String response) {
         Logging.main("ReconFunctions","downloadDataSession() called!");
         String strSystemConsole = "System Console";
-        String[] parsedResponse = null;
+        String[] parsedResponse;
         parsedResponse = response.split(",");
         if(parsedResponse.length<15) {
             Logging.main("ReconFunctions","downloadDataSession: Session point at null record. Aborting download.");
@@ -60,54 +60,49 @@ class ReconFunctions {
             case "H":
                 if(boolRecordHeaderFound) {
                     Logging.main("ReconFunctions","WARNING! MULTIPLE HEADER FILES ENCOUNTERED -- ABORTING DOWNLOAD!");
-                    break;
                 } else {
                     boolRecordHeaderFound = true;
                     Logging.main("ReconFunctions","Header found!");
                     intDataSessionPointer++;
                     send(cmdReadNextRecord);
-                    break;
                 }
+                break;
             case "W":
                 if(boolRecordHeaderFound) {
                     intDataSessionPointer++;
                     strSystemConsole = "Downloading Record #" + intDataSessionPointer;
                     send(cmdReadNextRecord);
-                    break;
                 } else {
                     Logging.main("ReconFunctions","WARNING! WAIT RECORD FOUND, BUT HEADER FILE NOT FOUND -- ABORTING DOWNLOAD!");
-                    break;
                 }
+                break;
             case "S":
                 if(boolRecordHeaderFound) {
                     intDataSessionPointer++;
                     strSystemConsole = "Downloading Record #" + intDataSessionPointer;
                     send(cmdReadNextRecord);
-                    break;
                 } else {
                     Logging.main("ReconFunctions","WARNING! START RECORD FOUND, BUT HEADER FILE NOT FOUND -- ABORTING DOWNLOAD!");
-                    break;
                 }
+                break;
             case "I":
                 if(boolRecordHeaderFound) {
                     intDataSessionPointer++;
                     strSystemConsole = "Downloading Record #" + intDataSessionPointer;
                     send(cmdReadNextRecord);
-                    break;
                 } else {
                     Logging.main("ReconFunctions","WARNING! INTERIM RECORD FOUND, BUT HEADER FILE NOT FOUND -- ABORTING DOWNLOAD!");
-                    break;
                 }
+                break;
             case "E":
                 if(boolRecordHeaderFound) {
                     intDataSessionPointer++;
                     strSystemConsole = "Downloading Record #" + intDataSessionPointer;
                     send(cmdReadNextRecord);
-                    break;
                 } else {
                     Logging.main("ReconFunctions","WARNING! END RECORD FOUND, BUT HEADER FILE NOT FOUND -- ABORTING DOWNLOAD!");
-                    break;
                 }
+                break;
             case "Z":
                 boolRecordTrailerFound = true;
                 if(boolRecordHeaderFound) {
@@ -115,10 +110,10 @@ class ReconFunctions {
                     Logging.main("ReconFunctions","Record Length (intDataSessionPointer) = " + intDataSessionPointer);
                     strSystemConsole = "Download Success!";
                     CreateTXT.main();
-                    break;
                 } else {
                     Logging.main("ReconFunctions","WARNING! RECORD TRAILER FOUND, BUT NO RECORD HEADER FOUND.");
                 }
+                break;
             default:
                 break;
         }
@@ -132,8 +127,8 @@ class ReconFunctions {
 
     void getCalibrationFactors(String response) {
         Logging.main("ReconFunctions","getCalibrationFactors() called!");
-        Date reconDateTime = Calendar.getInstance().getTime();
-        String[] parsedResponse = null;
+        Calendar.getInstance().getTime(); //Do we need this call?
+        String[] parsedResponse;
         parsedResponse = response.split(",");
         if(parsedResponse[0].equals("=RL") && parsedResponse.length==9 && connected== Globals.ReconConnected.True) {
             if(!parsedResponse[1].trim().isEmpty()) {
@@ -187,7 +182,7 @@ class ReconFunctions {
     }
 
     void getDataSessions(String response) {
-        String[] parsedResponse = null;
+        String[] parsedResponse;
         boolean boolUnexpectedResponse = true;
         Logging.main("ReconFunctions","getDataSessions() called!");
         if(connected == Globals.ReconConnected.True) {
@@ -240,8 +235,12 @@ class ReconFunctions {
         if(boolReconConnected) {
             globalReconSerial = parsedResponse[3];
             globalReconFirmwareRevision = Double.parseDouble(parsedResponse[2]);
-            ReconSerial.setText("Rad Elec Recon #" + (globalReconSerial != null ? globalReconSerial : "??"));
-            ReconFirmware.setText("Firmware v" + globalReconFirmwareRevision);
+            try {
+                ReconSerial.setText(String.format("Rad Elec Recon #%s", globalReconSerial != null ? globalReconSerial : "??"));
+                ReconFirmware.setText(String.format("Firmware v%s", globalReconFirmwareRevision));
+            } catch (NullPointerException ex) {
+                ex.printStackTrace();
+            }
         } else {
             globalReconSerial = "";
             globalReconFirmwareRevision = 0;
