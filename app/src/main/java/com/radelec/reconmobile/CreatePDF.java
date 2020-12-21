@@ -12,7 +12,10 @@ import com.tom_roush.pdfbox.pdmodel.font.PDFont;
 import com.tom_roush.pdfbox.pdmodel.font.PDType0Font;
 import com.tom_roush.pdfbox.pdmodel.font.PDType1Font;
 import com.tom_roush.pdfbox.pdmodel.common.PDRectangle;
+import com.tom_roush.pdfbox.pdmodel.graphics.color.PDColor;
+import com.tom_roush.pdfbox.pdmodel.graphics.color.PDDeviceRGB;
 import com.tom_roush.pdfbox.pdmodel.graphics.image.PDImageXObject;
+import com.tom_roush.pdfbox.pdmodel.interactive.annotation.PDAnnotationTextMarkup;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -875,6 +878,7 @@ public class CreatePDF {
     private void DrawAverageRadonBanner(PDPageContentStream contents, PDPage page, PDFont font, boolean drawTopDoubleLines) {
         try {
 
+            Logging.main("CreatePDF","CreatePDF::DrawAverageRadonBanner called for page #" + page + "!");
             String strOverallAvgRnC;
             if(Globals.globalUnitType.equals("SI")) {
                 strOverallAvgRnC = new DecimalFormat("0").format(CreateGraphArrays.OverallAvgRnC); //no decimal places for Bq/m3
@@ -908,6 +912,20 @@ public class CreatePDF {
             contents.newLineAtOffset(marginSide,PDF_Y);
             contents.showText(textLine);
             contents.endText();
+
+            //Highlighting
+            if(Globals.boolHighlightAverage) {
+                Logging.main("CreatePDF","CreatePDF::DrawAverageRadonBanner, Attempting to highight average radon concentration banner...");
+                PDAnnotationTextMarkup highlight = new PDAnnotationTextMarkup(PDAnnotationTextMarkup.SUB_TYPE_HIGHLIGHT);
+                highlight.setRectangle(PDRectangle.A4);
+                float quadPoints[] = {marginSide, PDF_Y + 15, page.getMediaBox().getWidth() - marginSide, PDF_Y + 15, marginSide, PDF_Y - 5, page.getMediaBox().getWidth() - marginSide, PDF_Y - 5};
+                highlight.setQuadPoints(quadPoints);
+                PDColor color_highlight = new PDColor(new float[]{1,1,204/255F}, PDDeviceRGB.INSTANCE);
+                highlight.setColor(color_highlight);
+                List annotations = page.getAnnotations();
+                annotations.add(highlight);
+                Logging.main("CreatePDF","CreatePDF::DrawAverageRadonBanner, Highlighting complete!");
+            }
 
             //Another Double-Line (below Average Results Banner)
             PDF_Y -= 0.5f*fontSize;

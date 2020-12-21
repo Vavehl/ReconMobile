@@ -44,6 +44,7 @@ class Globals {
     //Options
     public static boolean boolDiagnosticMode = false;
     public static boolean boolExcludeFirst4Hours = true;
+    public static boolean boolHighlightAverage = true;
     public static boolean boolLongTermMode = false;
     public static boolean boolAutoLoadFile = true;
     public static String globalUnitType = "US";
