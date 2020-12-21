@@ -466,7 +466,7 @@ public class CreatePDF {
             DrawDetailedColumnHeaders(contents, fontBold);
 
             //Let's start drawing rows of detailed summary data
-            if (Globals.boolDiagnosticMode) { // regular user mode
+            if (!Globals.boolDiagnosticMode) { // regular user mode
                 for (int arrayCounter = 0; arrayCounter < HourlyReconData.size(); arrayCounter++) {
                     //contents.moveTextPositionByAmount(0,-1.0f*fontSize);
                     PDF_Y -= 1.1f*fontSize;
@@ -476,9 +476,9 @@ public class CreatePDF {
 
                     //Shade the first four hours of the report (if this option is enabled)
                     if( Globals.boolExcludeFirst4Hours && arrayCounter < 4) {
-                        contents.setNonStrokingColor(Color.LTGRAY);
+                        contents.setNonStrokingColor(160); //Light(ish) Grey
                     } else {
-                        contents.setNonStrokingColor(Color.BLACK);
+                        contents.setNonStrokingColor(0); //Black
                     }
 
                     //Record #
