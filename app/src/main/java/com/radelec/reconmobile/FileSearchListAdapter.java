@@ -90,8 +90,9 @@ public class FileSearchListAdapter extends RecyclerView.Adapter<FileSearchListAd
                 File fileReconDeleted = new File(strFilePath);
                 if (fileReconDeleted.delete()) {
                     Logging.main("FileSearchListAdapter", "File successfully deleted per user request!");
-                    alDataFiles.remove(selectedPos);
-                    this.notifyItemRemoved(position);
+                    alDataFiles.remove(selectedPos); //Remove the deleted filename from the array.
+                    this.notifyItemRemoved(position); //Remove the filename from the view holder.
+                    Globals.boolClickToLoad = false; //Set boolClickToLoad to false, so that the next tap/click won't try to load a non-existent file.
                 } else {
                     Logging.main("FileSearchListAdapter","File not deleted...");
                 }
