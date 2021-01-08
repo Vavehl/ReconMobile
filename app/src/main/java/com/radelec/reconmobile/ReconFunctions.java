@@ -233,7 +233,7 @@ class ReconFunctions {
         TextView ReconSerial = view.findViewById(R.id.txtFoundRecon_Serial);
         TextView ReconFirmware = view.findViewById(R.id.txtFoundRecon_Firmware);
         if(boolReconConnected) {
-            globalReconSerial = parsedResponse[3];
+            globalReconSerial = parsedResponse[3].replaceAll("[\\n\\r+]", "");
             globalReconFirmwareRevision = Double.parseDouble(parsedResponse[2]);
             try {
                 ReconSerial.setText(String.format("Rad Elec Recon #%s", globalReconSerial != null ? globalReconSerial : "??"));
