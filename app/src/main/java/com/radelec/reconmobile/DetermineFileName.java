@@ -111,7 +111,7 @@ public class DetermineFileName {
         Logging.main("DetermineFileName","SetDefaultFileName() called!");
         DateFormat dateFormat = new SimpleDateFormat("MMddyyyy");
         Calendar cal = Calendar.getInstance();
-        String ConfirmSN = (globalReconSerial.length() > 0) ? globalReconSerial : "Recon";
+        String ConfirmSN = (globalReconSerial.length() > 0) ? globalReconSerial.replaceAll("[\\n\\r+]", "") : "Recon";
         dateFormat.setCalendar(cal);
         String strFileName = "Recon_" + ConfirmSN + "_" + dateFormat.format(cal.getTime());
         Logging.main("DetermineFileName","Default FileName (if employed) = " + strFileName);
