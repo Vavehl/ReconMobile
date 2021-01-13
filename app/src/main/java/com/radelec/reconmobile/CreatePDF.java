@@ -417,26 +417,29 @@ public class CreatePDF {
             //Draw Average Radon Concentration Banner
             //DrawAverageRadonBanner(contents, page_chart, fontBold, true);
 
+            //Determine graph / image height.
+            int intImageHeight = 130;
+
             //This draws the graph images, which are externalized in MainActivity.createImagesFromChart().
             PDImageXObject imageRadon = PDImageXObject.createFromFile(imageDir + File.separator + "chartRadon.png", doc);
             PDImageXObject imageHumidity = PDImageXObject.createFromFile(imageDir + File.separator + "chartHumidity.png", doc);
             PDImageXObject imagePressure = PDImageXObject.createFromFile(imageDir + File.separator + "chartPressure.png", doc);
             PDImageXObject imageTilts = PDImageXObject.createFromFile(imageDir + File.separator + "chartTilts.png", doc);
 
-            Point scaledImageRadon = getScaledDimension(new Point(imageRadon.getWidth(), imageRadon.getHeight()), new Point((int) 480,144));
-            Point scaledImageHumidity = getScaledDimension(new Point(imageHumidity.getWidth(), imageHumidity.getHeight()), new Point((int) 480,144));
-            Point scaledImagePressure = getScaledDimension(new Point(imagePressure.getWidth(), imagePressure.getHeight()), new Point((int) 480,144));
-            Point scaledImageTilts = getScaledDimension(new Point(imageTilts.getWidth(), imageTilts.getHeight()), new Point((int) 480,144));
+            Point scaledImageRadon = getScaledDimension(new Point(imageRadon.getWidth(), imageRadon.getHeight()), new Point(480,intImageHeight));
+            Point scaledImageHumidity = getScaledDimension(new Point(imageHumidity.getWidth(), imageHumidity.getHeight()), new Point(480,intImageHeight));
+            Point scaledImagePressure = getScaledDimension(new Point(imagePressure.getWidth(), imagePressure.getHeight()), new Point(480,intImageHeight));
+            Point scaledImageTilts = getScaledDimension(new Point(imageTilts.getWidth(), imageTilts.getHeight()), new Point(480,intImageHeight));
 
-            PDF_Y -= 180;
-            contents.drawImage(imageRadon, marginSide*2, PDF_Y, scaledImageRadon.x,scaledImageRadon.y);
-            PDF_Y-= 155;
-            contents.drawImage(imageHumidity, marginSide*2, PDF_Y, scaledImageHumidity.x, scaledImageHumidity.y);
-            PDF_Y-= 155;
-            contents.drawImage(imagePressure, marginSide*2, PDF_Y, scaledImagePressure.x, scaledImagePressure.y);
-            PDF_Y-= 155;
-            contents.drawImage(imageTilts, marginSide*2, PDF_Y, scaledImageTilts.x, scaledImageTilts.y);
-            PDF_Y-= 155;
+            PDF_Y -= (intImageHeight + Math.round((float)intImageHeight/3));
+            contents.drawImage(imageRadon, (page_chart.getMediaBox().getWidth() - scaledImageRadon.x) / 2, PDF_Y, scaledImageRadon.x,scaledImageRadon.y);
+            PDF_Y-= (intImageHeight + Math.round((float)intImageHeight/8));
+            contents.drawImage(imageHumidity, (page_chart.getMediaBox().getWidth() - scaledImageHumidity.x) / 2, PDF_Y, scaledImageHumidity.x, scaledImageHumidity.y);
+            PDF_Y-= (intImageHeight + Math.round((float)intImageHeight/8));
+            contents.drawImage(imagePressure, (page_chart.getMediaBox().getWidth() - scaledImagePressure.x) / 2, PDF_Y, scaledImagePressure.x, scaledImagePressure.y);
+            PDF_Y-= (intImageHeight + Math.round((float)intImageHeight/8));
+            contents.drawImage(imageTilts, (page_chart.getMediaBox().getWidth() - scaledImageTilts.x) / 2, PDF_Y, scaledImageTilts.x, scaledImageTilts.y);
+            PDF_Y-= (intImageHeight + Math.round((float)intImageHeight/8));
             contents.close();
             //END SECOND PAGE (CHART)
 
@@ -1176,7 +1179,7 @@ public class CreatePDF {
             Logging.main("CreatePDF","CreatePDF::DrawDigitalSignature called.");
             if (boolFoundSignature) {
 
-                //This is only for determining the width offset of "Signature" to properly place the digital signatur image.
+                //This is only for determining the width offset of "Signature" to properly place the digital signature image.
                 String textLine = "Signature: ";
                 fontSize = 12;
                 float textWidth = (font.getStringWidth(textLine) / 1000 * fontSize);

@@ -442,7 +442,17 @@ public class MainActivity extends AppCompatActivity
 
         //Assign layout element to the linechart lcRadon
         lcRadon = findViewById(R.id.chartRadonPDF);
+
+        //Declare LineDataSet for the Radon Chart
         LineDataSet lineDataSet = new LineDataSet(chartdataRadon,"pCi/L");
+
+        //X-Axis formatting (...don't understand why, but x-axis should be defined very early when setting up charts with labels)
+        xAxis = lcRadon.getXAxis();
+        xAxis.setLabelRotationAngle(90);
+        xAxis.setCenterAxisLabels(true);
+        xAxis.setDrawGridLines(false);
+        xAxis.setValueFormatter(new GraphAxisFormatter());
+        xAxis.setAvoidFirstLastClipping(true);
 
         lineDataSet.setFillAlpha(110);
         lineDataSet.setDrawCircles(false);
@@ -468,10 +478,6 @@ public class MainActivity extends AppCompatActivity
         lcRadon.fitScreen();
         lcRadon.setDrawBorders(false);
         lcRadon.setDrawGridBackground(false);
-        lcRadon.setTouchEnabled(true);
-        lcRadon.setPinchZoom(true);
-        lcRadon.setScaleEnabled(true);
-        lcRadon.setDragEnabled(true);
         lcRadon.setAutoScaleMinMaxEnabled(true);
         lcRadon.getAxisRight().setEnabled(false);
         lcRadon.getDescription().setEnabled(false);
@@ -484,14 +490,6 @@ public class MainActivity extends AppCompatActivity
         yAxis.setValueFormatter(new DefaultValueFormatter(1));
         yAxis.setAxisMaximum(yAxis.getAxisMaximum() * (float)1.25);
         yAxis.setAxisMinimum(yMin);
-
-        //X-Axis formatting
-        xAxis = lcRadon.getXAxis();
-        xAxis.setLabelRotationAngle(90);
-        xAxis.setCenterAxisLabels(true);
-        xAxis.setDrawGridLines(false);
-        xAxis.setValueFormatter(new GraphAxisFormatter());
-        xAxis.setAvoidFirstLastClipping(true);
 
         //Modifiers if SI units are selected.
         if(Objects.equals(globalUnitType, "SI")) {
@@ -514,7 +512,14 @@ public class MainActivity extends AppCompatActivity
         //Assign layout element to the linechart lcHumidity
         lcHumidity = findViewById(R.id.chartHumidityPDF);
 
+        //Declare LineDataSet for the Radon Chart
         LineDataSet lineDataSet = new LineDataSet(chartdataHumidity,"%");
+
+        //X-Axis formatting (...don't understand why, but x-axis should be defined very early when setting up charts with labels)
+        xAxis = lcHumidity.getXAxis();
+        xAxis.setDrawLabels(false);
+        xAxis.setDrawGridLines(false);
+        xAxis.setAvoidFirstLastClipping(true);
 
         lineDataSet.setFillAlpha(110);
         lineDataSet.setDrawCircles(false);
@@ -536,10 +541,6 @@ public class MainActivity extends AppCompatActivity
         lcHumidity.fitScreen();
         lcHumidity.setDrawBorders(false);
         lcHumidity.setDrawGridBackground(false);
-        lcHumidity.setTouchEnabled(true);
-        lcHumidity.setPinchZoom(true);
-        lcHumidity.setScaleEnabled(true);
-        lcHumidity.setDragEnabled(true);
         lcHumidity.setAutoScaleMinMaxEnabled(false);
         lcHumidity.getAxisRight().setEnabled(false);
         lcHumidity.getDescription().setEnabled(false);
@@ -553,12 +554,6 @@ public class MainActivity extends AppCompatActivity
         yAxis.setAxisMinimum(yMin);
         yAxis.setAxisMaximum(100);
 
-        //X-Axis formatting
-        xAxis = lcHumidity.getXAxis();
-        xAxis.setDrawLabels(false);
-        xAxis.setDrawGridLines(false);
-        xAxis.setAvoidFirstLastClipping(true);
-
     }
 
     public void populatePressureChart() {
@@ -571,7 +566,14 @@ public class MainActivity extends AppCompatActivity
         //Assign layout element to the linechart lcPressure
         lcPressure = findViewById(R.id.chartPressurePDF);
 
+        //Declare LineDataSet for the Pressure Chart
         LineDataSet lineDataSet = new LineDataSet(chartdataPressure,"inHg");
+
+        //X-Axis formatting (...don't understand why, but x-axis should be defined very early when setting up charts with labels)
+        xAxis = lcPressure.getXAxis();
+        xAxis.setDrawLabels(false);
+        xAxis.setDrawGridLines(false);
+        xAxis.setAvoidFirstLastClipping(true);
 
         lineDataSet.setFillAlpha(110);
         lineDataSet.setDrawCircles(false);
@@ -593,10 +595,6 @@ public class MainActivity extends AppCompatActivity
         lcPressure.fitScreen();
         lcPressure.setDrawBorders(false);
         lcPressure.setDrawGridBackground(false);
-        lcPressure.setTouchEnabled(true);
-        lcPressure.setPinchZoom(true);
-        lcPressure.setScaleEnabled(true);
-        lcPressure.setDragEnabled(true);
         lcPressure.setAutoScaleMinMaxEnabled(false);
         lcPressure.getAxisRight().setEnabled(false);
         lcPressure.getDescription().setEnabled(false);
@@ -609,12 +607,6 @@ public class MainActivity extends AppCompatActivity
         yAxis.setValueFormatter(new DefaultValueFormatter(1));
         yAxis.setAxisMinimum(yAxis.getAxisMinimum() * (float)0.65);
         yAxis.setAxisMaximum(yAxis.getAxisMaximum() * (float)1.25);
-
-        //X-Axis formatting
-        xAxis = lcPressure.getXAxis();
-        xAxis.setDrawLabels(false);
-        xAxis.setDrawGridLines(false);
-        xAxis.setAvoidFirstLastClipping(true);
 
         //Modifiers if SI units are selected.
         if(Objects.equals(globalUnitType, "SI")) {
@@ -633,7 +625,14 @@ public class MainActivity extends AppCompatActivity
         //Assign layout element to the barchart bcTilts
         bcTilts = findViewById(R.id.chartTiltsPDF);
 
+        //Declare barDataSet for the Tilts chart.
         BarDataSet barDataSet = new BarDataSet(chartdataTilts,"Tilts");
+
+        //X-Axis formatting (...don't understand why, but x-axis should be defined very early when setting up charts with labels)
+        xAxis = bcTilts.getXAxis();
+        xAxis.setDrawLabels(false);
+        xAxis.setDrawGridLines(false);
+        xAxis.setAvoidFirstLastClipping(true);
 
         barDataSet.setColor(R.color.colorPrimary);
         barDataSet.setDrawValues(true);
@@ -650,10 +649,6 @@ public class MainActivity extends AppCompatActivity
         bcTilts.fitScreen();
         bcTilts.setDrawBorders(false);
         bcTilts.setDrawGridBackground(false);
-        bcTilts.setTouchEnabled(true);
-        bcTilts.setPinchZoom(true);
-        bcTilts.setScaleEnabled(true);
-        bcTilts.setDragEnabled(true);
         bcTilts.setAutoScaleMinMaxEnabled(false);
         bcTilts.getAxisRight().setEnabled(false);
         bcTilts.getDescription().setEnabled(false);
@@ -668,14 +663,8 @@ public class MainActivity extends AppCompatActivity
         yAxis.setAxisMaximum(yAxis.getAxisMaximum() * (float)1.25);
         if(yAxis.getAxisMaximum()<10) yAxis.setAxisMaximum(10); //If the maximum y-axis isn't at least 10, let's set it to 10.
 
-        //X-Axis formatting
-        xAxis = bcTilts.getXAxis();
-        xAxis.setDrawLabels(false);
-        xAxis.setDrawGridLines(false);
-        xAxis.setAvoidFirstLastClipping(true);
     }
-
-
+    
     public void createImagesFromChart() {
         Logging.main("MainActivity","createImagesFromChart() called!");
         if(lcRadon.getHeight() > 0 && lcRadon.getWidth() > 0) {
