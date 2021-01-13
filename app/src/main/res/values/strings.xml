@@ -56,6 +56,8 @@
     <string name="tilt_sensitivity_high">High</string>
     <string name="tilt_value">Tilt Value</string>
     <string name="recon_display_options">Recon Display Options</string>
+    <string name="report_options">Report Options</string>
+    <string name="page_size">Page Size</string>
     <string name="display_pressure">Pressure</string>
     <string name="display_temperature">Temperature</string>
     <string name="display_radon">Radon</string>
@@ -74,6 +76,11 @@
         <item>Always</item>
         <item>Never</item>
         <item>Prompt</item>
+    </string-array>
+    <string-array name="spinnerPageSize">
+        <item>A4</item>
+        <item>LEGAL</item>
+        <item>LETTER</item>
     </string-array>
     <string-array name="spinnerSignatureOptions">
         <item>Display Line Only</item>

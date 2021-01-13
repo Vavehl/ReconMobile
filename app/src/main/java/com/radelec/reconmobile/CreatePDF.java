@@ -393,7 +393,7 @@ public class CreatePDF {
             //END FIRST PAGE (SUMMARY)
 
             //BEGIN SECOND PAGE (CHART)
-            PDPage page_chart = new PDPage(PDRectangle.A4);
+            PDPage page_chart = new PDPage(globalPageSize);
             doc.addPage(page_chart);
             contents = new PDPageContentStream(doc, page_chart);
             PDF_Y = page_chart.getMediaBox().getHeight() - marginTop - textHeight; //Reset PDF_Y

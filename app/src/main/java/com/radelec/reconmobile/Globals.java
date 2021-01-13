@@ -4,6 +4,7 @@ import android.content.res.AssetManager;
 
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
+import com.tom_roush.pdfbox.pdmodel.common.PDRectangle;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -48,6 +49,7 @@ class Globals {
     public static boolean boolLongTermMode = false;
     public static boolean boolAutoLoadFile = true;
     public static String globalUnitType = "US";
+    public static PDRectangle globalPageSize = PDRectangle.LETTER;
 
     //File Directory
     public static File fileDir = null;
