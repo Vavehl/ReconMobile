@@ -389,6 +389,21 @@ public class CreatePDF {
                 drawDigitalSignature(doc, contents, page, fontDefault);
             }
 
+            switch(cursorSettingsData.getString(5)) {
+                case "A4":
+                    globalPageSize = PDRectangle.A4;
+                    break;
+                case "LEGAL":
+                    globalPageSize = PDRectangle.LEGAL;
+                    break;
+                case "LETTER":
+                    globalPageSize = PDRectangle.LETTER;
+                    break;
+                default:
+                    globalPageSize = PDRectangle.LETTER;
+            }
+            Logging.main("CreatePDF", "CREATEPDF:: Page Size = " + globalPageSize.toString());
+
             contents.close();
             //END FIRST PAGE (SUMMARY)
 

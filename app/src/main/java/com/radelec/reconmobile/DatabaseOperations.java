@@ -30,7 +30,7 @@ public class DatabaseOperations extends SQLiteOpenHelper {
 
         //Create Settings Table
         createTable = "CREATE TABLE SETTINGS (SettingsID INTEGER PRIMARY KEY AUTOINCREMENT," +
-                "AUTO_CLEAR_SESSIONS VARCHAR(6), UNIT_SYSTEM VARCHAR(2), SIGNATURE_OPTIONS VARCHAR(20), TILT_SENSITIVITY TINYINT(2))";
+                "AUTO_CLEAR_SESSIONS VARCHAR(6), UNIT_SYSTEM VARCHAR(2), SIGNATURE_OPTIONS VARCHAR(20), TILT_SENSITIVITY TINYINT(2), PAGE_SIZE VARCHAR(10))";
         db.execSQL(createTable);
 
         //Create Company Table
@@ -68,7 +68,7 @@ public class DatabaseOperations extends SQLiteOpenHelper {
                 "test results or deciding if further action is needed.";
 
         //Assign default values to newly created database
-        db.execSQL("INSERT INTO SETTINGS (AUTO_CLEAR_SESSIONS, UNIT_SYSTEM, SIGNATURE_OPTIONS, TILT_SENSITIVITY) VALUES ('Always', 'US', 'Digitally Signed', '5')");
+        db.execSQL("INSERT INTO SETTINGS (AUTO_CLEAR_SESSIONS, UNIT_SYSTEM, SIGNATURE_OPTIONS, TILT_SENSITIVITY, PAGE_SIZE) VALUES ('Always', 'US', 'Digitally Signed', '5', 'LETTER')");
         db.execSQL("INSERT INTO COMPANY (COMPANY_NAME, COMPANY_DETAILS, COMPANY_EMAIL) VALUES ('','','')");
         db.execSQL("INSERT INTO REPORT_DEFAULTS (INSTRUMENT_LOCATION, PROTOCOL, TAMPERING, WEATHER, MITIGATION, COMMENT, REPORT_TEXT) VALUES ('Basement', " +
                 "'Closed Building Conditions Met', 'No Tampering Detected', 'No Abnormal Weather Conditions', 'No Mitigation System Installed', " +

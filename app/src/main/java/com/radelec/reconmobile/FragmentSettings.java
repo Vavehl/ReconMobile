@@ -34,6 +34,7 @@ public class FragmentSettings extends Fragment {
         //Standard Settings should be initialized to the proper spinners
         final Spinner spnAutoClear = view.findViewById(R.id.spinner_autoclear);
         final Spinner spnUnitSystem = view.findViewById(R.id.spinner_units);
+        final Spinner spnPageSize = view.findViewById(R.id.spinner_pagesize);
         final Spinner spnSignatureOptions = view.findViewById(R.id.spinner_signatureoptions);
 
         //Recon Display Options
@@ -86,6 +87,20 @@ public class FragmentSettings extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 db_settings.updateData("SETTINGS","SIGNATURE_OPTIONS",spnSignatureOptions.getSelectedItem().toString(),"SettingsID");
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        //Pull Page Size value from database, and assign it to spnPageSize.
+        spnPageSize.setSelection(findSpinnerIndex(spnPageSize,cursorSettingsDefaults.getString(5)));
+        spnPageSize.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                db_settings.updateData("SETTINGS","PAGE_SIZE",spnPageSize.getSelectedItem().toString(),"SettingsID");
             }
 
             @Override
