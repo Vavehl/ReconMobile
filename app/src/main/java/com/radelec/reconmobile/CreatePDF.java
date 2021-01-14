@@ -389,15 +389,19 @@ public class CreatePDF {
                 drawDigitalSignature(doc, contents, page, fontDefault);
             }
 
+            String strPageSize = "LETTER";
             switch(cursorSettingsData.getString(5)) {
                 case "A4":
                     globalPageSize = PDRectangle.A4;
+                    strPageSize = "A4";
                     break;
                 case "LEGAL":
                     globalPageSize = PDRectangle.LEGAL;
+                    strPageSize = "LEGAL";
                     break;
                 case "LETTER":
                     globalPageSize = PDRectangle.LETTER;
+                    strPageSize = "LETTER";
                     break;
                 default:
                     globalPageSize = PDRectangle.LETTER;
@@ -433,7 +437,22 @@ public class CreatePDF {
             //DrawAverageRadonBanner(contents, page_chart, fontBold, true);
 
             //Determine graph / image height.
-            int intImageHeight = 130;
+            int intImageHeight = 120;
+            int intImageWidth = 480;
+            switch(strPageSize) {
+                case "A4":
+                    intImageHeight = 130;
+                    intImageWidth = 467;
+                    break;
+                case "LEGAL":
+                    intImageHeight = 160;
+                    intImageWidth = 480;
+                    break;
+                case "LETTER":
+                    intImageHeight = 120;
+                    intImageWidth = 480;
+            }
+
 
             //This draws the graph images, which are externalized in MainActivity.createImagesFromChart().
             PDImageXObject imageRadon = PDImageXObject.createFromFile(imageDir + File.separator + "chartRadon.png", doc);
@@ -441,10 +460,10 @@ public class CreatePDF {
             PDImageXObject imagePressure = PDImageXObject.createFromFile(imageDir + File.separator + "chartPressure.png", doc);
             PDImageXObject imageTilts = PDImageXObject.createFromFile(imageDir + File.separator + "chartTilts.png", doc);
 
-            Point scaledImageRadon = getScaledDimension(new Point(imageRadon.getWidth(), imageRadon.getHeight()), new Point(480,intImageHeight));
-            Point scaledImageHumidity = getScaledDimension(new Point(imageHumidity.getWidth(), imageHumidity.getHeight()), new Point(480,intImageHeight));
-            Point scaledImagePressure = getScaledDimension(new Point(imagePressure.getWidth(), imagePressure.getHeight()), new Point(480,intImageHeight));
-            Point scaledImageTilts = getScaledDimension(new Point(imageTilts.getWidth(), imageTilts.getHeight()), new Point(480,intImageHeight));
+            Point scaledImageRadon = getScaledDimension(new Point(imageRadon.getWidth(), imageRadon.getHeight()), new Point(intImageWidth,intImageHeight));
+            Point scaledImageHumidity = getScaledDimension(new Point(imageHumidity.getWidth(), imageHumidity.getHeight()), new Point(intImageWidth,intImageHeight));
+            Point scaledImagePressure = getScaledDimension(new Point(imagePressure.getWidth(), imagePressure.getHeight()), new Point(intImageWidth,intImageHeight));
+            Point scaledImageTilts = getScaledDimension(new Point(imageTilts.getWidth(), imageTilts.getHeight()), new Point(intImageWidth,intImageHeight));
 
             PDF_Y -= (intImageHeight + Math.round((float)intImageHeight/3));
             contents.drawImage(imageRadon, (page_chart.getMediaBox().getWidth() - scaledImageRadon.x) / 2, PDF_Y, scaledImageRadon.x,scaledImageRadon.y);
