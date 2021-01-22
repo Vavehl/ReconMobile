@@ -127,6 +127,31 @@ public class CreatePDF {
         float textHeight;
 
         try {
+
+            //We need to pull current settings from DB early, so that the options are up-to-date before the PDF generation begins.
+            Cursor cursorSettingsData;
+            cursorSettingsData = db.getSettingsData();
+            cursorSettingsData.moveToFirst(); //Critical to moveToFirst() here, or else we're sitting at an invalid index!
+
+            String strPageSize = "LETTER";
+            switch(cursorSettingsData.getString(5)) {
+                case "A4":
+                    globalPageSize = PDRectangle.A4;
+                    strPageSize = "A4";
+                    break;
+                case "LEGAL":
+                    globalPageSize = PDRectangle.LEGAL;
+                    strPageSize = "LEGAL";
+                    break;
+                case "LETTER":
+                    globalPageSize = PDRectangle.LETTER;
+                    strPageSize = "LETTER";
+                    break;
+                default:
+                    globalPageSize = PDRectangle.LETTER;
+            }
+            Logging.main("CreatePDF", "CREATEPDF:: Page Size = " + globalPageSize.toString());
+
             PDPage page = new PDPage(globalPageSize);
             doc.addPage(page);
 
@@ -375,10 +400,6 @@ public class CreatePDF {
 
             WrapMultiLineText (contents,page,marginSide,PDF_Y,textLine,fontDefault,fontSize,marginSide);
 
-            Cursor cursorSettingsData;
-            cursorSettingsData = db.getSettingsData();
-            cursorSettingsData.moveToFirst(); //Critical to moveToFirst() here, or else we're sitting at an invalid index!
-
             Logging.main("CreatePDF","CreatePDF:: Signature Option = " + cursorSettingsData.getString(3));
             String displaySig = cursorSettingsData.getString(3);
             if(displaySig.equals("Display Line Only")) { //Draw Signature Line
@@ -387,25 +408,6 @@ public class CreatePDF {
                 drawSignatureLine(contents, page, fontDefault); //Draw Signature Line; for now, only if DisplaySig = 1 or 2 in options.
                 drawDigitalSignature(doc, contents, page, fontDefault);
             }
-
-            String strPageSize = "LETTER";
-            switch(cursorSettingsData.getString(5)) {
-                case "A4":
-                    globalPageSize = PDRectangle.A4;
-                    strPageSize = "A4";
-                    break;
-                case "LEGAL":
-                    globalPageSize = PDRectangle.LEGAL;
-                    strPageSize = "LEGAL";
-                    break;
-                case "LETTER":
-                    globalPageSize = PDRectangle.LETTER;
-                    strPageSize = "LETTER";
-                    break;
-                default:
-                    globalPageSize = PDRectangle.LETTER;
-            }
-            Logging.main("CreatePDF", "CREATEPDF:: Page Size = " + globalPageSize.toString());
 
             contents.close();
             //END FIRST PAGE (SUMMARY)
