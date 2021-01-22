@@ -1,7 +1,6 @@
 package com.radelec.reconmobile;
 
 import android.database.Cursor;
-import android.graphics.Color;
 import android.graphics.Point;
 import android.os.Environment;
 
@@ -128,7 +127,7 @@ public class CreatePDF {
         float textHeight;
 
         try {
-            PDPage page = new PDPage(PDRectangle.A4);
+            PDPage page = new PDPage(globalPageSize);
             doc.addPage(page);
 
             //Declare the fonts
@@ -478,7 +477,7 @@ public class CreatePDF {
             //END SECOND PAGE (CHART)
 
             //BEGIN THIRD PAGE (DETAILED)
-            PDPage page_detailed = new PDPage(PDRectangle.A4);
+            PDPage page_detailed = new PDPage(globalPageSize);
             doc.addPage(page_detailed);
             contents = new PDPageContentStream(doc, page_detailed);
             PDF_Y = page_detailed.getMediaBox().getHeight() - marginTop - textHeight; //Reset PDF_Y
@@ -567,7 +566,7 @@ public class CreatePDF {
                     if((PDF_Y-1.0f*fontSize <= marginBottom) && (arrayCounter < HourlyReconData.size()-1)) { //We need to be able to add a new page for long exposures.
                         //Don't add a new page if we've already drawn our final record! (if arrayCounter < HourlyReconData.size()-1)
                         contents.close();
-                        page_detailed = new PDPage(PDRectangle.A4);
+                        page_detailed = new PDPage(globalPageSize);
                         doc.addPage(page_detailed);
                         contents = new PDPageContentStream(doc, page_detailed);
                         PDF_Y = page_detailed.getMediaBox().getHeight() - marginTop - textHeight; //Reset PDF_Y
@@ -638,7 +637,7 @@ public class CreatePDF {
                     if((PDF_Y-1.0f*fontSize <= marginBottom) && (arrayCounter < HourlyReconData.size()-1)) { //We need to be able to add a new page for long exposures.
                         //Don't add a new page if we've already drawn our final record! (if arrayCounter < HourlyReconData.size()-1)
                         contents.close();
-                        page_detailed = new PDPage(PDRectangle.A4);
+                        page_detailed = new PDPage(globalPageSize);
                         doc.addPage(page_detailed);
                         contents = new PDPageContentStream(doc, page_detailed);
                         PDF_Y = page_detailed.getMediaBox().getHeight() - marginTop - textHeight; //Reset PDF_Y
