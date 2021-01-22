@@ -451,6 +451,9 @@ public class MainActivity extends AppCompatActivity
         xAxis.setLabelRotationAngle(90);
         xAxis.setCenterAxisLabels(true);
         xAxis.setDrawGridLines(false);
+        xAxis.setGranularityEnabled(true);
+        xAxis.setGranularity(1f);
+        xAxis.setLabelCount(12);
         xAxis.setValueFormatter(new GraphAxisFormatter());
         xAxis.setAvoidFirstLastClipping(true);
 
@@ -519,6 +522,9 @@ public class MainActivity extends AppCompatActivity
         xAxis = lcHumidity.getXAxis();
         xAxis.setDrawLabels(false);
         xAxis.setDrawGridLines(false);
+        xAxis.setGranularityEnabled(true);
+        xAxis.setGranularity(1f);
+        xAxis.setLabelCount(12);
         xAxis.setAvoidFirstLastClipping(true);
 
         lineDataSet.setFillAlpha(110);
@@ -573,6 +579,9 @@ public class MainActivity extends AppCompatActivity
         xAxis = lcPressure.getXAxis();
         xAxis.setDrawLabels(false);
         xAxis.setDrawGridLines(false);
+        xAxis.setGranularityEnabled(true);
+        xAxis.setGranularity(1f);
+        xAxis.setLabelCount(12);
         xAxis.setAvoidFirstLastClipping(true);
 
         lineDataSet.setFillAlpha(110);
@@ -632,6 +641,9 @@ public class MainActivity extends AppCompatActivity
         xAxis = bcTilts.getXAxis();
         xAxis.setDrawLabels(false);
         xAxis.setDrawGridLines(false);
+        xAxis.setGranularityEnabled(true);
+        xAxis.setGranularity(1f);
+        xAxis.setLabelCount(12);
         xAxis.setAvoidFirstLastClipping(true);
 
         barDataSet.setColor(R.color.colorPrimary);
@@ -639,7 +651,7 @@ public class MainActivity extends AppCompatActivity
         barDataSet.setValueFormatter(new DefaultValueFormatter(0));
         barDataSet.setGradientColor(Color.argb(100,171,157,242),Color.argb(200,52,139,195));
         barDataTilts = new BarData(barDataSet);
-        barDataTilts.setBarWidth(20f);
+        barDataTilts.setBarWidth(2000f);
         barDataTilts.setValueTextSize(10f);
 
         //Draw the actual graph with barData

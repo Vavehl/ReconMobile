@@ -54,6 +54,7 @@ public class CreateGraphArrays {
         double TotalAvgRnC_Ch1_Raw = 0;
         double TotalAvgRnC_Ch2_Raw = 0;
         double dblEpochMinute;
+        double dblEpochSecond;
         long TotalHourCounter = 0;
         long hourlyMovement = 0;
         int TempYear = 0;
@@ -205,7 +206,6 @@ public class CreateGraphArrays {
                     Logging.main("CreateGraphArrays","Beginning Exposure (deprecatedHourCounter) = " + deprecatedHourCounter.toString());
                 }
 
-
                 if((Build.VERSION.SDK_INT >= 26 && HourCounter != null && ReconDate != null)||(Build.VERSION.SDK_INT < 26 && deprecatedHourCounter!= null && deprecatedReconDate != null)) {
                     if(Build.VERSION.SDK_INT >= 26) {
                         diffMinutes = ChronoUnit.MINUTES.between(HourCounter, ReconDate);
@@ -312,16 +312,17 @@ public class CreateGraphArrays {
 
                             if(Build.VERSION.SDK_INT >= 26) {
                                 //We multiply ReconDate.toEpochSeconds by 1000 to ensure that we are using Epoch Milliseconds, which is also produced by deprecatedReconDate.getTime() below.
-                                dblEpochMinute = (double)ReconDate.toEpochSecond(ZoneOffset.UTC)/60;
+                                dblEpochSecond = (double)ReconDate.toInstant(ZoneOffset.UTC).atZone(ZoneOffset.UTC).toEpochSecond();
                                 System.out.println("EPOCH SECOND = " + ReconDate.toEpochSecond(ZoneOffset.UTC));
                             } else {
-                                dblEpochMinute = (double)deprecatedReconDate.getTime()/60000;
+                                dblEpochSecond = (double)deprecatedReconDate.getTime()/1000d; //getTime() returns millisecond values, so we need to divide by 1000 to reach seconds.
+                                System.out.println("EPOCH SECOND (deprecatedReconDate) = " + dblEpochSecond);
                             }
-                            chartdataRadon.add(new Entry((float)dblEpochMinute, Float.parseFloat(formatUS_RnC.format((tempCounts_Ch1 / LoadedReconCF1 + tempCounts_Ch2 / LoadedReconCF2) / 2))));
-                            chartdataPressure.add(new Entry((float)dblEpochMinute,Float.parseFloat(formatTenth.format((hourlyAvgPress / avgCounter) * 0.02952998751))));
-                            chartdataHumidity.add(new Entry((float)dblEpochMinute,Float.parseFloat(formatZero.format(hourlyAvgHumidity / avgCounter))));
-                            chartdataTemp.add(new Entry((float)dblEpochMinute,Float.parseFloat(formatZero.format((hourlyAvgTemp / avgCounter) * 9 / 5 + 32))));
-                            chartdataTilts.add(new BarEntry((float)dblEpochMinute,Float.parseFloat(formatZero.format(Math.round(hourlyMovement)))));
+                            chartdataRadon.add(new Entry((float)dblEpochSecond, Float.parseFloat(formatUS_RnC.format((tempCounts_Ch1 / LoadedReconCF1 + tempCounts_Ch2 / LoadedReconCF2) / 2))));
+                            chartdataPressure.add(new Entry((float)dblEpochSecond,Float.parseFloat(formatTenth.format((hourlyAvgPress / avgCounter) * 0.02952998751))));
+                            chartdataHumidity.add(new Entry((float)dblEpochSecond,Float.parseFloat(formatZero.format(hourlyAvgHumidity / avgCounter))));
+                            chartdataTemp.add(new Entry((float)dblEpochSecond,Float.parseFloat(formatZero.format((hourlyAvgTemp / avgCounter) * 9 / 5 + 32))));
+                            chartdataTilts.add(new BarEntry((float)dblEpochSecond,Float.parseFloat(formatZero.format(Math.round(hourlyMovement)))));
                             System.out.println(arrLine);
                         }
 

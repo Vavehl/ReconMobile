@@ -88,6 +88,9 @@ public class ChartHumidity extends Fragment {
         xAxis.setLabelRotationAngle(90);
         xAxis.setCenterAxisLabels(true);
         xAxis.setDrawGridLines(false);
+        xAxis.setGranularityEnabled(true);
+        xAxis.setGranularity(1f);
+        xAxis.setLabelCount(12);
         xAxis.setValueFormatter(new GraphAxisFormatter());
         xAxis.setAvoidFirstLastClipping(true);
 

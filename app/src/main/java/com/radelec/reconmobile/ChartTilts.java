@@ -50,7 +50,7 @@ public class ChartTilts extends Fragment {
         barDataSet.setValueFormatter(new DefaultValueFormatter(0));
         barDataSet.setGradientColor(Color.argb(100,171,157,242),Color.argb(200,52,139,195));
         barData = new BarData(barDataSet);
-        barData.setBarWidth(20f);
+        barData.setBarWidth(2000f);
         barData.setValueTextSize(10f);
 
         //Draw the actual graph with barData
@@ -83,8 +83,13 @@ public class ChartTilts extends Fragment {
         xAxis.setLabelRotationAngle(90);
         xAxis.setCenterAxisLabels(true);
         xAxis.setDrawGridLines(false);
+        xAxis.setGranularityEnabled(true);
+        xAxis.setGranularity(1f);
         xAxis.setValueFormatter(new GraphAxisFormatter());
         xAxis.setAvoidFirstLastClipping(true);
+
+        //We have to refresh here...
+        bcTilts.invalidate();
 
         return view;
     }
