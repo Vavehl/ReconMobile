@@ -124,6 +124,7 @@ public class FragmentConnect extends Fragment implements ConsoleCallback, Servic
                         ReconFunctions rfRecon = new ReconFunctions(null);
                         rfRecon.disconnect();
                         checkConnectionStatus();
+                        updateSystemConsole("System Console"); //Restore default System Console text.
                         break;
                     case False:
                         Logging.main("FragmentConnect","Connect button pressed!");

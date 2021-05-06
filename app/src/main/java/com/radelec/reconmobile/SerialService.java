@@ -88,6 +88,8 @@ public class SerialService extends Service implements SerialListener {
         listener = null;
         boolConnected = false;
         notificationMsg = null;
+        queue1.clear(); //Clear Queue 1
+        queue2.clear(); //Clear Queue 2
         cancelNotification();
     }
 
