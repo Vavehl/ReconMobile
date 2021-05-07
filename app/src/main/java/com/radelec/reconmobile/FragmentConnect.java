@@ -49,7 +49,6 @@ public class FragmentConnect extends Fragment implements ConsoleCallback, Servic
     private Space spaceConnect_1;
 
     private BroadcastReceiver broadcastReceiver;
-    private boolean initialStart = true;
 
     public FragmentConnect() {
         Logging.main("FragmentConnect","FragmentConnect() called!");
