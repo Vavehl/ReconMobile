@@ -14,6 +14,11 @@
         android:title="@string/save_file"
         app:showAsAction="ifRoom" />
     <item
+        android:id="@+id/email_pdf"
+        android:icon="@drawable/ic_email_ivory_24dp"
+        android:title="@string/email_pdf"
+        app:showAsAction="ifRoom" />
+    <item
         android:id="@+id/save_file"
         android:icon="@drawable/ic_save_24px"
         android:title="@string/save_file"

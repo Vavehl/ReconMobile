@@ -21,7 +21,6 @@ import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.DefaultValueFormatter;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -95,22 +94,6 @@ public class MainActivity extends AppCompatActivity
         assetManager = this.getAssets();
 
         Permissions.verifyStoragePermissions(this);
-
-        FloatingActionButton fab = findViewById(R.id.fabEmail);
-        fab.setOnClickListener(view -> {
-            if(connected == ReconConnected.Loaded) {
-                populateRadonChart();
-                populateHumidityChart();
-                populatePressureChart();
-                populateTiltsChart();
-                emailPDF();
-            } else {
-                //If no file is loaded, let's try to prompt the user to load one...
-                Toast no_file_loaded = Toast.makeText(getApplicationContext(),"You must load a file before emailing it!",Toast.LENGTH_SHORT);
-                no_file_loaded.show();
-                openFile();
-            }
-        });
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
@@ -203,6 +186,21 @@ public class MainActivity extends AppCompatActivity
                 return true;
             case R.id.open_file:
                 openFile();
+                return true;
+            case R.id.email_pdf:
+                if(connected == ReconConnected.Loaded) {
+                    saveFile();
+                    populateRadonChart();
+                    populateHumidityChart();
+                    populatePressureChart();
+                    populateTiltsChart();
+                    emailPDF();
+                } else {
+                    //If no file is loaded, let's try to prompt the user to load one...
+                    Toast no_file_loaded = Toast.makeText(getApplicationContext(),"You must load a file before emailing it!",Toast.LENGTH_SHORT);
+                    no_file_loaded.show();
+                    openFile();
+                }
                 return true;
             case R.id.save_file:
                 saveFile();
