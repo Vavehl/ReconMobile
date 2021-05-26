@@ -60,7 +60,7 @@ public class Logging {
     public static void exportLogFile(String strSuffix) throws IOException {
 
         Log.d("Logging","Logging.exportLogFile() called!");
-        String strPublicLogPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + File.separator + "ReconMobile" + (strSuffix.length() > 0 ? strSuffix + ".log" : ".log");
+        String strPublicLogPath = Globals.cacheDir + File.separator + "ReconMobile" + (strSuffix.length() > 0 ? strSuffix + ".log" : ".log");
 
         File src = new File(Globals.logsDir + File.separator + "ReconMobile.log");
         File dst = new File(strPublicLogPath);

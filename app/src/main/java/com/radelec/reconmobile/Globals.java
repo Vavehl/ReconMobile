@@ -52,6 +52,7 @@ class Globals {
     public static PDRectangle globalPageSize = PDRectangle.LETTER;
 
     //File Directory
+    public static File cacheDir = null;
     public static File fileDir = null;
     public static File imageDir = null;
     public static File logsDir = null;

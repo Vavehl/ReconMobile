@@ -2,7 +2,6 @@ package com.radelec.reconmobile;
 
 import android.database.Cursor;
 import android.graphics.Point;
-import android.os.Environment;
 
 import com.tom_roush.pdfbox.pdmodel.PDDocument;
 import com.tom_roush.pdfbox.pdmodel.PDPage;
@@ -666,12 +665,18 @@ public class CreatePDF {
             Logging.main("CreatePDF","End PDF generation stage. Writing to file...");
 
             drawFooterInfo(doc);
-            doc.save(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS + File.separator + PDF_Name));
-            Logging.main("CreatePDF","PDF saved to: " + Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS + File.separator + PDF_Name));
-            //Draw the footer info (page #, version, etc.)
-            //It's a bit shoddy, but because we're appending, we need to have already saved it
-            //and then re-open the file.
-            filePDF = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + File.separator + PDF_Name);
+            //Handle shared storage differences for Android 11+
+            try {
+                doc.save(cacheDir + File.separator + PDF_Name);
+                Logging.main("CreatePDF", "PDF saved to: " + cacheDir + File.separator + PDF_Name);
+                //Draw the footer info (page #, version, etc.)
+                //It's a bit shoddy, but because we're appending, we need to have already saved it
+                //and then re-open the file.
+                filePDF = new File(cacheDir + File.separator + PDF_Name);
+            } catch (Exception ex) {
+                Logging.main("CreatePDF","Exception when saving PDF in Android SDK <30!");
+                Logging.main("CreatePDF",ex.toString());
+            }
             if (filePDF != null) {
                 if (filePDF.exists()) {
                     Logging.main("CreatePDF", PDF_Name + " has been created. [" + filePDF.getAbsolutePath() + "]");

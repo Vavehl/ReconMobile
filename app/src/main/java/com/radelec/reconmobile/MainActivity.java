@@ -25,6 +25,7 @@ import com.google.android.material.tabs.TabLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -64,6 +65,7 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
 
         //Get various directories used by Recon Mobile
+        cacheDir = getApplicationContext().getCacheDir();
         fileDir = getApplicationContext().getFilesDir();
         imageDir = getApplicationContext().getDir("images",MODE_PRIVATE);
         logsDir = getApplicationContext().getDir("logs",MODE_PRIVATE);
@@ -356,65 +358,126 @@ public class MainActivity extends AppCompatActivity
             String[] self_email = {db.getCompanyEmail()};
             String subject = "Radon Test Report";
             String body = "Please find attached your radon test results!";
-            Intent intent = new Intent(Intent.ACTION_VIEW);
-            Uri data = Uri.parse("mailto:");
-            intent.putExtra(Intent.EXTRA_EMAIL, recipient_email);
-            intent.putExtra(Intent.EXTRA_SUBJECT, subject);
-            intent.putExtra(Intent.EXTRA_TEXT, body);
-            intent.putExtra(Intent.EXTRA_BCC, self_email);
             if (filePDF != null) {
-                if (filePDF.exists()) {
-                    Logging.main("MainActivity", "emailPDF(): Attempting to attach PDF to email!");
-                    //filePDF.setReadable(true, false);
-                    intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(filePDF));
-                    intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                } else {
-                    Logging.main("MainActivity", "emailPDF(): No PDF found for attachment!");
+                if (android.os.Build.VERSION.SDK_INT < 29) { //Old method for attaching files (pre-Android <10 / SDK API LEVEL <29
+                    if (filePDF.exists()) {
+                        Logging.main("MainActivity", "emailPDF(): Attempting to attach PDF to email (SDK <29)!");
+                        try {
+                            Intent intent = new Intent(Intent.ACTION_VIEW);
+                            Uri data = Uri.parse("mailto:");
+                            intent.putExtra(Intent.EXTRA_EMAIL, recipient_email);
+                            intent.putExtra(Intent.EXTRA_SUBJECT, subject);
+                            intent.putExtra(Intent.EXTRA_TEXT, body);
+                            intent.putExtra(Intent.EXTRA_BCC, self_email);
+                            intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(filePDF));
+                            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                            intent.setData(data);
+                            try {
+                                startActivityForResult(Intent.createChooser(intent, "Creating email..."), 12);
+                            } catch (ActivityNotFoundException ex) {
+                                Toast msgEmail = Toast.makeText(getApplicationContext(), "Unable to launch email client...", Toast.LENGTH_SHORT);
+                                msgEmail.show();
+                            }
+                        } catch (Exception ex) {
+                            Logging.main("MainActivity", "emailPDF(): Unable to attach PDF to email!");
+                            Logging.main("MainActivity", "emailPDF(): " + ex.toString());
+                        }
+                    } else {
+                        Logging.main("MainActivity", "emailPDF(): No PDF found for attachment!");
+                    }
+                } else { //New method for attaching files to email client in Android 10+ / SDK 29+
+                    if (filePDF.exists()) {
+                        Logging.main("MainActivity", "emailPDF(): Attempting to attach PDF to email (SDK 29+)!");
+                        try {
+                            Intent intent = new Intent(Intent.ACTION_SEND);
+                            intent.putExtra(Intent.EXTRA_EMAIL, recipient_email);
+                            intent.putExtra(Intent.EXTRA_SUBJECT, subject);
+                            intent.putExtra(Intent.EXTRA_TEXT, body);
+                            intent.putExtra(Intent.EXTRA_BCC, self_email);
+
+                            if (!filePDF.exists() || !filePDF.canRead()) {
+                                Logging.main("MainActivity","emailLog(): PDF Attachment Error!");
+                                Toast.makeText(this, "Attachment Error", Toast.LENGTH_SHORT).show();
+                                finish();
+                                return;
+                            }
+
+                            Uri uri = FileProvider.getUriForFile(MainActivity.this, "com.radelec.reconmobile.fileprovider", filePDF);
+                            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                            intent.setDataAndType(uri, getContentResolver().getType(uri));
+                            intent.putExtra(Intent.EXTRA_STREAM, uri);
+                            try {
+                                startActivityForResult(Intent.createChooser(intent, "Creating email..."), 12);
+                            } catch (ActivityNotFoundException ex) {
+                                Toast msgEmail = Toast.makeText(getApplicationContext(), "Unable to launch email client...", Toast.LENGTH_SHORT);
+                                msgEmail.show();
+                            }
+                        } catch (Exception ex) {
+                            Logging.main("MainActivity", "emailPDF(): Unable to attach PDF to email!");
+                            Logging.main("MainActivity", "emailPDF(): " + ex.toString());
+                        }
+                    }
                 }
-            }
-            intent.setData(data);
-            if (intent.resolveActivity(getPackageManager()) != null) {
-                startActivityForResult(Intent.createChooser(intent, "Creating email..."), 12);
-            } else {
-                Toast msgEmail = Toast.makeText(getApplicationContext(), "Unable to launch email client...", Toast.LENGTH_SHORT);
-                msgEmail.show();
             }
         } catch (ActivityNotFoundException ex) {
             Logging.main("MainActivity","emailPDF(): Email client not found?");
+            Toast msgEmail = Toast.makeText(getApplicationContext(), "No default email client found...", Toast.LENGTH_SHORT);
+            msgEmail.show();
         }
     }
 
     public void emailLog(){
         Logging.main("MainActivity","emailLog() called!");
-        File fileLastLog = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + File.separator + "ReconMobile_last.log");
-        /*try {
-            Logging.exportLogFile("_current");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }*/
-        File fileCurrentLog = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + File.separator + "ReconMobile_current.log");
+        File fileLastLog = new File(cacheDir + File.separator + "ReconMobile_last.log");
         String[] recipient_email = {"lcstieff@radelec.com"};
         String subject = "Recon Mobile Bug Report";
         String body = "Here is the latest bug report / log file!";
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        Uri data = Uri.parse("mailto:");
-        intent.putExtra(Intent.EXTRA_EMAIL, recipient_email);
-        intent.putExtra(Intent.EXTRA_SUBJECT, subject);
-        intent.putExtra(Intent.EXTRA_TEXT, body);
         if (fileLastLog.exists()) {
-            Logging.main("MainActivity", "emailLog(): Attempting to attach ReconMobile.log!");
-            intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(fileLastLog));
-            //intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(fileCurrentLog));
-            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            if (android.os.Build.VERSION.SDK_INT < 29) { //Old method for attaching files (pre-Android <10 / SDK API LEVEL <29
+                Logging.main("MainActivity", "emailLog(): Attempting to attach ReconMobile_last.log (SDK <29)!");
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                Uri data = Uri.parse("mailto:");
+                intent.putExtra(Intent.EXTRA_EMAIL, recipient_email);
+                intent.putExtra(Intent.EXTRA_SUBJECT, subject);
+                intent.putExtra(Intent.EXTRA_TEXT, body);
+                intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(fileLastLog));
+                //intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(fileCurrentLog));
+                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                intent.setData(data);
+                try {
+                    startActivityForResult(Intent.createChooser(intent, "Creating email..."), 12);
+                } catch (ActivityNotFoundException ex) {
+                    Toast msgEmail = Toast.makeText(getApplicationContext(), "Unable to launch email client...", Toast.LENGTH_SHORT);
+                    msgEmail.show();
+                }
+            } else { //Current method for attaching files (Android 10+ / SDK API LEVEL 29+)
+                Logging.main("MainActivity", "emailLog(): Attempting to attach ReconMobile_last.log (SDK 29+)!");
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.putExtra(Intent.EXTRA_EMAIL, recipient_email);
+                intent.putExtra(Intent.EXTRA_SUBJECT, subject);
+                intent.putExtra(Intent.EXTRA_TEXT, body);
+
+                if (!fileLastLog.exists() || !fileLastLog.canRead()) {
+                    Logging.main("MainActivity","emailLog(): Attachment Error!");
+                    Toast.makeText(this, "Log Attachment Error", Toast.LENGTH_SHORT).show();
+                    finish();
+                    return;
+                }
+
+                Uri uri = FileProvider.getUriForFile(MainActivity.this, "com.radelec.reconmobile.fileprovider", fileLastLog);
+                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                intent.setDataAndType(uri, getContentResolver().getType(uri));
+                intent.putExtra(Intent.EXTRA_STREAM, uri);
+                try {
+                    startActivityForResult(Intent.createChooser(intent, "Creating email..."), 12);
+                    finish();
+                } catch (android.content.ActivityNotFoundException ex) {
+                    Toast.makeText(MainActivity.this,"Unable to launch email client...", Toast.LENGTH_SHORT).show();
+                }
+            }
         } else {
+            Toast.makeText(MainActivity.this,"No suitable log files available...", Toast.LENGTH_SHORT).show();
             Logging.main("MainActivity", "emailLog(): No accessible log file found for attachment!");
-        }
-        intent.setData(data);
-        if (intent.resolveActivity(getPackageManager()) != null) {
-            startActivityForResult(Intent.createChooser(intent, "Creating email..."), 12);
-        } else {
-            Toast msgEmail = Toast.makeText(getApplicationContext(), "Unable to launch email client...", Toast.LENGTH_SHORT);
-            msgEmail.show();
         }
     }
 
