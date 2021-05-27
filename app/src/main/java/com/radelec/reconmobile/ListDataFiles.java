@@ -4,6 +4,8 @@ import android.content.Context;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Objects;
 
 public class ListDataFiles {
@@ -33,7 +35,13 @@ public class ListDataFiles {
         Logging.main("ListDataFiles","Data directory = " + f);
         File[] files = f.listFiles();
         if(files!=null && files.length>0) {
-            Logging.main("ListDataFiles","Generating list of internal Recon data files...");
+            Logging.main("ListDataFiles","Generating list of internal Recon data files, sorted by date modified...");
+            Arrays.sort(files, new Comparator<File>() { //This will sort by date modified!
+                @Override
+                public int compare(File f1, File f2) {
+                    return Long.compare(f2.lastModified(), f1.lastModified());
+                }
+            });
             alDataFiles.clear();
             for (File file : files) {
                 ListDataFiles element = new ListDataFiles("", (long) 0,"");

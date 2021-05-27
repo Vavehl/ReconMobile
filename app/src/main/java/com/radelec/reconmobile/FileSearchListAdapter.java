@@ -105,7 +105,7 @@ public class FileSearchListAdapter extends RecyclerView.Adapter<FileSearchListAd
             holder.ibTrashDelete.setVisibility(View.INVISIBLE);
             holder.ibTrashDelete.setFocusable(false);
         }
-        holder.tvDateModified.setText(DateFormat.format("dd-MMM-yyyy hh:mm", element.getDateModified()));
+        holder.tvDateModified.setText(DateFormat.format("dd-MMM-yyyy HH:mm", element.getDateModified()));
         holder.tvFileName.setText(element.getFileName());
     }
 
