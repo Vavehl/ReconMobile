@@ -242,12 +242,12 @@ public class CreateTXT {
                 // write customer info to file
                 writer.println(newline);
                 writer.println("Customer information:");
-                writer.println(cursorReportDefaults.getString(2));
+                writer.println((cursorReportDefaults.getString(2) == null ? "" : cursorReportDefaults.getString(2)));
                 writer.println(newline);
 
                 // write test site info to file
                 writer.println("Test site information:");
-                writer.println(cursorReportDefaults.getString(3));
+                writer.println((cursorReportDefaults.getString(3) == null ? "" : cursorReportDefaults.getString(3)));
                 writer.println(newline);
 
                 if (photodiodeFailure_Ch1 || photodiodeFailure_Ch2) {
@@ -288,29 +288,29 @@ public class CreateTXT {
                 writer.println("Chamber 1 CF: " + cfDec.format(CF1));
                 writer.println("Chamber 2 CF: " + cfDec.format(CF2));
                 writer.println("Calibration Date = " + ReconCalDate);
-                writer.println("Protocol: " + cursorReportDefaults.getString(7));
-                writer.println("Tampering: " + cursorReportDefaults.getString(8));
-                writer.println("Weather: " + cursorReportDefaults.getString(9));
-                writer.println("Mitigation: " + cursorReportDefaults.getString(10));
-                writer.println("Comment: " + cursorReportDefaults.getString(11));
-                writer.println("Location: " + cursorReportDefaults.getString(1));
+                writer.println("Protocol: " + (cursorReportDefaults.getString(7) == null ? "" : cursorReportDefaults.getString(7)));
+                writer.println("Tampering: " + (cursorReportDefaults.getString(8) == null ? "" : cursorReportDefaults.getString(8)));
+                writer.println("Weather: " + (cursorReportDefaults.getString(9) == null ? "" : cursorReportDefaults.getString(9)));
+                writer.println("Mitigation: " + (cursorReportDefaults.getString(10) == null ? "" : cursorReportDefaults.getString(10)));
+                writer.println("Comment: " + (cursorReportDefaults.getString(11) == null ? "" : cursorReportDefaults.getString(11)));
+                writer.println("Location: " + (cursorReportDefaults.getString(1) == null ? "" : cursorReportDefaults.getString(1)));
                 writer.println("Email: " + db.getCompanyEmail());
                 writer.println(newline);
-                writer.println("Analyzed By: " + cursorReportDefaults.getString(6));
-                writer.println("Deployed By: " + cursorReportDefaults.getString(4));
-                writer.println("Retrieved By: " + cursorReportDefaults.getString(5));
+                writer.println("Analyzed By: " + (cursorReportDefaults.getString(6) == null ? "" : cursorReportDefaults.getString(6)));
+                writer.println("Deployed By: " + (cursorReportDefaults.getString(4) == null ? "" : cursorReportDefaults.getString(4)));
+                writer.println("Retrieved By: " + (cursorReportDefaults.getString(5) == null ? "" : cursorReportDefaults.getString(5)));
                 writer.println(newline);
             } else if (BeginAveraging) { // or this if we're in regular user mode
                 Logging.main("CreateTXT","Creating TXT details...");
                 // write customer info to file
                 writer.println(newline);
                 writer.println("Customer information:");
-                writer.println(cursorReportDefaults.getString(2));
+                writer.println((cursorReportDefaults.getString(2) == null ? "" : cursorReportDefaults.getString(2)));
                 writer.println(newline);
 
                 // write test site info to file
                 writer.println("Test site information:");
-                writer.println(cursorReportDefaults.getString(3));
+                writer.println((cursorReportDefaults.getString(3) == null ? "" : cursorReportDefaults.getString(3)));
                 writer.println(newline);
 
                 writer.println("Instrument Serial: " + strInstrumentSerial);
@@ -338,17 +338,17 @@ public class CreateTXT {
                 writer.println("Chamber 1 CF: " + cfDec.format(CF1));
                 writer.println("Chamber 2 CF: " + cfDec.format(CF2));
                 writer.println("Calibration Date = " + ReconCalDate);
-                writer.println("Protocol: " + cursorReportDefaults.getString(7));
-                writer.println("Tampering: " + cursorReportDefaults.getString(8));
-                writer.println("Weather: " + cursorReportDefaults.getString(9));
-                writer.println("Mitigation: " + cursorReportDefaults.getString(10));
-                writer.println("Comment: " + cursorReportDefaults.getString(11));
-                writer.println("Location: " + cursorReportDefaults.getString(1));
+                writer.println("Protocol: " + (cursorReportDefaults.getString(7) == null ? "" : cursorReportDefaults.getString(7)));
+                writer.println("Tampering: " + (cursorReportDefaults.getString(8) == null ? "" : cursorReportDefaults.getString(8)));
+                writer.println("Weather: " + (cursorReportDefaults.getString(9) == null ? "" : cursorReportDefaults.getString(9)));
+                writer.println("Mitigation: " + (cursorReportDefaults.getString(10) == null ? "" : cursorReportDefaults.getString(10)));
+                writer.println("Comment: " + (cursorReportDefaults.getString(11) == null ? "" : cursorReportDefaults.getString(11)));
+                writer.println("Location: " + (cursorReportDefaults.getString(1) == null ? "" : cursorReportDefaults.getString(1)));
                 writer.println("Email: " + db.getCompanyEmail());
                 writer.println(newline);
-                writer.println("Analyzed By: " + cursorReportDefaults.getString(6));
-                writer.println("Deployed By: " + cursorReportDefaults.getString(4));
-                writer.println("Retrieved By: " + cursorReportDefaults.getString(5));
+                writer.println("Analyzed By: " + (cursorReportDefaults.getString(6) == null ? "" : cursorReportDefaults.getString(6)));
+                writer.println("Deployed By: " + (cursorReportDefaults.getString(4) == null ? "" : cursorReportDefaults.getString(4)));
+                writer.println("Retrieved By: " + (cursorReportDefaults.getString(5) == null ? "" : cursorReportDefaults.getString(5)));
                 writer.println(newline);
             }
             // do following regardless of mode
