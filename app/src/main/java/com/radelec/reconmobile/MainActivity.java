@@ -31,16 +31,23 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Environment;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.Menu;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.PrintWriter;
+import java.nio.channels.FileChannel;
 import java.text.ParseException;
 import java.util.Objects;
 
@@ -197,6 +204,11 @@ public class MainActivity extends AppCompatActivity
                     populatePressureChart();
                     populateTiltsChart();
                     emailPDF();
+                    try {
+                        copyPDFToPublicDir();
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    }
                 } else {
                     //If no file is loaded, let's try to prompt the user to load one...
                     Toast no_file_loaded = Toast.makeText(getApplicationContext(),"You must load a file before emailing it!",Toast.LENGTH_SHORT);
@@ -337,6 +349,73 @@ public class MainActivity extends AppCompatActivity
 
         if(fragmentOpen.isDetached()) {
             Logging.main("MainActivity","FRAGMENT_OPEN DETACHED!");
+        }
+    }
+
+    protected void copyPDFToPublicDir() throws IOException {
+        Log.d("MainActivity", "copyPDFToPublicDir() called!");
+
+        File src = filePDF;
+        String strPDF_Name = "RadonTestReport.pdf";
+
+        //strips .txt from the filename and replaces it with .pdf
+        if (globalLoadedFileName != null && globalLoadedFileName.length()>5) {
+            strPDF_Name = StringUtils.left(globalLoadedFileName, globalLoadedFileName.length() - 4) + ".pdf";
+        }
+
+        String strPublicPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + File.separator + strPDF_Name;
+        File dst = new File(strPublicPath);
+
+        if(src==null) {
+            Log.d("MainActivity", "Source PDF file is null! Unable to copy to public directory...");
+            return;
+        }
+
+        if (!(src.exists())) {
+            Log.d("MainActivity", "No source PDF file found!? Unable to copy to public directory...");
+            return;
+        }
+
+        try {
+            if (!(dst.exists())) {
+                PrintWriter pw;
+                pw = new PrintWriter(dst);
+                pw.close();
+            } else {
+                Log.d("MainActivity", "Public-accessible PDF with the desired name already exists. Attempting to overwrite.");
+            }
+        } catch (FileNotFoundException ex) {
+            Log.d("MainActivity", "ERROR: Unable to create public PDF!");
+            Log.d("MainActivity", ex.toString());
+            return;
+        }
+
+        Log.d("MainActivity", "SRC = " + src.getAbsolutePath() + " (" + src.length() / 1024 + " kb) // DST = " + dst.getAbsolutePath());
+
+        File expFile = new File(strPublicPath);
+
+        FileChannel inChannel;
+        FileChannel outChannel;
+
+        try {
+            inChannel = new FileInputStream(src).getChannel();
+            outChannel = new FileOutputStream(expFile).getChannel();
+        } catch (FileNotFoundException ex) {
+            Log.d("MainActivity", "ERROR: Unable to establish inChannel / outChannel!");
+            Log.d("MainActivity", ex.toString());
+            return;
+        }
+
+        try {
+            inChannel.transferTo(0, inChannel.size(), outChannel);
+        } catch (FileNotFoundException ex) {
+            Log.d("Logging", "ERROR: Unable to transfer contents from internal ReconMobile.log to public log!");
+            Log.d("Logging", ex.toString());
+        } finally {
+            if (inChannel != null)
+                inChannel.close();
+            if (outChannel != null)
+                outChannel.close();
         }
     }
 
